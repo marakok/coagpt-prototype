@@ -41,3 +41,4 @@ Zet de twee variabelen dan in een `.env.local` (zie `.env.example`).
 - Pagina's worden niet geïndexeerd door zoekmachines (`X-Robots-Tag: noindex`).
 - De inhoud (rollen, taken, e-learnings, documenten) is voorbeeldinhoud. Waar echte gegevens horen staan placeholders zoals `[locatie]`.
 - De koppen gebruiken `Supreme` als dat lettertype op het apparaat staat, anders Noto Sans. Supreme wordt niet meegeleverd zolang de licentie niet is uitgezocht.
+- Beweging gebruikt prototype-tokens (`--sh-motion-*`, `--sh-ease-*` in `public/index.html`), omdat de motion-richtlijnen van Shelter op mxds.nl achter een inlog staan. Vervang ze door de officiële waarden zodra die bekend zijn. Met `prefers-reduced-motion` staat alle beweging uit, behalve laadindicatoren.
