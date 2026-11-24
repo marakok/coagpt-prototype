@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>COAGPT · Prototype intake en werkruimte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Shelter v2.1.0 tokens, overgenomen van mxds.nl (light theme).
+   Namen volgen Figma (background/foreground/border); op mxds.nl
+   heten ze --sh-bg-*, --sh-fg-*, --sh-border-*.
+   ========================================================= */
+:root{
+  --sh-petrol-50:#e5ffff; --sh-petrol-250:#83def2; --sh-petrol-450:#2ea1b8; --sh-petrol-500:#0094ab;
+  --sh-petrol-550:#008197; --sh-petrol-600:#006f85; --sh-petrol-650:#005f74; --sh-petrol-700:#004e63;
+  --sh-petrol-800:#00384a; --sh-petrol-900:#002535;
+
+  --sh-background-neutral:#f7f8f8;
+  --sh-background-neutral-raised:#ffffff;
+  --sh-background-neutral-faded:#e9ebec;
+  --sh-background-neutral-muted:#dbe0e2;
+  --sh-background-neutral-inverted:#002535;
+  --sh-background-primary:#2ea1b8;
+  --sh-background-primary-faded:#006f85;
+  --sh-background-primary-raised:#e5ffff;
+  --sh-background-constructive:#41a960;
+  --sh-background-constructive-faded:#00772f;
+  --sh-background-constructive-raised:#e0ffe9;
+  --sh-background-attention:#be8c0b;
+  --sh-background-attention-raised:#fffcdb;
+  --sh-background-destructive:#f25342;
+  --sh-background-destructive-faded:#b80300;
+  --sh-background-destructive-raised:#ffeee5;
+  --sh-background-accent1-raised:#fff0ff;
+
+  --sh-foreground-neutral-prominent:#12171a;
+  --sh-foreground-neutral:#282f32;
+  --sh-foreground-neutral-faded:#4b5357;
+  --sh-foreground-neutral-muted:#6b7478;
+  --sh-foreground-neutral-inverted:#f7f8f8;
+  --sh-foreground-primary:#008197;
+  --sh-foreground-primary-prominent:#004e63;
+  --sh-foreground-constructive:#0d8940;
+  --sh-foreground-constructive-prominent:#005510;
+  --sh-foreground-attention:#986800;
+  --sh-foreground-attention-prominent:#623800;
+  --sh-foreground-destructive:#d32a1d;
+  --sh-foreground-destructive-prominent:#8e0000;
+  --sh-foreground-accent1:#8360a1;
+  --sh-foreground-accent1-prominent:#51316b;
+
+  --sh-border-neutral:#dbe0e2;
+  --sh-border-neutral-faded:#e9ebec;
+  --sh-border-neutral-prominent:#c8cfd2;
+  --sh-border-neutral-contrast:#12171a;
+  --sh-border-primary:#0094ab;
+  --sh-border-constructive:#24984d;
+  --sh-border-attention:#aa7a00;
+
+  --sh-action-hover-inverse:#00000008;
+  --sh-action-active-inverse:#0000001a;
+  --sh-opacity-dark-50:#00000080;
+
+  --sh-radius-xs:4px; --sh-radius-sm:6px; --sh-radius-md:8px; --sh-radius-lg:10px; --sh-radius-xl:12px; --sh-radius-full:9999px;
+  --sh-levitation-1:0 2px 3px 0 rgba(0,0,0,.1);
+  --sh-levitation-2:0 4px 16px 0 rgba(0,0,0,.03),0 4px 6px 0 rgba(0,0,0,.03);
+  --sh-levitation-3:0 4px 16px 0 rgba(0,0,0,.03),0 6px 8px 0 rgba(0,0,0,.03);
+  --sh-levitation-4:0 4px 16px 0 rgba(0,0,0,.03),0 10px 12px 0 rgba(0,0,0,.03);
+  --sh-levitation-5:0 4px 16px 0 rgba(0,0,0,.03),0 14px 16px 0 rgba(0,0,0,.1);
+  --sh-focus:#008197;
+
+  --sh-font-header:'Supreme','Noto Sans',system-ui,sans-serif;
+  --sh-font-body:'Noto Sans',system-ui,sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--sh-font-body);font-size:16px;line-height:24px;color:var(--sh-foreground-neutral);background:var(--sh-background-neutral);-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--sh-focus);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+svg{flex:none}
+
+/* Typografie: headings Supreme 500, body Noto Sans */
+.h1,.h2,.h3,.h4,.h5{margin:0;font-family:var(--sh-font-header);font-weight:500;color:var(--sh-foreground-neutral-prominent)}
+.h1{font-size:40px;line-height:44px}
+.h2{font-size:32px;line-height:36px}
+.h3{font-size:24px;line-height:28px}
+.h4{font-size:20px;line-height:24px}
+.h5{font-size:16px;line-height:20px}
+.lead{margin:0;font-size:20px;line-height:28px;color:var(--sh-foreground-neutral-faded)}
+.label{font-size:14px;line-height:20px}
+.label-sm{font-size:12px;line-height:16px}
+.overline{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sh-foreground-primary)}
+.faded{color:var(--sh-foreground-neutral-faded)}
+
+/* Buttons */
+.sh-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 16px;border-radius:var(--sh-radius-xl);border:1px solid transparent;font-size:16px;line-height:24px;font-weight:500;white-space:nowrap;transition:background .15s}
+.sh-btn--primary{background:var(--sh-background-primary-faded);color:#fff}
+.sh-btn--primary:hover{background:var(--sh-petrol-650)}
+.sh-btn--secondary{background:var(--sh-background-neutral-raised);border-color:var(--sh-border-neutral-faded);color:var(--sh-foreground-neutral-prominent)}
+.sh-btn--secondary:hover{background:var(--sh-background-neutral);border-color:var(--sh-border-neutral-prominent)}
+.sh-btn--ghost{background:transparent;color:var(--sh-foreground-primary-prominent)}
+.sh-btn--ghost:hover{background:var(--sh-action-hover-inverse)}
+.sh-btn--sm{min-height:36px;padding:0 12px;border-radius:var(--sh-radius-md);font-size:14px}
+.sh-icon-btn{width:40px;height:40px;display:inline-flex;align-items:center;justify-content:center;border-radius:var(--sh-radius-md);border:0;background:transparent;color:var(--sh-foreground-neutral-faded)}
+.sh-icon-btn:hover{background:var(--sh-action-hover-inverse);color:var(--sh-foreground-neutral-prominent)}
+
+/* Chips */
+.sh-chip{display:inline-flex;align-items:center;gap:2px;height:24px;padding:4px 8px;border-radius:var(--sh-radius-full);font-size:12px;font-weight:500;line-height:16px;white-space:nowrap}
+.sh-chip--neutral{background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral-faded);color:var(--sh-foreground-neutral-prominent)}
+.sh-chip--primary{background:var(--sh-background-primary-raised);color:var(--sh-foreground-primary-prominent)}
+.sh-chip--constructive{background:var(--sh-background-constructive-raised);color:var(--sh-foreground-constructive-prominent)}
+.sh-chip--attention{background:var(--sh-background-attention-raised);color:var(--sh-foreground-attention-prominent)}
+.sh-chip--accent1{background:var(--sh-background-accent1-raised);color:var(--sh-foreground-accent1-prominent)}
+.sh-chip--neutral-raised{background:var(--sh-background-neutral);border:1px solid var(--sh-border-neutral-faded);color:var(--sh-foreground-neutral-prominent)}
+.sh-chip--solid{background:var(--sh-foreground-neutral-prominent);color:var(--sh-foreground-neutral-inverted)}
+
+/* Suggestion chip (selecteerbaar) */
+.sh-suggest{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:8px 16px;border-radius:var(--sh-radius-full);border:1px solid var(--sh-border-neutral);background:var(--sh-background-neutral-raised);color:var(--sh-foreground-neutral-prominent);font-size:15px;font-weight:500;text-align:left}
+.sh-suggest:hover{border-color:var(--sh-border-neutral-prominent)}
+.sh-suggest[aria-pressed="true"]{background:var(--sh-background-primary-faded);border-color:var(--sh-background-primary-faded);color:var(--sh-foreground-neutral-inverted)}
+.sh-suggest--quiet{min-height:36px;padding:8px 16px;border-color:var(--sh-border-neutral);font-size:14px;color:var(--sh-foreground-neutral-faded)}
+.sh-suggest--quiet:hover{color:var(--sh-foreground-neutral-prominent)}
+
+/* Inputs */
+.sh-field{display:flex;flex-direction:column;gap:8px}
+.sh-field label{font-size:14px;line-height:20px;font-weight:600;color:var(--sh-foreground-neutral-prominent)}
+.sh-input{min-height:48px;padding:4px 12px;border-radius:var(--sh-radius-xl);border:1px solid var(--sh-border-neutral-faded);background:var(--sh-background-neutral);font-size:16px;color:var(--sh-foreground-neutral-prominent)}
+.sh-input:hover{border-color:var(--sh-border-neutral-prominent)}
+.sh-input:focus{outline:none;border:2px solid var(--sh-focus);background:var(--sh-background-neutral-raised);padding:3px 11px}
+textarea.sh-input{padding:8px 12px 4px;resize:vertical;line-height:24px}
+textarea.sh-input:focus{padding:7px 11px 3px}
+.sh-desc{font-size:12px;line-height:16px;color:var(--sh-foreground-neutral-faded);padding-top:4px}
+
+/* Progress */
+.sh-progress{display:flex;align-items:center;gap:12px}
+.sh-progress__track{flex:1;height:8px;border-radius:var(--sh-radius-full);background:var(--sh-background-neutral-muted);overflow:hidden}
+.sh-progress__fill{height:100%;border-radius:var(--sh-radius-full);background:var(--sh-background-primary);transition:width .3s}
+.sh-progress__fill--done{background:var(--sh-background-constructive)}
+.sh-progress__pct{width:36px;text-align:right;font-size:12px;font-weight:600;color:var(--sh-foreground-neutral-faded)}
+
+/* Stepper (Shelter 2.0: current / next / done) */
+.sh-stepper{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.sh-step{display:flex;align-items:center;gap:12px;min-width:0}
+.sh-step__dot{width:32px;height:32px;border-radius:var(--sh-radius-full);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;flex:none}
+.sh-step--current .sh-step__dot{background:var(--sh-background-primary-faded);color:var(--sh-foreground-neutral-inverted)}
+.sh-step--next .sh-step__dot{background:var(--sh-background-neutral-faded);color:var(--sh-foreground-neutral-faded)}
+.sh-step--done .sh-step__dot{background:var(--sh-background-constructive);color:var(--sh-foreground-neutral-inverted)}
+.sh-step__label{font-size:16px;line-height:20px;font-weight:600;color:var(--sh-foreground-neutral-prominent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sh-step--next .sh-step__label{color:var(--sh-foreground-neutral-faded);font-weight:500}
+.sh-step__line{flex:1;height:2px;background:var(--sh-border-neutral-faded);min-width:12px}
+.sh-step--done .sh-step__line{background:var(--sh-background-constructive)}
+
+/* Option card (Action card list) */
+.opt{position:relative;display:flex;flex-direction:column;gap:12px;padding:20px;border-radius:var(--sh-radius-md);border:1px solid var(--sh-border-neutral);background:var(--sh-background-neutral-raised);text-align:left;min-height:168px;transition:box-shadow .15s,border-color .15s}
+.opt:hover{box-shadow:var(--sh-levitation-1);border-color:var(--sh-border-neutral)}
+.opt[aria-pressed="true"]{border:2px solid var(--sh-border-primary);padding:19px;background:var(--sh-background-neutral-raised)}
+.opt__icon{width:40px;height:40px;border-radius:var(--sh-radius-xs);display:flex;align-items:center;justify-content:center;background:var(--sh-background-neutral);color:var(--sh-foreground-neutral-faded)}
+.opt[aria-pressed="true"] .opt__icon{background:var(--sh-background-primary-raised);color:var(--sh-foreground-primary-prominent)}
+.opt__check{position:absolute;top:16px;right:16px;width:24px;height:24px;border-radius:var(--sh-radius-full);background:var(--sh-background-primary-faded);color:#fff;display:none;align-items:center;justify-content:center}
+.opt[aria-pressed="true"] .opt__check{display:flex}
+
+/* ================== INTAKE ================== */
+.intake{display:flex;flex-wrap:wrap;min-height:100vh}
+.intake__aside{flex:1 1 380px;max-width:100%;background:var(--sh-petrol-900);color:#fff;padding:32px 40px 40px;display:flex;flex-direction:column;gap:32px}
+.intake__main{flex:999 1 600px;min-width:0;background:var(--sh-background-neutral-raised);padding:32px 56px 32px;display:flex;flex-direction:column;gap:40px}
+.intake__body{flex:1;max-width:800px;display:flex;flex-direction:column;gap:32px}
+.intake__foot{max-width:800px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--sh-border-neutral-faded);padding-top:24px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand__mark{display:flex;align-items:center}
+.brand__name{font-family:var(--sh-font-header);font-size:20px;line-height:28px;font-weight:800}
+
+.pv{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:var(--sh-radius-xl);padding:24px;display:flex;flex-direction:column;gap:20px}
+.pv__label{font-size:12px;line-height:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.pv__row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--sh-radius-lg);background:rgba(255,255,255,.08);font-size:14px;line-height:20px}
+.pv__ghost{height:40px;border-radius:var(--sh-radius-lg);border:1px dashed rgba(255,255,255,.22)}
+.pv__app{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:var(--sh-radius-full);background:#fff;color:var(--sh-petrol-900);font-size:13px;font-weight:700;letter-spacing:.03em}
+.avatar{width:48px;height:48px;border-radius:var(--sh-radius-full);display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.pop{animation:pop .35s ease}
+@keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.grid-5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.wrap{display:flex;flex-wrap:wrap;gap:10px}
+.app-tile{min-height:64px;justify-content:center;border-radius:var(--sh-radius-lg);font-weight:700;letter-spacing:.04em;font-size:16px}
+
+/* ================== BOUWEN ================== */
+.build{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px;background:var(--sh-petrol-900)}
+.build__card{width:100%;max-width:560px;background:var(--sh-background-neutral-raised);border-radius:var(--sh-radius-xl);box-shadow:var(--sh-levitation-5);padding:40px;display:flex;flex-direction:column;gap:28px}
+.vstep{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.vstep li{display:flex;gap:16px;position:relative;padding-bottom:20px}
+.vstep li:last-child{padding-bottom:0}
+.vstep li:not(:last-child)::after{content:"";position:absolute;left:15px;top:36px;bottom:4px;width:2px;background:var(--sh-border-neutral-faded)}
+.vstep li.sh-step--done:not(:last-child)::after{background:var(--sh-background-constructive)}
+.vstep .txt{padding-top:4px;font-size:16px;line-height:24px}
+.spin{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ================== WERKRUIMTE ================== */
+.ws{display:flex;flex-wrap:wrap;min-height:100vh}
+.sidenav{flex:0 1 256px;min-width:232px;max-width:100%;background:var(--sh-background-neutral-raised);border-right:1px solid var(--sh-border-neutral-faded);padding:16px 12px;display:flex;flex-direction:column;gap:0}
+.sidenav__group{display:flex;flex-direction:column;gap:2px;padding:12px 0;border-top:1px solid var(--sh-border-neutral-faded)}
+.sidenav__group--first{border-top:0;padding-top:8px}
+.sidenav__title{padding:4px 8px 6px;font-size:12px;line-height:16px;font-weight:500;color:var(--sh-foreground-neutral-faded)}
+.sh-navitem{display:flex;align-items:center;gap:12px;width:100%;min-height:36px;padding:8px;border-radius:var(--sh-radius-md);border:0;background:transparent;color:var(--sh-foreground-neutral);font-size:16px;line-height:20px;font-weight:500;text-align:left}
+.sh-navitem:hover{background:var(--sh-action-hover-inverse);color:var(--sh-foreground-neutral-prominent)}
+.sh-navitem[aria-current="page"]{background:var(--sh-background-primary-faded);color:var(--sh-foreground-neutral-inverted)}
+.sh-navitem[aria-current="page"] .lock{color:rgba(255,255,255,.8)}
+.sidenav__brand{padding:4px 8px 16px}
+.sidenav__new{display:flex;align-items:center;gap:12px;width:100%;min-height:40px;padding:0 8px;margin-bottom:4px;border-radius:var(--sh-radius-md);border:1px solid var(--sh-border-neutral-faded);background:var(--sh-background-neutral-raised);color:var(--sh-foreground-neutral-prominent);font-size:16px;line-height:20px;font-weight:500;text-align:left}
+.sidenav__new:hover{background:var(--sh-background-neutral);border-color:var(--sh-border-neutral-prominent)}
+.sidenav__new svg{color:var(--sh-foreground-primary)}
+.sh-navitem .grow{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sh-navitem--sub{font-size:14px;line-height:20px;font-weight:400;padding:8px 8px 8px 38px}
+.count{min-width:20px;height:20px;padding:0 6px;border-radius:var(--sh-radius-full);background:var(--sh-background-neutral-faded);color:var(--sh-foreground-neutral-faded);font-size:12px;line-height:16px;font-weight:500;display:inline-flex;align-items:center;justify-content:center}
+.sh-navitem .lock{color:var(--sh-foreground-neutral-muted);display:inline-flex}
+.sh-navitem[aria-current="page"] .count{background:rgba(255,255,255,.2);color:#fff}
+
+.main{flex:999 1 640px;min-width:0;display:flex;flex-direction:column}
+.topnav{height:48px;display:flex;align-items:center;gap:12px;padding:0 24px;background:var(--sh-background-neutral-raised);border-bottom:1px solid var(--sh-border-neutral-faded)}
+.topnav__search{flex:1;max-width:420px;display:flex;align-items:center;gap:8px;height:36px;padding:0 8px 0 12px;border-radius:var(--sh-radius-xl);background:var(--sh-background-neutral);border:1px solid var(--sh-border-neutral-faded);color:var(--sh-foreground-neutral-faded);font-size:14px}
+.keycap{display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;padding:0 4px;border-radius:6px;border:1px solid var(--sh-border-neutral);background:var(--sh-background-neutral-raised);font-size:11px;font-weight:600;color:var(--sh-foreground-neutral-faded)}
+.topnav__spacer{flex:1}
+.mini-avatar{width:32px;height:32px;border-radius:var(--sh-radius-full);background:var(--sh-background-primary-raised);color:var(--sh-foreground-primary-prominent);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700}
+
+.home{width:100%;max-width:1200px;margin:0 auto;padding:40px 32px 64px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px 20px}
+.home__main{grid-column:span 8;display:flex;flex-direction:column;gap:32px;min-width:0}
+.home__side{grid-column:span 4;display:flex;flex-direction:column;gap:20px;min-width:0}
+@media (max-width:1100px){.home__main,.home__side{grid-column:1 / -1}}
+
+.insight{background:var(--sh-background-primary-raised);border-left:2px solid var(--sh-border-primary);border-radius:var(--sh-radius-xl);padding:16px;display:flex;gap:12px;align-items:flex-start}
+.ai-input{background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral);border-radius:var(--sh-radius-xl);box-shadow:var(--sh-levitation-3);padding:16px 16px 12px;display:flex;flex-direction:column;gap:8px;transition:border-color .15s}
+.ai-input:focus-within{border-color:var(--sh-focus)}
+.ai-input textarea{width:100%;border:0;resize:none;background:transparent;font-size:18px;line-height:28px;color:var(--sh-foreground-neutral-prominent);outline:none;padding:0}
+.ai-input textarea::placeholder{color:var(--sh-foreground-neutral-faded)}
+.ai-input__bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.send{width:44px;height:44px;border-radius:var(--sh-radius-md);border:0;background:var(--sh-background-primary-faded);color:#fff;display:flex;align-items:center;justify-content:center}
+.send:hover{background:var(--sh-petrol-650)}
+
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.cards,.grid-3{grid-template-columns:1fr}.grid-5{grid-template-columns:repeat(3,minmax(0,1fr))}.intake__main{padding:24px}.sh-stepper .sh-step__label{display:none}}
+.action-card{display:flex;flex-direction:column;gap:8px;padding:16px;border-radius:var(--sh-radius-md);border:1px solid var(--sh-border-neutral);background:var(--sh-background-neutral-raised);text-align:left;min-height:148px;transition:box-shadow .15s}
+.action-card:hover{box-shadow:var(--sh-levitation-1)}
+.action-card__top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:4px}
+.icon-container{width:40px;height:40px;border-radius:var(--sh-radius-xs);display:flex;align-items:center;justify-content:center;background:var(--sh-background-accent1-raised);color:var(--sh-foreground-accent1-prominent)}
+
+.panel{background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral);border-radius:var(--sh-radius-md);padding:20px;display:flex;flex-direction:column;gap:14px}
+.item{display:flex;flex-direction:column;gap:8px;padding:14px;border-radius:var(--sh-radius-lg);background:var(--sh-background-neutral)}
+.lp{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:10px 12px;border-radius:var(--sh-radius-lg);border:1px solid var(--sh-border-neutral-faded);background:var(--sh-background-neutral-raised);text-align:left}
+.lp:hover{background:var(--sh-background-neutral)}
+.lp[disabled]{cursor:default}
+.lp[disabled]:hover{background:var(--sh-background-neutral-raised)}
+
+/* Chat */
+.chat{flex:1;display:flex;flex-direction:column}
+.chat__scroll{flex:1;width:100%;max-width:800px;margin:0 auto;padding:32px;display:flex;flex-direction:column;gap:24px}
+.bubble-out{align-self:flex-end;max-width:80%;padding:8px 12px;border-radius:var(--sh-radius-xl) 0 var(--sh-radius-xl) var(--sh-radius-xl);background:var(--sh-background-primary-faded);color:var(--sh-foreground-neutral-inverted);box-shadow:var(--sh-levitation-1)}
+.msg-in{display:flex;gap:14px;align-items:flex-start}
+.ai-avatar{width:32px;height:32px;border-radius:var(--sh-radius-full);flex:none;background:radial-gradient(140% 120% at 40% 0,#fff 0,#f2f9fa 30%,#c8e5eb 58%,#95ceda 82%,#61b8c9 100%);box-shadow:0 0 0 1px rgba(46,161,184,.18)}
+.ai-avatar svg{display:none}
+.ai-avatar--thinking{animation:orb 1.6s ease-in-out infinite}
+@keyframes orb{50%{box-shadow:0 0 0 6px rgba(46,161,184,.22)}}
+.msg-in__body{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
+.msg-text{color:var(--sh-foreground-neutral-prominent);line-height:26px}
+.ph{display:inline-block;padding:0 6px;border-radius:var(--sh-radius-sm);background:var(--sh-background-neutral-muted);color:var(--sh-foreground-neutral-faded);font-size:14px;line-height:22px}
+.tool{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;height:28px;padding:0 10px;border-radius:var(--sh-radius-md);background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral-faded);font-size:13px;color:var(--sh-foreground-neutral-faded)}
+.cite{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;height:24px;padding:0 8px;border-radius:var(--sh-radius-full);background:var(--sh-background-neutral);border:1px solid var(--sh-border-neutral-faded);color:var(--sh-foreground-neutral-prominent);font-size:12px;font-weight:500}
+.feedback{display:flex;gap:4px;margin-left:-8px}
+.feedback .sh-icon-btn{width:36px;height:36px}
+.dots{display:inline-flex;gap:4px;align-self:flex-start;padding:12px 16px;border-radius:0 var(--sh-radius-xl) var(--sh-radius-xl) var(--sh-radius-xl);background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral);box-shadow:var(--sh-levitation-1)}
+.dots i{width:6px;height:6px;border-radius:50%;background:var(--sh-foreground-neutral-muted);animation:dot 1.2s infinite}
+.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes dot{0%,60%,100%{opacity:.3}30%{opacity:1}}
+
+.sh-alert{border-radius:var(--sh-radius-xl);background:var(--sh-background-attention-raised);padding:16px;display:flex;flex-direction:column;gap:14px}
+.sh-alert__head{display:flex;gap:12px;align-items:flex-start}
+.sh-alert--ok{background:var(--sh-background-constructive-raised);color:var(--sh-foreground-constructive-prominent);flex-direction:row;align-items:center;gap:10px;font-weight:600}
+
+.chat__foot{width:100%;max-width:800px;margin:0 auto;padding:0 32px 24px}
+.chat__foot .ai-input{padding:8px 8px 8px 16px;flex-direction:row;align-items:flex-end}
+.chat__foot textarea{font-size:16px;line-height:24px;padding:10px 0}
+.disclaimer{margin:10px 0 0;text-align:center;font-size:12px;line-height:16px;color:var(--sh-foreground-neutral-faded)}
+
+/* Drawer (e-learning) */
+.scrim{position:fixed;inset:0;background:var(--sh-opacity-dark-50);display:flex;justify-content:flex-end;z-index:20;animation:fade .2s}
+@keyframes fade{from{opacity:0}}
+.drawer{width:100%;max-width:552px;height:100%;background:var(--sh-background-neutral-raised);border-radius:var(--sh-radius-xl) 0 0 var(--sh-radius-xl);box-shadow:var(--sh-levitation-5);display:flex;flex-direction:column;animation:slide .28s cubic-bezier(.2,.8,.2,1)}
+@keyframes slide{from{transform:translateX(40px);opacity:.4}}
+.drawer__head{padding:24px;border-bottom:1px solid var(--sh-border-neutral-faded);display:flex;flex-direction:column;gap:16px}
+.drawer__body{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:20px}
+.drawer__foot{padding:16px 24px;border-top:1px solid var(--sh-border-neutral-faded);display:flex;justify-content:space-between;gap:12px}
+.slide-hero{border-radius:var(--sh-radius-xl);background:var(--sh-petrol-900);color:#fff;padding:28px;min-height:200px;display:flex;flex-direction:column;justify-content:space-between;gap:24px}
+.quiz-opt{display:flex;align-items:center;gap:12px;width:100%;min-height:56px;padding:8px 16px;border-radius:var(--sh-radius-md);border:1px solid var(--sh-border-neutral);background:var(--sh-background-neutral-raised);text-align:left;font-size:16px}
+.quiz-opt:hover{border-color:var(--sh-border-neutral-prominent)}
+.quiz-opt .l{width:28px;height:28px;border-radius:var(--sh-radius-full);background:var(--sh-background-neutral);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex:none}
+.quiz-opt.ok{border:2px solid var(--sh-background-constructive);background:var(--sh-background-constructive-raised);padding:7px 15px}
+.quiz-opt.ok .l{background:var(--sh-background-constructive);color:#fff}
+.quiz-opt.no{border:2px solid var(--sh-background-destructive);background:var(--sh-background-destructive-raised);padding:7px 15px}
+.quiz-opt.no .l{background:var(--sh-background-destructive);color:#fff}
+
+
+/* Pagina's */
+.page{width:100%;max-width:1200px;margin:0 auto;padding:32px 32px 96px;display:flex;flex-direction:column;gap:24px}
+.page__head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.grid-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.grid-cards--4{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media (max-width:1100px){.grid-cards,.grid-cards--4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.grid-cards,.grid-cards--4{grid-template-columns:1fr}}
+.list{display:flex;flex-direction:column;background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral);border-radius:var(--sh-radius-md);overflow:hidden}
+.row{display:grid;grid-template-columns:110px minmax(0,1fr) 120px auto;align-items:center;gap:16px;min-height:64px;padding:12px 16px;border:0;border-bottom:1px solid var(--sh-border-neutral-faded);background:transparent;text-align:left;width:100%}
+.row:last-child{border-bottom:0}
+.row--btn:hover{background:var(--sh-action-hover-inverse)}
+.row--doc{grid-template-columns:minmax(0,1fr) 200px 160px 96px}
+.row--btn.row--doc{grid-template-columns:minmax(0,1fr) 200px 160px 24px}
+.row--kb{grid-template-columns:36px minmax(0,1fr) auto 24px}
+.row--btn:not(.row--doc):not(.row--kb){grid-template-columns:28px minmax(0,1fr) auto 24px}
+.row--head{min-height:40px;padding:8px 16px;background:var(--sh-background-neutral);font-size:12px;line-height:16px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--sh-foreground-neutral-faded)}
+.row__actions{display:flex;align-items:center;gap:4px;justify-content:flex-end}
+@media (max-width:760px){.row,.row--doc,.row--btn.row--doc{grid-template-columns:1fr !important;gap:6px}.row--head{display:none}}
+.doc-ic,.chat-ic{width:36px;height:36px;border-radius:var(--sh-radius-xs);display:flex;align-items:center;justify-content:center;background:var(--sh-background-primary-raised);color:var(--sh-foreground-primary-prominent);flex:none}
+.chat-ic{width:28px;height:28px;border-radius:var(--sh-radius-full);background:var(--sh-background-neutral);color:var(--sh-foreground-neutral-faded)}
+.empty{display:flex;flex-direction:column;align-items:center;gap:8px;padding:48px 16px;text-align:center;color:var(--sh-foreground-neutral-faded)}
+.app-logo{display:flex;align-items:center;justify-content:center;width:100%;height:72px;border-radius:var(--sh-radius-md);background:var(--sh-background-neutral-inverted);color:#fff;font-weight:700;letter-spacing:.06em;font-size:18px}
+.doc-preview{display:flex;flex-direction:column;gap:10px;padding:24px;border:1px solid var(--sh-border-neutral);border-radius:var(--sh-radius-md);background:var(--sh-background-neutral-raised);box-shadow:var(--sh-levitation-1)}
+.sk{display:block;height:10px;border-radius:var(--sh-radius-full);background:var(--sh-background-neutral-faded)}
+
+/* Tabbar (Shelter: geselecteerd = gevulde pill) */
+.sh-tabbar{display:flex;gap:8px;flex-wrap:wrap}
+.sh-tab{display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 14px;border-radius:var(--sh-radius-md);border:0;background:transparent;color:var(--sh-foreground-neutral);font-size:15px;font-weight:500}
+.sh-tab:hover{background:var(--sh-action-hover-inverse)}
+.sh-tab[aria-selected="true"]{background:var(--sh-background-primary-faded);color:var(--sh-foreground-neutral-inverted)}
+.sh-tab__n{font-size:12px;opacity:.8}
+
+/* Switch */
+.sh-switch{position:relative;display:inline-flex;align-items:center;cursor:pointer}
+.sh-switch input{position:absolute;opacity:0;width:44px;height:24px;margin:0;cursor:pointer}
+.sh-switch__track{width:44px;height:24px;border-radius:var(--sh-radius-full);background:var(--sh-background-neutral-muted);position:relative;transition:background .15s}
+.sh-switch__track::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:var(--sh-levitation-1);transition:transform .15s}
+.sh-switch input:checked + .sh-switch__track{background:var(--sh-background-primary-faded)}
+.sh-switch input:checked + .sh-switch__track::after{transform:translateX(20px)}
+.sh-switch input:focus-visible + .sh-switch__track{outline:2px solid var(--sh-focus);outline-offset:2px}
+
+/* Toast */
+.sh-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--sh-radius-xl);background:var(--sh-background-neutral-inverted);color:#fff;font-size:15px;box-shadow:var(--sh-levitation-5);animation:pop .25s ease}
+
+
+/* ===== Intake als gesprek ===== */
+.intake__main{padding:0 !important;gap:0 !important;height:100vh;min-height:640px;position:sticky;top:0}
+@media (max-width:980px){.intake__main{height:auto;position:static}}
+.intake__top{padding:20px 40px;border-bottom:1px solid var(--sh-border-neutral-faded);background:var(--sh-background-neutral-raised)}
+.ichat{flex:1;overflow:auto;padding:32px 40px;display:flex;flex-direction:column;gap:20px;background:var(--sh-background-neutral);scroll-behavior:smooth}
+.ichat > *{max-width:760px;width:100%}
+.intake__foot{padding:16px 40px 24px;background:var(--sh-background-neutral);border-top:1px solid var(--sh-border-neutral-faded)}
+.intake__foot > *{max-width:760px}
+.ai-input--row{flex-direction:row !important;align-items:center;padding:6px 6px 6px 16px !important;gap:8px}
+.ai-input--row input{flex:1;border:0;outline:none;background:transparent;font-size:16px;line-height:24px;padding:10px 0;color:var(--sh-foreground-neutral-prominent);min-width:0}
+.ai-input--row input::placeholder{color:var(--sh-foreground-neutral-faded)}
+.ai-input--disabled{background:var(--sh-background-neutral-faded) !important;box-shadow:none !important;border-color:var(--sh-border-neutral-faded) !important}
+.sh-desc--error{color:var(--sh-foreground-destructive)}
+.intake__foot .sh-desc{margin:8px 0 0 4px}
+
+/* Chat bubbles (Shelter) */
+.bubble-in{align-self:flex-start;max-width:100%;padding:12px 16px;border-radius:0 var(--sh-radius-xl) var(--sh-radius-xl) var(--sh-radius-xl);background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral);box-shadow:var(--sh-levitation-1);color:var(--sh-foreground-neutral-prominent);line-height:24px}
+.bubble-in strong{font-weight:600}
+.out-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:4px;align-self:flex-end}
+.out-wrap .bubble-out{max-width:100%}
+.ichat .out-wrap{max-width:560px}
+.link-btn{border:0;background:transparent;padding:4px 6px;font-size:13px;font-weight:500;color:var(--sh-foreground-primary);text-decoration:underline;text-underline-offset:3px}
+.link-btn:hover{color:var(--sh-foreground-primary-prominent)}
+.link-btn--inv{color:rgba(255,255,255,.85)}
+.link-btn--inv:hover{color:#fff}
+
+/* Suggested prompts (Shelter) */
+.sh-prompts{display:flex;flex-wrap:wrap;gap:8px}
+.sh-prompt{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:8px 16px;border-radius:var(--sh-radius-full);border:1px solid var(--sh-border-neutral);background:var(--sh-background-neutral-raised);color:var(--sh-foreground-neutral-prominent);font-size:14px;line-height:20px;text-align:left;transition:border-color .12s,background .12s}
+.sh-prompt:hover{border-color:var(--sh-border-neutral-prominent);background:var(--sh-background-neutral)}
+.sh-prompt[aria-pressed="true"]{background:var(--sh-background-primary-faded);border-color:var(--sh-background-primary-faded);color:var(--sh-foreground-neutral-inverted)}
+.role-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:640px){.role-grid{grid-template-columns:1fr}}
+.opt--sm{min-height:0 !important;flex-direction:row !important;align-items:center;gap:12px !important;padding:12px !important}
+.opt--sm[aria-pressed="true"]{padding:11px !important}
+
+/* Tool call indicator (Shelter: done / running / pending) */
+.sh-tools{display:flex;flex-direction:column;gap:6px}
+.sh-tool{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;min-height:28px;padding:4px 10px;border-radius:var(--sh-radius-md);background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral-faded);font-size:13px;line-height:20px;color:var(--sh-foreground-neutral-faded)}
+.sh-tool--done{color:var(--sh-foreground-neutral-prominent)}
+.sh-tool--done svg{color:var(--sh-foreground-constructive)}
+.sh-tool--running{color:var(--sh-foreground-neutral-prominent);border-color:var(--sh-border-primary)}
+.sh-tool--running svg{color:var(--sh-foreground-primary)}
+.sh-tool--pending{opacity:.7}
+.mini-task{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:12px 16px;border-radius:var(--sh-radius-xl);background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral)}
+
+/* Coach mark (Shelter tooltip, inverted) */
+.sh-coach{position:absolute;z-index:26;width:280px;padding:16px;border-radius:var(--sh-radius-md);background:var(--sh-background-neutral-inverted);color:#fff;box-shadow:var(--sh-levitation-5);display:flex;flex-direction:column;gap:6px;animation:pop .25s ease}
+.sh-coach strong{font-family:var(--sh-font-header);font-weight:500;font-size:18px;line-height:24px;outline:none}
+.sh-coach__arrow{position:absolute;width:12px;height:12px;background:var(--sh-background-neutral-inverted);transform:rotate(45deg)}
+.sh-coach--right{left:calc(100% + 18px);top:0}
+.sh-coach--right .sh-coach__arrow{left:-6px;top:18px}
+.sh-coach--left{right:calc(100% + 18px);top:0}
+.sh-coach--left .sh-coach__arrow{right:-6px;top:18px}
+@media (max-width:1100px){.sh-coach--left,.sh-coach--right{left:0;right:auto;top:calc(100% + 12px)}.sh-coach__arrow{display:none}}
+.sh-coach__foot{display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.sh-btn--inv{background:#fff;color:var(--sh-background-neutral-inverted)}
+.sh-btn--inv:hover{background:var(--sh-petrol-50)}
+.sidenav{position:relative;z-index:5;overflow:visible}
+
+/* Checklist */
+.cl{display:flex;flex-direction:column;gap:2px}
+.cl-item{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:8px;border:0;border-radius:var(--sh-radius-md);background:transparent;text-align:left}
+.cl-item:hover{background:var(--sh-action-hover-inverse)}
+.cl-item.is-done{cursor:default}
+.cl-item.is-done:hover{background:transparent}
+.cl-dot{width:28px;height:28px;border-radius:var(--sh-radius-full);flex:none;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;background:var(--sh-background-neutral-faded);color:var(--sh-foreground-neutral-faded)}
+.cl-item.is-done .cl-dot{background:var(--sh-background-constructive-faded);color:#fff}
+.cl-t{font-weight:500;color:var(--sh-foreground-neutral-prominent);font-size:15px;line-height:22px}
+.cl-item.is-done .cl-t{color:var(--sh-foreground-neutral-faded);text-decoration:line-through}
+.tip-li{display:flex;gap:10px;align-items:flex-start}
+.tip-li svg{margin-top:2px}
+
+/* Prototype-hulp */
+.proto{position:fixed;left:16px;bottom:16px;z-index:30;display:flex;gap:8px;align-items:center;padding:6px;border-radius:var(--sh-radius-full);background:var(--sh-foreground-neutral-prominent);box-shadow:var(--sh-levitation-2)}
+.proto span{padding:0 8px 0 10px;font-size:12px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.7)}
+.proto button{min-height:32px;padding:0 12px;border:0;border-radius:var(--sh-radius-full);background:rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600}
+.proto button:hover{background:rgba(255,255,255,.22)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="proto" role="group" aria-label="Prototype-bediening">
+  <span>PROTOTYPE</span>
+  <button type="button" data-a="reset">Opnieuw beginnen</button>
+  <button type="button" data-a="skip">Naar werkruimte</button>
+  <a href="/api/logout" style="min-height:32px;padding:0 12px;border-radius:9999px;background:rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600;display:inline-flex;align-items:center;text-decoration:none">Uitloggen</a>
+</div>
+
+<script>
+/* ---------- Iconen ---------- */
+var P = {
+  sparkle:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/>',
+  check:'<path d="M5 12l5 5L20 7"/>',
+  lock:'<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  send:'<path d="M12 19V5M5 12l7-7 7 7"/>',
+  book:'<path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/>',
+  sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>',
+  folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  tasks:'<path d="M10 6h10M10 12h10M10 18h10"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/>',
+  chat:'<path d="M4 5h16v11H8l-4 4z"/>',
+  doc:'<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  chevDown:'<path d="M6 9l6 6 6-6"/>',
+  chevRight:'<path d="M9 6l6 6-6 6"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>',
+  arrow:'<path d="M5 12h14M13 6l6 6-6 6"/>',
+  grid:'<rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/>',
+  clip:'<path d="M20 11l-8.5 8.5a5 5 0 0 1-7-7L13 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L14 7"/>',
+  bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+  search:'<circle cx="11" cy="11" r="6"/><path d="M20 20l-4-4"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 20a8 8 0 0 1 16 0"/>',
+  pen:'<path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/>',
+  up:'<path d="M7 10v10H4V10zM7 10l4-7a2 2 0 0 1 3 2l-1 4h6a2 2 0 0 1 2 2l-2 7a2 2 0 0 1-2 2H7"/>',
+  down:'<path d="M7 14V4H4v10zM7 14l4 7a2 2 0 0 0 3-2l-1-4h6a2 2 0 0 0 2-2l-2-7a2 2 0 0 0-2-2H7"/>',
+  comment:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+  copy:'<rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/>',
+  play:'<path d="M8 5l11 7-11 7z" fill="currentColor" stroke="none"/>',
+  warn:'<path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/>',
+  loader:'<path d="M12 3a9 9 0 1 0 9 9"/>',
+  target:'<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/>',
+  building:'<path d="M4 21V5l8-2v18M12 8l8 2v11M8 8h.01M8 12h.01M8 16h.01M16 13h.01M16 17h.01M2 21h20"/>',
+  home:'<path d="M4 11l8-7 8 7v9H4z"/><path d="M10 20v-6h4v6"/>',
+  people:'<circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0"/><circle cx="17" cy="9" r="2.5"/><path d="M17 14a5 5 0 0 1 5 5"/>',
+  hammer:'<path d="M14 6l4 4-9 9-4-4z"/><path d="M14 6l2-2 4 4-2 2"/>',
+  monitor:'<rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/>',
+  bot:'<rect x="4" y="8" width="16" height="12" rx="3"/><path d="M12 4v4M9 13h.01M15 13h.01M9 17h6"/>',
+  db:'<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>',
+  layers:'<path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/>',
+  dots3:'<circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/>',
+  mail:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+  scale:'<path d="M12 4v16M6 20h12M4 8h16"/><path d="M4 8l-2 6a3 3 0 0 0 4 0zM20 8l-2 6a3 3 0 0 0 4 0z"/>'
+};
+function ic(n, s, extra){ s = s || 20; return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" '+(extra||'')+'>'+P[n]+'</svg>'; }
+function esc(t){ return String(t == null ? '' : t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function rich(t){ return esc(t).replace(/\[([^\]]+)\]/g,'<span class="ph">$1</span>').replace(/\n/g,'<br>'); }
+
+/* ---------- Inhoud ---------- */
+var ELS = {
+  basis:{ title:'COAGPT in 5 minuten', mins:5, desc:'Hoe COAGPT werkt en hoe je er goed mee vraagt.',
+    slides:[
+      {h:'Eén keer inloggen', p:'Je logt in op coagpt.nl. Daarna open je apps als DOCK en FIKS zonder opnieuw in te loggen.'},
+      {h:'Alles loopt via Sluis', p:'Elk AI-verzoek van COAGPT, agents en apps gaat via Sluis. Zo blijft het gebruik veilig en controleerbaar.'},
+      {h:'Goed vragen', p:'Vertel wat je wilt, voor wie en in welke vorm. Hoe concreter je vraag, hoe bruikbaarder het antwoord.'}],
+    quiz:{ q:'Waar lopen alle AI-verzoeken van COAGPT langs?', o:['Sluis','DOCK','Je eigen laptop'], c:0, why:'Sluis is de centrale doorgang voor alle AI-verzoeken.' } },
+  vertrouwelijk:{ title:'Vertrouwelijke documenten en AI', mins:8, desc:'Wat COAGPT met je documenten doet en waar jij op let.',
+    slides:[
+      {h:'Wat COAGPT wel en niet ziet', p:'COAGPT leest alleen documenten waar jij in DOCK al toegang toe hebt. Wat jij niet mag zien, ziet COAGPT ook niet.'},
+      {h:'Controleer altijd de bron', p:'Een samenvatting is een startpunt. Bij elk antwoord zie je uit welk document het komt. Check cijfers en termijnen daar.'},
+      {h:'Binnen COA houden', p:'Plak contractinhoud nooit in externe tools. Binnen COAGPT blijft alles in de COA-omgeving.'}],
+    quiz:{ q:'COAGPT vat een contract voor je samen. Wat doe je voordat je de opzegtermijn doorgeeft?', o:['Direct doorgeven, het klopt meestal','Controleren in het brondocument','Even vragen aan een collega'], c:1, why:'Jij blijft verantwoordelijk, dus je checkt de termijn in het brondocument.' } },
+  data:{ title:'Signalen uit data lezen', mins:6, desc:'Hoe je een signaal beoordeelt voordat je actie onderneemt.',
+    slides:[
+      {h:'Een signaal is geen conclusie', p:'COAGPT ziet afwijkingen in de data van je apps. Dat is een reden om te kijken, nog geen oordeel.'},
+      {h:'Kijk naar de periode', p:'Vergelijk met eerdere maanden en vraag je af of er een verklaring is, zoals extra werk of een nieuwe locatie.'},
+      {h:'Leg vast wat je doet', p:'Pak je een signaal op, noteer dan wat je hebt bekeken en besloten. Zo kan een collega het volgen.'}],
+    quiz:{ q:'COAGPT meldt dat een partij opvallend meer factureert. Wat is je eerste stap?', o:['Direct de leverancier aanspreken','De onderliggende facturen bekijken','Het signaal negeren'], c:1, why:'Eerst de onderliggende gegevens bekijken, dan pas actie.' } },
+  persoons:{ title:'Persoonsgegevens van bewoners', mins:10, desc:'Zorgvuldig omgaan met gegevens van bewoners in COAGPT.',
+    slides:[
+      {h:'Alleen wat nodig is', p:'Gebruik in een vraag alleen de gegevens die je echt nodig hebt. Vaak is een kenmerk genoeg en is een volledige naam niet nodig.'},
+      {h:'Extra voorzichtig', p:'Gegevens over gezondheid, geloof of strafrecht zijn extra gevoelig. Volg hiervoor altijd je werkinstructie.'},
+      {h:'Jij beslist', p:'COAGPT schrijft een concept. Jij controleert het en bepaalt wat er in het dossier komt.'}],
+    quiz:{ q:'Je schrijft een overdracht met COAGPT. Wat neem je op?', o:['Alles wat je weet, dan is het volledig','Alleen wat de volgende dienst nodig heeft','Niets over de bewoner'], c:1, why:'Alleen wat de volgende dienst nodig heeft.' } }
+};
+
+var ROLES = [
+  { id:'contract', icon:'doc', title:'Contractbeheerder', dept:'Vastgoed & Facilitair', blurb:'Contracten, keuringen en leveranciers', apps:['DOCK','FIKS'],
+    topics:['Contractverlengingen','Keuringen op locaties','Leveranciersbeoordeling','Facturen controleren'],
+    goals:['Minder zoeken in documenten','Geen keuring meer laten verlopen','Afwijkingen in facturen eerder zien','Sneller rapporteren aan mijn manager'],
+    prompts:['Welke contracten lopen dit kwartaal af?','Welke keuringen verlopen binnenkort?','Schrijf een herinnering aan een leverancier'],
+    skills:[
+      { t:'Contract samenvatten', d:'Looptijd, opzegtermijn en afspraken uit een document in DOCK', need:'vertrouwelijk', src:'DOCK · Contract [nummer]', tool:'DOCK doorzocht',
+        reply:'Hier is de samenvatting van het contract dat je in DOCK hebt geopend.\n\n• Partij: [leverancier]\n• Looptijd: [startdatum] tot [einddatum]\n• Opzegtermijn: [termijn]\n• Verlenging: [stilzwijgend of op verzoek]\n\nBij elk punt staat de pagina in het brondocument. Zal ik een herinnering zetten voor de opzegdatum?' },
+      { t:'Keuringen bewaken', d:'Keuringen die binnen 60 dagen verlopen, per locatie', need:null, src:'FIKS · Keuringen', tool:'Gegevens uit FIKS opgehaald',
+        reply:'Ik heb de keuringen in FIKS bekeken voor jouw locaties. Deze verlopen binnen 60 dagen:\n\n• [keuring] · [locatie] · [datum]\n• [keuring] · [locatie] · [datum]\n\nZal ik per keuring een taak voor je aanmaken in FIKS?' },
+      { t:'Factuurafwijkingen', d:'Vergelijk facturen van een partij met eerdere maanden', need:'data', src:'FIKS · Facturen', tool:'Facturen in FIKS vergeleken',
+        reply:'Ik heb de facturen van [partij] vergeleken met de afgelopen zes maanden.\n\n• Deze maand: [bedrag]\n• Gemiddeld: [bedrag]\n• Opvallend: [omschrijving]\n\nWil je dat ik de onderliggende facturen voor je op een rij zet?' },
+      { t:'Mail aan leverancier', d:'Concept in COA-toon, klaar om aan te passen', need:null, src:'', tool:'',
+        reply:'Hier is een concept:\n\nBeste [naam],\n\nIn ons contract staat dat [afspraak]. Wij zien dat [situatie]. Kunt u voor [datum] laten weten hoe u dit oplost?\n\nMet vriendelijke groet,\n[jouw naam]\nVastgoed & Facilitair, COA' }],
+    attention:[
+      { type:'Taak', t:'Keuring liftinstallatie verloopt deze maand', m:'FIKS · [locatie]' },
+      { type:'Signaal', t:'Een onderhoudspartij factureert opvallend meer dan in eerdere maanden', m:'Afgeleid uit FIKS-data' },
+      { type:'Taak', t:'Besluit nodig over verlenging schoonmaakcontract', m:'DOCK' }] },
+  { id:'locatie', icon:'building', title:'Locatiemanager', dept:'Opvanglocatie', blurb:'Team, bewoners en de dagelijkse operatie', apps:['ISHP','VOMO'],
+    topics:['Bezetting en instroom','Teamplanning','Veiligheid op locatie','Samenwerking met de gemeente'],
+    goals:['Sneller overzicht van mijn locatie','Minder tijd aan rapportages','Signalen eerder oppakken','Mijn team beter informeren'],
+    prompts:['Maak een weekupdate voor mijn team','Wat speelt er deze week op de locatie?','Bereid het MT-overleg voor'],
+    skills:[
+      { t:'Weekupdate voor je team', d:'Concept op basis van de week in je apps', need:null },
+      { t:'Incident samenvatten', d:'Feitelijk verslag, klaar om te melden', need:'persoons' },
+      { t:'Bezetting in één oogopslag', d:'Overzicht per unit, met wat opvalt', need:'data' },
+      { t:'Overleg voorbereiden', d:'Agenda en stukken voor het MT', need:null }],
+    attention:[
+      { type:'Taak', t:'Incidentmelding wacht op jouw akkoord', m:'ISHP' },
+      { type:'Signaal', t:'Opvallend veel meldingen over één unit deze week', m:'Afgeleid uit VOMO-data' }] },
+  { id:'woon', icon:'home', title:'Woonbegeleider', dept:'Opvanglocatie', blurb:'Begeleiding en contact met bewoners', apps:['ISHP'],
+    topics:['Begeleiding bewoners','Dagstructuur en activiteiten','Overdracht tussen diensten','Uitleg in eenvoudige taal'],
+    goals:['Overdrachten sneller en vollediger','Uitleg die bewoners begrijpen','Meer tijd voor bewoners','Weten waar ik informatie vind'],
+    prompts:['Help me met de overdracht van vandaag','Leg deze regel uit in eenvoudige taal','Bedenk een activiteit voor zaterdag'],
+    skills:[
+      { t:'Overdracht schrijven', d:'Kort en volledig, uit je eigen aantekeningen', need:'persoons' },
+      { t:'Uitleg in eenvoudige taal', d:'Herschrijf een brief of regel op B1-niveau', need:null },
+      { t:'Activiteit voorbereiden', d:'Plan, materialen en tijdsindeling', need:null },
+      { t:'Vraag over een werkinstructie', d:'Het antwoord uit Kennis, met bron', need:null, src:'Kennis' }],
+    attention:[
+      { type:'Taak', t:'Overdracht avonddienst nog niet afgerond', m:'ISHP' },
+      { type:'Taak', t:'Nieuwe werkinstructie over bezoekregeling', m:'Kennis' }] },
+  { id:'project', icon:'hammer', title:'Projectleider vastgoed', dept:'Vastgoed & Facilitair', blurb:'Renovatie, nieuwbouw en planning', apps:['DOCK','FIKS','CAI'],
+    topics:['Renovatie locaties','Nieuwbouw','Planning en budget','Aanbestedingen'],
+    goals:['Altijd een actuele projectstatus','Risico’s eerder zien','Minder tijd aan stuurgroepstukken','Overzicht over alle documenten'],
+    prompts:['Maak een projectstatus voor de stuurgroep','Welke risico’s spelen er nu?','Vergelijk de offertes in DOCK'],
+    skills:[
+      { t:'Projectstatus opstellen', d:'Voortgang, planning en besluiten op één pagina', need:null },
+      { t:'Offertes vergelijken', d:'Naast elkaar op prijs, planning en voorwaarden', need:'vertrouwelijk', src:'DOCK' },
+      { t:'Risico’s in kaart', d:'Uit verslagen en planning, met eigenaar', need:null },
+      { t:'Stuurgroepmemo', d:'Besluitpunten helder en kort', need:null }],
+    attention:[
+      { type:'Taak', t:'Stuurgroepstukken moeten deze week de deur uit', m:'Projecten' },
+      { type:'Signaal', t:'Planning van een renovatie loopt achter op de mijlpalen', m:'Afgeleid uit projectdata' }] },
+  { id:'ict', icon:'monitor', title:'Medewerker ICT', dept:'TOK / ICT', blurb:'Applicaties, toegang en ondersteuning', apps:['VOMO'],
+    topics:['Toegang en accounts','Applicatiebeheer','Storingen','Overstap naar Entra'],
+    goals:['Storingen sneller afhandelen','Betere werkinstructies','Minder handwerk bij toegang','Duidelijke communicatie naar gebruikers'],
+    prompts:['Vat deze storing samen voor gebruikers','Schrijf een werkinstructie','Maak release notes'],
+    skills:[
+      { t:'Storing samenvatten', d:'Wat er speelt, voor wie, en wat ze moeten doen', need:null },
+      { t:'Werkinstructie schrijven', d:'Stap voor stap, in de vaste COA-opbouw', need:null },
+      { t:'Toegangsverzoek controleren', d:'Klopt de rol bij de gevraagde rechten?', need:'persoons' },
+      { t:'Release notes', d:'Uit de wijzigingen naar heldere taal', need:null }],
+    attention:[
+      { type:'Taak', t:'Toegangsverzoeken wachten op beoordeling', m:'VOMO' },
+      { type:'Signaal', t:'Meer inlogproblemen dan normaal sinds gisteren', m:'Afgeleid uit meldingen' }] },
+  { id:'beleid', icon:'scale', title:'Beleidsadviseur', dept:'Hoofdkantoor', blurb:'Analyse, notities en advies', apps:['DOCK'],
+    topics:['Beleidsnotities','Wet- en regelgeving','Cijfers en trends','Advies aan directie'],
+    goals:['Sneller een eerste versie','Bronnen beter onderbouwen','Trends eerder zien','Kortere stukken voor de directie'],
+    prompts:['Zet een beleidsnotitie op','Vat deze stukken samen voor het MT','Welke trend zie je in de cijfers?'],
+    skills:[
+      { t:'Notitie opzetten', d:'Opbouw, kernboodschap en eerste versie', need:null },
+      { t:'Bronnen vergelijken', d:'Verschillen en overeenkomsten tussen stukken', need:'vertrouwelijk', src:'DOCK' },
+      { t:'Trend uit cijfers', d:'Wat valt op en wat zou de verklaring kunnen zijn', need:'data' },
+      { t:'Samenvatting voor het MT', d:'Eén pagina, met besluitpunten', need:null }],
+    attention:[
+      { type:'Taak', t:'Reactie op conceptnotitie gevraagd', m:'DOCK' },
+      { type:'Signaal', t:'Nieuwe kwartaalcijfers beschikbaar', m:'Databases' }] }
+];
+var ALL_APPS = ['DOCK','FIKS','ISHP','VOMO','CAI'];
+var EXP = ['Net begonnen','Minder dan een jaar','1 tot 5 jaar','Langer dan 5 jaar'];
+var STEPS = ['Wie ben je','Je functie','Je werk','Je doelen'];
+var MORE = ['Agents','Apps','Databases','Skills','Templates','Kennis'];
+
+/* ---------- State ---------- */
+function fresh(){ return { screen:'intake', step:0, name:'', exp:'', role:null, topics:[], apps:[], goals:[], note:'', build:0, draft:'', msgs:[], done:{}, el:null, elStep:0, answer:null, pending:null, showAll:false, busy:false, view:'vandaag', taskFilter:'alle', q:'', agents:{}, doc:null, toast:'', doneTasks:{}, requested:{}, istep:0, typing:false, nameErr:false, ob:{}, coach:0, coachSeen:false }; }
+var S = fresh();
+var timer = null;
+var app = document.getElementById('app');
+
+function role(){ for (var i=0;i<ROLES.length;i++) if (ROLES[i].id===S.role) return ROLES[i]; return null; }
+function needs(){ var n=['basis'], r=role(); if (r) r.skills.forEach(function(k){ if (k.need && n.indexOf(k.need)<0) n.push(k.need); }); return n; }
+function initial(){ return (S.name.trim()[0] || '?').toUpperCase(); }
+function nameOr(){ return S.name.trim() || 'jij'; }
+function toggle(key, v){ var i=S[key].indexOf(v); if (i>=0) S[key].splice(i,1); else S[key].push(v); }
+function greeting(){ var h=new Date().getHours(); return h<12?'Goedemorgen':(h<18?'Goedemiddag':'Goedenavond'); }
+
+/* ---------- Views ---------- */
+function brand(light){
+  var c = light ? '#fff' : 'var(--sh-foreground-neutral-prominent)';
+  return '<div class="brand" style="color:'+c+'"><span class="brand__mark"><svg width="25" height="18" viewBox="0 0 25 18" aria-hidden="true"><path fill="currentColor" d="M12.5771 0.03125C15.5686 0.03125 17.994 2.45585 17.9941 5.44727V11.9287C17.9941 14.9203 15.5687 17.3457 12.5771 17.3457C9.58561 17.3457 7.16016 14.9203 7.16016 11.9287V5.44727C7.1603 2.45585 9.5857 0.0312517 12.5771 0.03125ZM2.68555 0.03125C4.16829 0.0314455 5.36999 1.23306 5.37012 2.71582C5.37012 4.19869 4.16837 5.40117 2.68555 5.40137C1.20256 5.40137 0 4.19881 0 2.71582C0.000124703 1.23294 1.20264 0.03125 2.68555 0.03125ZM22.3145 0C23.7974 0 25 1.20256 25 2.68555C24.9998 4.16837 23.7973 5.37012 22.3145 5.37012C20.8317 5.36995 19.6301 4.16827 19.6299 2.68555C19.6299 1.20266 20.8316 0.000163241 22.3145 0Z"/></svg></span><span class="brand__name">COAGPT</span></div>';
+}
+
+function preview(){
+  var r = role(), h = '';
+  h += '<div class="pv" id="preview" aria-live="polite">';
+  h += '<div style="display:flex;align-items:center;gap:14px"><span class="avatar" style="background:#9fd3dc;color:var(--sh-petrol-900)">'+esc(initial())+'</span>';
+  h += '<span style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font-size:17px;font-weight:600">'+esc(S.name.trim()||'Jouw naam')+'</span>';
+  h += r ? '<span class="sh-chip sh-chip--constructive" style="align-self:flex-start">'+esc(r.title)+' · '+esc(r.dept)+'</span>' : '<span style="font-size:14px;color:rgba(255,255,255,.72)">Kies je functie</span>';
+  h += '</span></div>';
+  h += '<div style="display:flex;flex-direction:column;gap:8px"><span class="pv__label">Klaargezet voor jou</span>';
+  if (r) r.skills.forEach(function(k){ h += '<div class="pv__row pop">'+ic('sparkle',16,'style="color:#9fd3dc"')+'<span style="flex:1">'+esc(k.t)+'</span>'+(k.need?'<span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#f5d38a">'+ic('lock',12)+'e-learning</span>':'')+'</div>'; });
+  else h += '<div class="pv__ghost"></div><div class="pv__ghost"></div><div class="pv__ghost"></div><span style="font-size:13px;color:rgba(255,255,255,.72)">Verschijnt zodra je je functie kiest</span>';
+  h += '</div>';
+  if (S.apps.length){ h += '<div style="display:flex;flex-direction:column;gap:8px"><span class="pv__label">Jouw apps</span><div class="wrap" style="gap:8px">'; S.apps.forEach(function(a){ h += '<span class="pv__app pop">'+a+'</span>'; }); h += '</div></div>'; }
+  if (S.goals.length){ h += '<div style="display:flex;flex-direction:column;gap:8px"><span class="pv__label">Jouw doelen</span>'; S.goals.forEach(function(g){ h += '<div class="pop" style="display:flex;gap:8px;font-size:14px;line-height:20px">'+ic('target',16,'style="color:#9fd3dc;margin-top:2px"')+'<span>'+esc(g)+'</span></div>'; }); h += '</div>'; }
+  if (S.role){ h += '<div style="display:flex;flex-direction:column;gap:8px"><span class="pv__label">Leerpad</span><div class="pop" style="font-size:14px;line-height:20px;color:rgba(255,255,255,.85)">'+needs().length+' korte e-learnings, alleen als je ze nodig hebt</div></div>'; }
+  h += '</div>';
+  return h;
+}
+
+/* ---------- Intake als gesprek ---------- */
+function aiBlock(html, extra){ return { kind:'ai', html:'<div class="msg-in"><span class="ai-avatar"></span><div class="msg-in__body"><div class="bubble-in">'+html+'</div>'+(extra||'')+'</div></div>' }; }
+function userBlock(t, editStep){ return { kind:'user', html:'<div class="out-wrap"><div class="bubble-out">'+esc(t)+'</div>'+(editStep!=null?'<button type="button" class="link-btn" data-a="edit" data-v="'+editStep+'">Wijzig</button>':'')+'</div>' }; }
+function promptChips(items, action, multi, selected){
+  return '<div class="sh-prompts" role="group">'+items.map(function(t){ var sel = multi ? selected.indexOf(t)>=0 : false; return '<button type="button" class="sh-prompt" data-a="'+action+'" data-v="'+esc(t)+'"'+(multi?' aria-pressed="'+sel+'"':'')+'>'+(sel?ic('check',14,'stroke-width="2.6"'):'')+esc(t)+'</button>'; }).join('')+'</div>';
+}
+function toolRow(t, state){
+  var icn = state==='done' ? ic('check',14,'stroke-width="2.6"') : (state==='running' ? ic('loader',14,'class="spin" stroke-width="2.4"') : ic('clock',14));
+  return '<div class="sh-tool sh-tool--'+state+'">'+icn+'<span>'+esc(t)+'</span></div>';
+}
+function viewIntake(){
+  var r = role(), st = S.istep, B = [], nm = S.name.trim();
+  B.push(aiBlock('Hoi, ik ben COAGPT, je AI-werkplek bij COA. Voordat we beginnen wil ik je een beetje leren kennen, zodat ik je meteen goed kan helpen. Dat duurt ongeveer twee minuten.<br><br><strong>Hoe mag ik je noemen?</strong>'));
+  if (st>0) B.push(userBlock(nm, st===1?0:null));
+  if (st>=1){
+    B.push(aiBlock('Leuk je te ontmoeten, '+esc(nm)+'. Hoe lang werk je al bij COA?', st===1 ? promptChips(EXP,'exp') : ''));
+    if (st>1) B.push(userBlock(S.exp, st===2?1:null));
+  }
+  if (st>=2){
+    var line = S.exp==='Net begonnen' ? 'Welkom bij COA! Dan laat ik je straks ook even zien hoe alles werkt.' : (S.exp==='Minder dan een jaar' ? 'Fijn, dan ben je al een beetje ingewerkt.' : 'Fijn, dan ken je de organisatie al goed.');
+    var grid = '';
+    if (st===2){ grid = '<div class="role-grid">'; ROLES.forEach(function(x){ grid += '<button type="button" class="opt opt--sm" data-a="role" data-v="'+x.id+'" aria-pressed="'+(S.role===x.id)+'"><span class="opt__icon">'+ic(x.icon,18)+'</span><span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-weight:600;color:var(--sh-foreground-neutral-prominent)">'+x.title+'</span><span class="label-sm faded">'+x.dept+'</span></span></button>'; }); grid += '</div>'; }
+    B.push(aiBlock(line+' <strong>Wat is je functie?</strong> Kies wat het dichtst in de buurt komt.', grid));
+    if (st>2 && r) B.push(userBlock(r.title+' · '+r.dept, st===3?2:null));
+  }
+  if (st>=3 && r){
+    var x3 = st===3 ? '<span class="label-sm faded" style="margin-top:4px">Onderwerpen, kies er een of meer</span>'+promptChips(r.topics,'topic',true,S.topics)+'<span class="label-sm faded" style="margin-top:4px">Apps die je gebruikt</span>'+promptChips(ALL_APPS,'app',true,S.apps)+'<button type="button" class="sh-btn sh-btn--primary sh-btn--sm" data-a="adv" style="align-self:flex-start;margin-top:4px">Verder '+ic('arrow',16)+'</button>' : '';
+    B.push(aiBlock('Als '+esc(r.title.toLowerCase())+' werk je vaak met '+r.apps.join(' en ')+'. Die heb ik alvast voor je aangezet, en je logt er niet opnieuw voor in. <strong>Waar ga je de komende tijd aan werken?</strong>', x3));
+    if (st>3) B.push(userBlock((S.topics.length?S.topics.join(', '):'Weet ik nog niet')+' · '+(S.apps.length?S.apps.join(', '):'geen apps'), st===4?3:null));
+  }
+  if (st>=4 && r){
+    var x4 = st===4 ? promptChips(r.goals,'goal',true,S.goals)+'<button type="button" class="sh-btn sh-btn--primary sh-btn--sm" data-a="adv" style="align-self:flex-start;margin-top:4px">Klaar '+ic('check',16,'stroke-width="2.4"')+'</button>' : '';
+    B.push(aiBlock('Helder. Laatste vraag: <strong>wat wil je de komende drie maanden bereiken?</strong>', x4));
+    if (st>4) B.push(userBlock(S.goals.length?S.goals.join(', '):'Dat weet ik nog niet'));
+  }
+  if (st>=5 && r){
+    var n = needs(), steps = ['Profiel opgeslagen', r.skills.length+' skills voor '+r.title.toLowerCase()+' klaargezet', 'Gekoppeld aan '+(S.apps.length?S.apps.join(', '):'je apps'), 'Leerpad samengesteld: '+n.length+' korte e-learnings'];
+    var tools = '<div class="sh-tools">'+steps.map(function(t,i){ return toolRow(t, S.build>i?'done':(S.build===i?'running':'pending')); }).join('')+'</div>';
+    B.push(aiBlock('Dank je, '+esc(nm)+'. Ik stel je werkruimte samen.', tools));
+    if (S.build>=4){
+      var a = r.attention[0];
+      B.push(aiBlock('Je werkruimte is klaar. <strong>Zullen we meteen iets doen?</strong> Er wacht al iets op je:', '<div class="mini-task"><span class="sh-chip '+(a.type==='Taak'?'sh-chip--primary':'sh-chip--accent1')+'">'+a.type+'</span><span style="font-weight:500;color:var(--sh-foreground-neutral-prominent)">'+esc(a.t)+'</span><span class="label-sm faded">'+rich(a.m)+'</span></div><div class="wrap" style="gap:8px"><button type="button" class="sh-btn sh-btn--primary" data-a="firsttask">'+ic('sparkle',18)+'Ja, help me hiermee</button><button type="button" class="sh-btn sh-btn--secondary" data-a="tour">Eerst rondkijken</button></div>'));
+    }
+  }
+  if (S.typing){ while (B.length && B[B.length-1].kind==='ai') B.pop(); B.push({ kind:'ai', html:'<div class="msg-in"><span class="ai-avatar ai-avatar--thinking"></span><span class="dots" aria-label="COAGPT typt"><i></i><i></i><i></i></span></div>' }); }
+
+  var h = '<div class="intake">';
+  h += '<aside class="intake__aside" aria-label="Voorbeeld van jouw werkruimte">'+brand(true);
+  h += '<div style="display:flex;flex-direction:column;gap:10px"><span class="overline" style="color:var(--sh-petrol-250)">Live voorbeeld</span><h2 class="h2" style="color:#fff">Zo ziet jouw werkruimte eruit</h2><p style="margin:0;font-size:16px;line-height:24px;color:rgba(255,255,255,.78)">Met elk antwoord wordt hij persoonlijker. Wat je niet dagelijks nodig hebt, blijft bereikbaar maar staat niet in de weg.</p></div>';
+  h += preview();
+  h += '<p style="margin:auto 0 0;font-size:14px;line-height:20px;color:rgba(255,255,255,.72)">Je kunt je profiel altijd aanpassen via je avatar.</p></aside>';
+
+  h += '<main class="intake__main"><div class="intake__top"><ol class="sh-stepper" aria-label="Voortgang">';
+  STEPS.forEach(function(t,i){
+    var cur = st<5 ? Math.max(0, Math.min(3, st-1)) : 4;
+    var s2 = i<cur||st>=5 ? 'done' : (i===cur ? 'current' : 'next');
+    if (st===0) s2 = i===0 ? 'current' : 'next';
+    h += '<li class="sh-step sh-step--'+s2+'"'+(s2==='current'?' aria-current="step"':'')+'><span class="sh-step__dot">'+(s2==='done'?ic('check',16,'stroke-width="3"'):(i+1))+'</span><span class="sh-step__label">'+t+'</span>'+(i<3?'<span class="sh-step__line"></span>':'')+'</li>';
+  });
+  h += '</ol></div><div class="ichat" id="ichat" aria-live="polite">'+B.map(function(b){ return b.html; }).join('')+'</div>';
+  h += '<div class="intake__foot">';
+  if (st===0){
+    h += '<form class="ai-input ai-input--row" data-form="name"><label for="naam" class="sr-only">Je voornaam</label><input id="naam" type="text" autocomplete="given-name" placeholder="Typ je voornaam" value="'+esc(S.name)+'" aria-describedby="naam-desc"><button type="submit" class="send" aria-label="Verstuur">'+ic('send',20,'stroke-width="2.2"')+'</button></form>';
+    h += '<p class="sh-desc'+(S.nameErr?' sh-desc--error':'')+'" id="naam-desc">'+(S.nameErr?'Vul je voornaam in om verder te gaan.':'Alleen je voornaam is genoeg.')+'</p>';
+  } else {
+    h += '<div class="ai-input ai-input--row ai-input--disabled" aria-hidden="true"><span style="flex:1;color:var(--sh-foreground-neutral-muted);padding:10px 0">'+(st>=5?'Je werkruimte is bijna klaar…':'Kies hierboven een antwoord')+'</span><span class="send" style="background:var(--sh-background-neutral-muted)">'+ic('send',20,'stroke-width="2.2"')+'</span></div>';
+  }
+  h += '</div></main></div>';
+  return h;
+}
+function advance(){
+  S.typing = true; S.istep++; render();
+  setTimeout(function(){ S.typing = false; render(); if (S.istep===5) startBuild(); }, 750);
+}
+function startBuild(){
+  S.build = 0; render(); clearInterval(timer);
+  timer = setInterval(function(){ if (S.build>=4){ clearInterval(timer); return; } S.build++; render(); }, 650);
+}
+
+/* ---------- Onboarding in de werkruimte ---------- */
+var COACH = [
+  ['Aan de slag','Hier zie je wat je nog kunt ontdekken. Elk vinkje gaat vanzelf aan zodra je het doet.'],
+  ['Voor jou','Skills die bij jouw functie passen. Een slotje betekent: eerst een korte e-learning.'],
+  ['Alles in COAGPT','Agents, apps, databases, templates en kennis. Altijd bereikbaar, maar niet in de weg.']
+];
+function coachHtml(i, place){
+  if (S.coach!==i+1 || S.view!=='vandaag' || S.el || S.doc!=null) return '';
+  var c = COACH[i];
+  return '<div class="sh-coach sh-coach--'+place+'" role="dialog" aria-labelledby="coach-t"><span class="sh-coach__arrow" aria-hidden="true"></span><span class="label-sm" style="color:var(--sh-petrol-250)">'+(i+1)+' van '+COACH.length+'</span><strong id="coach-t" tabindex="-1">'+c[0]+'</strong><span class="label" style="color:rgba(255,255,255,.85)">'+c[1]+'</span><div class="sh-coach__foot"><button type="button" class="link-btn link-btn--inv" data-a="coachskip">Overslaan</button><button type="button" class="sh-btn sh-btn--sm sh-btn--inv" data-a="coachnext">'+(i===COACH.length-1?'Klaar':'Volgende')+'</button></div></div>';
+}
+function checklist(){
+  if (S.ob.hidden) return '';
+  var items = [
+    ['ask','Stel je eerste vraag','Typ iets in het vraagveld of kies een voorbeeld', !!S.ob.ask, 'cl-ask'],
+    ['basis','Leer de basis','Sluis en bronnen controleren, 5 min', !!S.done.basis, 'cl-basis'],
+    ['doc','Laat een document samenvatten','Open Documenten en kies een document', !!S.ob.doc, 'cl-doc'],
+    ['agent','Zet een agent aan','Laat terugkerend werk voor je doen', !!S.ob.agent, 'cl-agent'],
+    ['app','Open een app','Zonder opnieuw in te loggen', !!S.ob.app, 'cl-app']
+  ];
+  var d = items.filter(function(x){ return x[3]; }).length, pct = Math.round(d/items.length*100);
+  var h = '<section class="panel" aria-labelledby="h-cl" style="position:relative">'+coachHtml(0,'left');
+  h += '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2 class="overline" id="h-cl">Aan de slag</h2><span class="label-sm faded">'+d+' van '+items.length+'</span></div>';
+  h += '<div class="sh-progress"><div class="sh-progress__track"><div class="sh-progress__fill'+(pct===100?' sh-progress__fill--done':'')+'" style="width:'+pct+'%"></div></div><span class="sh-progress__pct">'+pct+'%</span></div>';
+  if (d===items.length) h += '<div class="sh-alert sh-alert--ok" style="font-weight:500">'+ic('check',18,'stroke-width="2.6"')+'Je kent COAGPT nu. Goed gedaan!</div>';
+  h += '<div class="cl">';
+  items.forEach(function(x,i){
+    h += '<button type="button" class="cl-item'+(x[3]?' is-done':'')+'" data-a="'+x[4]+'"'+(x[3]?' aria-disabled="true"':'')+'><span class="cl-dot">'+(x[3]?ic('check',14,'stroke-width="3"'):(i+1))+'</span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><span class="cl-t">'+x[1]+'</span>'+(x[3]?'':'<span class="label-sm faded">'+x[2]+'</span>')+'</span>'+(x[3]?'':ic('chevRight',16,'style="color:var(--sh-foreground-neutral-faded)"'))+'</button>';
+  });
+  h += '</div><button type="button" class="sh-btn sh-btn--ghost sh-btn--sm" data-a="cl-hide" style="align-self:flex-start;margin-left:-12px">Verbergen</button></section>';
+  return h;
+}
+function firstSkill(){ var r=role(); if (!r) return null; for (var i=0;i<r.skills.length;i++) if (!r.skills[i].need) return r.skills[i]; return r.skills[0]; }
+
+var NAV_MAIN = [['vandaag','sun','Vandaag'],['projecten','folder','Projecten'],['taken','tasks','Taken'],['chat','chat','Chat'],['documenten','doc','Documenten']];
+var NAV_MORE = [['agents','bot','Agents'],['apps','grid','Apps'],['databases','db','Databases'],['skills','sparkle','Skills'],['templates','layers','Templates'],['kennis','book','Kennis']];
+var DOCS = {
+  contract:[['Contract schoonmaak [locatie]','Contract','Vastgoed & Facilitair','2 dagen geleden','vertrouwelijk'],['Keuringsrapport lift [locatie]','Rapport','Keuringen','vorige week',''],['Offerte onderhoud 2027','Offerte','Leveranciers','vorige week','vertrouwelijk'],['Verslag leveranciersoverleg','Verslag','Leveranciers','2 weken geleden',''],['Raamovereenkomst facilitair','Contract','Vastgoed & Facilitair','vorige maand','vertrouwelijk']],
+  locatie:[['Weekrapportage [locatie]','Rapport','Locatie','gisteren',''],['Incidentverslag [nummer]','Verslag','Veiligheid','3 dagen geleden','persoons'],['Teamplanning december','Planning','Team','vorige week',''],['Afspraken met gemeente [gemeente]','Verslag','Samenwerking','vorige maand','']],
+  woon:[['Overdracht avonddienst','Overdracht','Begeleiding','vandaag','persoons'],['Activiteitenplan december','Planning','Activiteiten','vorige week',''],['Huisregels in eenvoudige taal','Werkinstructie','Locatie','vorige maand','']],
+  project:[['Projectplan renovatie [locatie]','Plan','Renovatie','gisteren',''],['Offerte aannemer A','Offerte','Aanbesteding','vorige week','vertrouwelijk'],['Offerte aannemer B','Offerte','Aanbesteding','vorige week','vertrouwelijk'],['Verslag stuurgroep','Verslag','Stuurgroep','2 weken geleden','']],
+  ict:[['Storingslog inlogproblemen','Log','Storingen','vandaag',''],['Werkinstructie Entra-inlog','Werkinstructie','Toegang','vorige week',''],['Release notes VOMO [versie]','Release notes','Applicaties','vorige maand','']],
+  beleid:[['Conceptnotitie [onderwerp]','Notitie','Beleid','gisteren',''],['Kwartaalrapportage Q3','Rapport','Cijfers','vorige maand',''],['Advies aan directie [onderwerp]','Advies','Directie','vorige maand','vertrouwelijk']]
+};
+var AGENTS = {
+  contract:[['Keuringsbewaker','Kijkt elke maandag in FIKS welke keuringen binnen 60 dagen verlopen en maakt een taak aan.','Elke maandag 08:00',true],['Factuurwachter','Meldt een signaal als een partij opvallend meer factureert dan eerdere maanden.','Dagelijks',true],['Contractkalender','Herinnert je aan opzegtermijnen van contracten in DOCK.','Wekelijks',false]],
+  generic:[['Weekoverzicht','Zet elke vrijdag op een rij wat er deze week in je apps is gebeurd.','Elke vrijdag 15:00',true],['Signalenwachter','Meldt afwijkingen in de data van je apps onder "Vraagt jouw aandacht".','Dagelijks',true],['Inbox-helper','Stelt antwoorden voor op terugkerende vragen.','Bij nieuwe berichten',false]]
+};
+var DBS = [['Keuringen','FIKS','Keuringen per object en locatie',['contract','project']],['Facturen','FIKS','Facturen per leverancier en maand',['contract','project','beleid']],['Contractregister','DOCK','Alle lopende contracten met looptijden',['contract','project']],['Bezetting','VOMO','Bezetting en instroom per locatie',['locatie','beleid']],['Meldingen en incidenten','ISHP','Meldingen per locatie en unit',['locatie','woon']],['Toegangsrechten','VOMO','Rollen en rechten per medewerker',['ict']]];
+var TEMPLATES = [['Mail aan leverancier','Formeel, met afspraak en termijn','mail'],['Weekupdate voor je team','Kort: wat ging goed, wat speelt, wat komt eraan','chat'],['Memo voor het MT','Aanleiding, afweging, besluitpunt','doc'],['Overdracht','Wat de volgende dienst moet weten','tasks'],['Werkinstructie','Stap voor stap in de COA-opbouw','book'],['Projectstatus','Voortgang, risico’s en besluiten op één pagina','folder']];
+var KENNIS = [['Werken met COAGPT','Algemeen','Inloggen, Sluis, goed vragen'],['Privacy en persoonsgegevens bij COA','Algemeen','Wat mag wel en niet met gegevens van bewoners'],['Handboek contractbeheer','Vastgoed & Facilitair','Van aanbesteding tot verlenging'],['Werkinstructie keuringen plannen','Vastgoed & Facilitair','Wie, wanneer en hoe vastleggen in FIKS'],['Huisregels opvanglocaties','Opvang','De regels en hoe je ze uitlegt'],['Incident melden','Opvang','Stappen en termijnen'],['Inloggen via Entra','ICT','Wat verandert er en wat moet je doen'],['Schrijfwijzer COA','Algemeen','Toon, B1-niveau en opbouw']];
+
+function navItem(view, icon, label, trail){
+  var cur = S.view===view || (view==='vandaag' && S.view==='gesprek');
+  return '<button type="button" class="sh-navitem" data-a="nav" data-v="'+view+'"'+(cur?' aria-current="page"':'')+'>'+ic(icon,18)+'<span class="grow">'+label+'</span>'+(trail||'')+'</button>';
+}
+function tasksFor(r){
+  if (!r) return [];
+  var list = r.attention.map(function(a){ return { type:a.type, t:a.t, m:a.m, due: a.type==='Taak'?'Deze week':'Nieuw' }; });
+  (S.topics.length?S.topics:r.topics.slice(0,2)).forEach(function(t){ list.push({ type:'Taak', t:'Voortgang bijwerken: '+t, m:'Projecten', due:'Volgende week' }); });
+  return list.filter(function(x){ return !S.doneTasks[x.t]; });
+}
+function projectsFor(r){
+  if (!r) return [];
+  var st = [['Loopt','sh-chip--constructive',60],['Aandacht nodig','sh-chip--attention',35],['Gestart','sh-chip--primary',15],['Bijna klaar','sh-chip--constructive',85]];
+  return r.topics.map(function(t,i){ return { t:t, mine:S.topics.indexOf(t)>=0, st:st[i%4], app:(S.apps[i%Math.max(1,S.apps.length)]||'DOCK') }; })
+    .sort(function(a,b){ return (b.mine?1:0)-(a.mine?1:0); });
+}
+function allSkills(){
+  var seen={}, out=[]; ROLES.forEach(function(r){ r.skills.forEach(function(k){ if (!seen[k.t]){ seen[k.t]=1; out.push({k:k, role:r}); } }); }); return out;
+}
+function viewWork(){
+  var r = role(), n = needs(), doneN = n.filter(function(id){ return S.done[id]; }).length;
+  var tasks = tasksFor(r);
+  var moreOpen = S.showAll || NAV_MORE.some(function(x){ return x[0]===S.view; });
+  var h = '<div class="ws">';
+  h += '<nav class="sidenav" aria-label="Hoofdmenu"><div class="sidenav__brand">'+brand(false)+'</div>';
+  h += '<button type="button" class="sidenav__new" data-a="home">'+ic('plus',18)+'Nieuwe vraag</button>';
+  h += '<div class="sidenav__group sidenav__group--first">';
+  NAV_MAIN.forEach(function(x){
+    var trail = x[0]==='taken' ? '<span class="count">'+tasks.filter(function(t){return t.type==='Taak';}).length+'</span>' : '';
+    h += navItem(x[0], x[1], x[2], trail);
+  });
+  h += '</div>';
+  if (r){
+    h += '<div class="sidenav__group" style="position:relative">'+coachHtml(1,'right')+'<span class="sidenav__title">Voor jou</span>';
+    r.skills.forEach(function(k,i){ var locked = k.need && !S.done[k.need]; h += '<button type="button" class="sh-navitem sh-navitem--sub" data-a="skill" data-v="'+i+'"><span class="grow">'+esc(k.t)+'</span>'+(locked?'<span class="lock" title="Eerst e-learning">'+ic('lock',14)+'<span class="sr-only">Eerst e-learning</span></span>':'')+'</button>'; });
+    h += '</div>';
+  }
+  h += '<div class="sidenav__group" style="position:relative">'+coachHtml(2,'right')+'<button type="button" class="sh-navitem" data-a="more" aria-expanded="'+moreOpen+'">'+ic('grid',18)+'<span class="grow">Alles in COAGPT</span>'+ic('chevDown',16,'style="transform:'+(moreOpen?'rotate(180deg)':'none')+';transition:transform .2s"')+'</button>';
+  if (moreOpen){ NAV_MORE.forEach(function(x){ h += '<button type="button" class="sh-navitem sh-navitem--sub" data-a="nav" data-v="'+x[0]+'"'+(S.view===x[0]?' aria-current="page"':'')+'>'+x[2]+'</button>'; }); }
+  h += '</div>';
+  h += '<div style="margin-top:auto;border-top:1px solid var(--sh-border-neutral-faded);padding:16px 4px 0;display:flex;align-items:center;gap:12px"><span class="mini-avatar" style="width:40px;height:40px;font-size:15px">'+esc(initial())+'</span><span style="display:flex;flex-direction:column;min-width:0;flex:1"><span class="h5" style="font-size:15px">'+esc(S.name.trim()||'Medewerker')+'</span><span class="label faded">'+(r?esc(r.title):'')+'</span></span><button type="button" class="sh-icon-btn" data-a="profile" aria-label="Profiel aanpassen">'+ic('pen',18)+'</button></div>';
+  h += '</nav>';
+
+  h += '<div class="main"><header class="topnav"><button type="button" class="topnav__search" data-a="nav" data-v="kennis">'+ic('search',18)+'<span style="flex:1;text-align:left">Zoeken in Kennis</span><span class="keycap">/</span></button><span class="topnav__spacer"></span>';
+  h += '<button type="button" class="sh-chip sh-chip--primary" data-a="nav" data-v="leerpad" style="height:32px;padding:0 12px;border:0;cursor:pointer">'+ic('book',14)+'Leerpad '+doneN+' van '+n.length+'</button>';
+  h += '<button type="button" class="sh-icon-btn" data-a="nav" data-v="taken" aria-label="Meldingen, '+tasks.length+' open">'+ic('bell',20)+'</button><button type="button" class="mini-avatar" data-a="profile" aria-label="Profiel" style="border:0">'+esc(initial())+'</button></header>';
+
+  var v = S.view;
+  if (v==='gesprek' && S.msgs.length) h += viewChat();
+  else if (v==='projecten') h += viewProjecten(r);
+  else if (v==='taken') h += viewTaken(r, tasks);
+  else if (v==='chat') h += viewChats(r);
+  else if (v==='documenten') h += viewDocs(r);
+  else if (v==='agents') h += viewAgents(r);
+  else if (v==='apps') h += viewApps();
+  else if (v==='databases') h += viewDbs(r);
+  else if (v==='skills') h += viewSkills(r);
+  else if (v==='templates') h += viewTemplates();
+  else if (v==='kennis') h += viewKennis();
+  else if (v==='leerpad') h += viewLeerpad(r, n, doneN);
+  else h += viewHome(r, n, doneN);
+  h += '</div></div>';
+  if (S.doc!=null) h += viewDocPanel(r);
+  if (S.el) h += viewDrawer();
+  if (S.toast) h += '<div class="sh-toast" role="status">'+ic('check',18,'stroke-width="2.6"')+'<span>'+esc(S.toast)+'</span></div>';
+  return h;
+}
+function pageHead(title, desc, extra){
+  return '<div class="page__head"><div style="display:flex;flex-direction:column;gap:8px;min-width:0"><h1 class="h2" id="page-title" tabindex="-1">'+title+'</h1>'+(desc?'<p class="lead" style="font-size:16px;line-height:24px">'+desc+'</p>':'')+'</div>'+(extra||'')+'</div>';
+}
+function askBtn(action, v, label){ return '<button type="button" class="sh-btn sh-btn--ghost sh-btn--sm" data-a="'+action+'" data-v="'+esc(v)+'" style="margin-left:-12px;align-self:flex-start">'+ic('sparkle',16)+(label||'Vraag COAGPT')+'</button>'; }
+
+function viewProjecten(r){
+  var ps = projectsFor(r), h = '<div class="page">'+pageHead('Projecten','Waar je aan werkt. Projecten die je in de intake koos staan bovenaan.','<button type="button" class="sh-btn sh-btn--secondary" data-a="toast" data-v="Nieuw project aangemaakt (prototype)">'+ic('plus',18)+'Nieuw project</button>');
+  h += '<div class="grid-cards">';
+  ps.forEach(function(p,i){
+    h += '<article class="action-card" style="min-height:0;gap:12px"><div class="action-card__top"><span class="icon-container" style="background:var(--sh-background-primary-raised);color:var(--sh-foreground-primary-prominent)">'+ic('folder',20)+'</span><span class="sh-chip '+p.st[1]+'">'+p.st[0]+'</span></div><h2 class="h4" style="font-size:18px">'+esc(p.t)+'</h2>';
+    h += '<div class="sh-progress"><div class="sh-progress__track"><div class="sh-progress__fill" style="width:'+p.st[2]+'%"></div></div><span class="sh-progress__pct">'+p.st[2]+'%</span></div>';
+    h += '<div class="wrap" style="gap:6px">'+(p.mine?'<span class="sh-chip sh-chip--accent1">'+ic('target',12)+'Uit je intake</span>':'')+'<span class="sh-chip sh-chip--neutral">'+p.app+'</span><span class="label-sm faded" style="align-self:center">Volgende stap: [mijlpaal] · [datum]</span></div>';
+    h += askBtn('ask','Wat is de status van project: '+p.t+'?','Status opvragen')+'</article>';
+  });
+  return h+'</div></div>';
+}
+function viewTaken(r, tasks){
+  var f = S.taskFilter, list = tasks.filter(function(t){ return f==='alle' || (f==='taken'&&t.type==='Taak') || (f==='signalen'&&t.type==='Signaal'); });
+  var h = '<div class="page">'+pageHead('Taken en signalen','Open taken uit je apps en signalen die COAGPT uit de data afleidt.');
+  h += '<div class="sh-tabbar" role="tablist" aria-label="Filter">';
+  [['alle','Alles'],['taken','Taken'],['signalen','Signalen']].forEach(function(x){ var n = x[0]==='alle'?tasks.length:tasks.filter(function(t){ return (x[0]==='taken')===(t.type==='Taak'); }).length; h += '<button type="button" role="tab" class="sh-tab" data-a="tf" data-v="'+x[0]+'" aria-selected="'+(f===x[0])+'">'+x[1]+' <span class="sh-tab__n">'+n+'</span></button>'; });
+  h += '</div><div class="list" role="list">';
+  if (!list.length) h += '<div class="empty">'+ic('check',28)+'<span class="h5">Niets meer open</span><span class="label faded">Goed bezig. Nieuwe taken en signalen verschijnen hier vanzelf.</span></div>';
+  list.forEach(function(t){
+    var task = t.type==='Taak';
+    h += '<div class="row" role="listitem"><span class="sh-chip '+(task?'sh-chip--primary':'sh-chip--accent1')+'" style="justify-self:start">'+(task?ic('tasks',12):ic('warn',12))+t.type+'</span><span style="display:flex;flex-direction:column;min-width:0"><span class="h5" style="font-family:var(--sh-font-body);font-weight:500;font-size:15px;line-height:22px">'+esc(t.t)+'</span><span class="label-sm faded">'+rich(t.m)+'</span></span><span class="label faded">'+t.due+'</span><span class="row__actions"><button type="button" class="sh-btn sh-btn--secondary sh-btn--sm" data-a="ask" data-v="'+esc('Help me met: '+t.t)+'">'+ic('sparkle',16)+'Pak op</button>'+(task?'<button type="button" class="sh-icon-btn" data-a="taskdone" data-v="'+esc(t.t)+'" aria-label="Markeer als afgerond">'+ic('check',18)+'</button>':'')+'</span></div>';
+  });
+  return h+'</div></div>';
+}
+function viewChats(r){
+  var h = '<div class="page">'+pageHead('Chat','Je eerdere gesprekken met COAGPT.','<button type="button" class="sh-btn sh-btn--primary" data-a="home">'+ic('plus',18)+'Nieuw gesprek</button>');
+  h += '<div class="list" role="list">';
+  if (S.msgs.length){ var first = S.msgs[0]; h += '<button type="button" class="row row--btn" data-a="nav" data-v="gesprek"><span class="ai-avatar" style="width:28px;height:28px"></span><span style="display:flex;flex-direction:column;min-width:0"><span class="h5" style="font-family:var(--sh-font-body);font-weight:500;font-size:15px">'+esc(first.text)+'</span><span class="label-sm faded">'+S.msgs.length+' berichten</span></span><span class="sh-chip sh-chip--constructive">Actief</span>'+ic('chevRight',18,'style="color:var(--sh-foreground-neutral-faded)"')+'</button>'; }
+  var when = ['Gisteren','Maandag','Vorige week'];
+  (r?r.prompts:[]).forEach(function(p,i){ h += '<button type="button" class="row row--btn" data-a="oldchat" data-v="'+i+'"><span class="chat-ic">'+ic('chat',16)+'</span><span style="display:flex;flex-direction:column;min-width:0"><span class="h5" style="font-family:var(--sh-font-body);font-weight:500;font-size:15px">'+esc(p)+'</span><span class="label-sm faded">'+when[i]+'</span></span><span></span>'+ic('chevRight',18,'style="color:var(--sh-foreground-neutral-faded)"')+'</button>'; });
+  return h+'</div></div>';
+}
+function viewDocs(r){
+  var docs = DOCS[r?r.id:'contract']||[];
+  var h = '<div class="page">'+pageHead('Documenten','Je documenten in DOCK. COAGPT leest alleen wat jij ook mag zien.','<button type="button" class="sh-btn sh-btn--secondary" data-a="toast" data-v="Upload opent in DOCK (prototype)">'+ic('plus',18)+'Uploaden</button>');
+  h += '<div class="list" role="list"><div class="row row--head" aria-hidden="true"><span>Naam</span><span>Context</span><span>Gewijzigd</span><span></span></div>';
+  docs.forEach(function(d,i){
+    h += '<button type="button" class="row row--btn row--doc" data-a="doc" data-v="'+i+'"><span style="display:flex;align-items:center;gap:12px;min-width:0"><span class="doc-ic">'+ic('doc',18)+'</span><span style="display:flex;flex-direction:column;min-width:0"><span style="font-weight:500;color:var(--sh-foreground-neutral-prominent)">'+rich(d[0])+'</span><span class="label-sm faded">'+d[1]+'</span></span></span><span class="label faded">'+d[2]+'</span><span class="label faded">'+d[3]+'</span>'+ic('chevRight',18,'style="color:var(--sh-foreground-neutral-faded)"')+'</button>';
+  });
+  return h+'</div></div>';
+}
+function viewDocPanel(r){
+  var d = (DOCS[r?r.id:'contract']||[])[S.doc]; if (!d) return '';
+  var sk = null; if (r) r.skills.forEach(function(k){ if (!sk && k.need && k.need===d[4]) sk=k; });
+  var locked = sk && sk.need && !S.done[sk.need];
+  var h = '<div class="scrim" data-a="docclose-scrim"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="doc-title"><div class="drawer__head"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="display:flex;flex-direction:column;gap:6px"><span class="overline">DOCK · '+d[1]+'</span><h2 class="h3" id="doc-title" tabindex="-1">'+rich(d[0])+'</h2></div><button type="button" class="sh-icon-btn" data-a="docclose" aria-label="Sluiten">'+ic('x',20)+'</button></div>';
+  h += '<div class="wrap" style="gap:6px"><span class="sh-chip sh-chip--neutral">'+d[2]+'</span><span class="sh-chip sh-chip--neutral">Versie 3</span><span class="sh-chip sh-chip--neutral">Gewijzigd '+d[3]+'</span>'+(d[4]?'<span class="sh-chip sh-chip--attention">'+ic('lock',12)+(d[4]==='persoons'?'Persoonsgegevens':'Vertrouwelijk')+'</span>':'')+'</div></div>';
+  h += '<div class="drawer__body"><div class="doc-preview" aria-label="Voorbeeld van het document"><span class="h4" style="font-size:18px">'+rich(d[0])+'</span><span class="sk" style="width:90%"></span><span class="sk" style="width:75%"></span><span class="sk" style="width:84%"></span><span class="sk" style="width:40%"></span><span style="height:8px"></span><span class="sk" style="width:88%"></span><span class="sk" style="width:70%"></span><span class="sk" style="width:80%"></span></div>';
+  h += '<div class="insight">'+ic('sparkle',20,'style="color:var(--sh-foreground-primary);margin-top:2px"')+'<div style="flex:1;display:flex;flex-direction:column;gap:6px"><span class="h5" style="font-size:14px;font-family:var(--sh-font-body);font-weight:600">Wat kan COAGPT met dit document?</span><span class="label">Samenvatten, vergelijken met eerdere versies of de afspraken eruit halen.'+(locked?' Hiervoor doe je eerst de e-learning "'+ELS[sk.need].title+'".':'')+'</span></div></div></div>';
+  h += '<div class="drawer__foot"><button type="button" class="sh-btn sh-btn--secondary" data-a="toast" data-v="Opent in DOCK zonder opnieuw in te loggen">Open in DOCK</button><button type="button" class="sh-btn sh-btn--primary" data-a="docsum">'+ic('sparkle',18)+'Vat samen'+(locked?' '+ic('lock',14):'')+'</button></div></aside></div>';
+  return h;
+}
+function viewAgents(r){
+  var list = AGENTS[r&&AGENTS[r.id]?r.id:'generic'];
+  var h = '<div class="page">'+pageHead('Agents','Agents doen terugkerend werk voor je op de achtergrond. Ze werken alleen met jouw rechten en via Sluis.','<button type="button" class="sh-btn sh-btn--secondary" data-a="ask" data-v="Help me een nieuwe agent te maken">'+ic('plus',18)+'Nieuwe agent</button>');
+  h += '<div class="grid-cards">';
+  list.forEach(function(a,i){
+    var on = S.agents[a[0]]!=null ? S.agents[a[0]] : a[3];
+    h += '<article class="action-card" style="min-height:0;gap:12px"><div class="action-card__top"><span class="icon-container">'+ic('bot',20)+'</span><label class="sh-switch"><input type="checkbox" data-a="agent" data-v="'+esc(a[0])+'"'+(on?' checked':'')+'><span class="sh-switch__track" aria-hidden="true"></span><span class="sr-only">'+esc(a[0])+' aan of uit</span></label></div><h2 class="h4" style="font-size:18px">'+esc(a[0])+'</h2><p class="label faded" style="margin:0">'+esc(a[1])+'</p><div class="wrap" style="gap:6px"><span class="sh-chip sh-chip--neutral">'+ic('clock',12)+a[2]+'</span><span class="sh-chip '+(on?'sh-chip--constructive':'sh-chip--neutral')+'">'+(on?'Actief':'Gepauzeerd')+'</span></div></article>';
+  });
+  return h+'</div></div>';
+}
+function viewApps(){
+  var h = '<div class="page">'+pageHead('Apps','Alle apps waar je naartoe kunt. Je bent al ingelogd via coagpt.nl.');
+  h += '<div class="grid-cards grid-cards--4">';
+  ALL_APPS.forEach(function(a){
+    var mine = S.apps.indexOf(a)>=0;
+    h += '<article class="action-card" style="min-height:0;align-items:flex-start;gap:12px"><span class="app-logo">'+a+'</span><div class="wrap" style="gap:6px">'+(mine?'<span class="sh-chip sh-chip--constructive">'+ic('check',12,'stroke-width="3"')+'In jouw werkruimte</span>':'<span class="sh-chip sh-chip--neutral">Beschikbaar</span>')+(a==='DOCK'?'<span class="sh-chip sh-chip--neutral">= Documenten</span>':'')+'</div><button type="button" class="sh-btn sh-btn--secondary sh-btn--sm" data-a="openapp" data-v="'+a+'">Openen '+ic('arrow',16)+'</button></article>';
+  });
+  h += '</div><p class="label faded" style="margin:0">Ontwikkeld met SevenLab als governed build-partij. Alle AI-verzoeken van apps lopen via Sluis.</p>';
+  return h+'</div>';
+}
+function viewDbs(r){
+  var h = '<div class="page">'+pageHead('Databases','De data waar COAGPT signalen uit afleidt. Je ziet alleen data waar je rechten op hebt.');
+  h += '<div class="list" role="list"><div class="row row--head" aria-hidden="true"><span>Bron</span><span>App</span><span>Toegang</span><span></span></div>';
+  DBS.forEach(function(d){
+    var ok = r && d[3].indexOf(r.id)>=0;
+    var req = S.requested[d[0]];
+    h += '<div class="row row--doc" role="listitem"><span style="display:flex;align-items:center;gap:12px;min-width:0"><span class="doc-ic">'+ic('db',18)+'</span><span style="display:flex;flex-direction:column;min-width:0"><span style="font-weight:500;color:var(--sh-foreground-neutral-prominent)">'+d[0]+'</span><span class="label-sm faded">'+d[2]+'</span></span></span><span><span class="sh-chip sh-chip--neutral">'+d[1]+'</span></span><span>'+(ok?'<span class="sh-chip sh-chip--constructive">Toegang</span>':(req?'<span class="sh-chip sh-chip--attention">Aangevraagd</span>':'<span class="sh-chip sh-chip--neutral">Geen toegang</span>'))+'</span><span class="row__actions">'+(ok?'<button type="button" class="sh-btn sh-btn--ghost sh-btn--sm" data-a="ask" data-v="'+esc('Wat valt op in de data van '+d[0]+'?')+'">'+ic('sparkle',16)+'Vraag</button>':(req?'':'<button type="button" class="sh-btn sh-btn--secondary sh-btn--sm" data-a="req" data-v="'+d[0]+'">Aanvragen</button>'))+'</span></div>';
+  });
+  return h+'</div></div>';
+}
+function skillCard(k, idx, roleIdx){
+  var locked = k.need && !S.done[k.need], open = k.need && S.done[k.need];
+  return '<button type="button" class="action-card" data-a="anyskill" data-v="'+idx+'"><span class="action-card__top"><span class="icon-container">'+ic('sparkle',20)+'</span>'+(locked?'<span class="sh-chip sh-chip--attention">'+ic('lock',12,'stroke-width="2.4"')+'Eerst e-learning · '+ELS[k.need].mins+' min</span>':'')+(open?'<span class="sh-chip sh-chip--constructive">'+ic('check',12,'stroke-width="3"')+'Ontgrendeld</span>':'')+'</span><span class="h5" style="font-size:17px;line-height:24px">'+esc(k.t)+'</span><span class="label faded">'+esc(k.d)+'</span></button>';
+}
+function viewSkills(r){
+  var all = allSkills(), q = (S.q||'').toLowerCase();
+  var h = '<div class="page">'+pageHead('Skills','Vaardigheden die COAGPT voor je kan uitvoeren. Sommige vragen eerst een korte e-learning.');
+  h += '<div class="sh-field" style="max-width:420px"><label for="filter" class="sr-only">Zoek een skill</label><input class="sh-input" id="filter" data-filter="skills" type="search" placeholder="Zoek een skill" value="'+esc(S.q||'')+'"></div><div id="results">'+skillResults(r, all, q)+'</div>';
+  return h+'</div>';
+}
+function skillResults(r, all, q){
+  var mine = [], other = [];
+  all.forEach(function(x,i){ if (q && (x.k.t+' '+x.k.d).toLowerCase().indexOf(q)<0) return; (r && x.role.id===r.id ? mine : other).push(skillCard(x.k, i)); });
+  var h = '';
+  if (mine.length) h += '<section style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px"><h2 class="h4">Voor jou</h2><div class="cards">'+mine.join('')+'</div></section>';
+  if (other.length) h += '<section style="display:flex;flex-direction:column;gap:12px"><h2 class="h4">Alle skills</h2><div class="cards">'+other.join('')+'</div></section>';
+  if (!mine.length && !other.length) h += '<div class="empty">'+ic('search',28)+'<span class="h5">Geen skill gevonden</span><span class="label faded">Probeer een ander woord, of stel je vraag gewoon aan COAGPT.</span></div>';
+  return h;
+}
+function viewTemplates(){
+  var h = '<div class="page">'+pageHead('Templates','Vaste opzetten in COA-stijl. COAGPT vult ze voor je in.');
+  h += '<div class="grid-cards">';
+  TEMPLATES.forEach(function(t,i){ h += '<button type="button" class="action-card" data-a="tpl" data-v="'+i+'"><span class="action-card__top"><span class="icon-container" style="background:var(--sh-background-primary-raised);color:var(--sh-foreground-primary-prominent)">'+ic(t[2],20)+'</span>'+ic('arrow',18,'style="color:var(--sh-foreground-neutral-faded)"')+'</span><span class="h5" style="font-size:17px;line-height:24px">'+t[0]+'</span><span class="label faded">'+t[1]+'</span></button>'; });
+  return h+'</div></div>';
+}
+function viewKennis(){
+  var q = (S.q||'').toLowerCase();
+  var h = '<div class="page">'+pageHead('Kennis','Werkinstructies, handboeken en beleid. Zoek zelf of vraag het COAGPT.');
+  h += '<div class="sh-field" style="max-width:560px"><label for="filter" class="sr-only">Zoek in Kennis</label><input class="sh-input" id="filter" data-filter="kennis" type="search" placeholder="Zoek in Kennis" value="'+esc(S.q||'')+'"></div><div id="results">'+kennisResults(q)+'</div>';
+  return h+'</div>';
+}
+function kennisResults(q){
+  var items = KENNIS.map(function(k,i){ return [k,i]; }).filter(function(x){ return !q || (x[0].join(' ')).toLowerCase().indexOf(q)>=0; });
+  if (!items.length) return '<div class="empty">'+ic('search',28)+'<span class="h5">Niets gevonden</span><span class="label faded">Vraag het COAGPT, dan zoekt hij ook in je documenten.</span><button type="button" class="sh-btn sh-btn--primary sh-btn--sm" data-a="ask" data-v="'+esc(S.q)+'">'+ic('sparkle',16)+'Vraag COAGPT</button></div>';
+  var h = '<div class="list" role="list">';
+  items.forEach(function(x){ var k=x[0]; h += '<button type="button" class="row row--btn row--kb" data-a="kb" data-v="'+x[1]+'"><span class="doc-ic">'+ic('book',18)+'</span><span style="display:flex;flex-direction:column;min-width:0"><span style="font-weight:500;color:var(--sh-foreground-neutral-prominent)">'+k[0]+'</span><span class="label-sm faded">'+k[2]+'</span></span><span class="sh-chip sh-chip--neutral">'+k[1]+'</span>'+ic('chevRight',18,'style="color:var(--sh-foreground-neutral-faded)"')+'</button>'; });
+  return h+'</div>';
+}
+function viewLeerpad(r, n, doneN){
+  var pct = Math.round(doneN/n.length*100);
+  var h = '<div class="page">'+pageHead('Leerpad','Korte e-learnings, alleen als je ze nodig hebt. Een skill met een slotje gaat open zodra je de bijbehorende e-learning hebt gedaan.');
+  h += '<div class="panel" style="max-width:720px"><div style="display:flex;justify-content:space-between;align-items:baseline"><span class="h5">Jouw voortgang</span><span class="label faded">'+doneN+' van '+n.length+' afgerond</span></div><div class="sh-progress"><div class="sh-progress__track"><div class="sh-progress__fill'+(pct===100?' sh-progress__fill--done':'')+'" style="width:'+pct+'%"></div></div><span class="sh-progress__pct">'+pct+'%</span></div></div>';
+  var optional = Object.keys(ELS).filter(function(id){ return n.indexOf(id)<0; });
+  [['Voor jouw rol', n],['Optioneel', optional]].forEach(function(grp){
+    if (!grp[1].length) return;
+    h += '<section style="display:flex;flex-direction:column;gap:12px;max-width:720px"><h2 class="h4">'+grp[0]+'</h2>';
+    grp[1].forEach(function(id){
+      var e=ELS[id], d=!!S.done[id];
+      var unlocks = r ? r.skills.filter(function(k){ return k.need===id; }).map(function(k){ return k.t; }) : [];
+      h += '<button type="button" class="lp" data-a="el" data-v="'+id+'"'+(d?' disabled':'')+' style="min-height:76px"><span style="width:40px;height:40px;border-radius:999px;flex:none;display:flex;align-items:center;justify-content:center;'+(d?'background:var(--sh-background-constructive-faded);color:#fff':'background:var(--sh-background-primary-raised);color:var(--sh-foreground-primary-prominent)')+'">'+(d?ic('check',18,'stroke-width="3"'):ic('play',16))+'</span><span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-weight:600;color:var(--sh-foreground-neutral-prominent)">'+e.title+'</span><span class="label faded">'+e.desc+'</span><span class="label-sm" style="color:var(--sh-foreground-primary-prominent)">'+(d?'Afgerond':e.mins+' min')+(unlocks.length?' · ontgrendelt '+esc(unlocks.join(', ')):'')+'</span></span>'+(d?'':ic('chevRight',18,'style="color:var(--sh-foreground-neutral-faded)"'))+'</button>';
+    });
+    h += '</section>';
+  });
+  return h+'</div>';
+}
+
+function composer(big){
+  if (big) return '<div class="ai-input"><label for="prompt" class="label faded" style="font-weight:600">Wat kan ik voor je doen?</label><textarea id="prompt" rows="3" placeholder="Vraag iets over je werk, een document of een taak…">'+esc(S.draft)+'</textarea><div class="ai-input__bar"><div class="wrap" style="gap:8px;align-items:center"><button type="button" class="sh-icon-btn" aria-label="Document uit DOCK toevoegen" style="border:1px solid var(--sh-border-neutral-faded)">'+ic('clip',18)+'</button><span class="label-sm faded">Context</span>'+S.apps.map(function(a){ return '<span class="sh-chip sh-chip--neutral">'+a+'</span>'; }).join('')+'</div><button type="button" class="send" data-a="send" aria-label="Verstuur">'+ic('send',20,'stroke-width="2.2"')+'</button></div></div>';
+  return '<div class="ai-input"><label for="prompt" class="sr-only">Vervolgvraag</label><textarea id="prompt" rows="1" placeholder="Stel een vervolgvraag…">'+esc(S.draft)+'</textarea><button type="button" class="send" data-a="send" aria-label="Verstuur">'+ic('send',20,'stroke-width="2.2"')+'</button></div>';
+}
+
+function viewHome(r, n, doneN){
+  var pct = Math.round(doneN/n.length*100);
+  var h = '<div class="home"><div class="home__main">';
+  h += '<div style="display:flex;flex-direction:column;gap:8px"><h1 class="h1">'+greeting()+', '+esc(S.name.trim()||'welkom')+'</h1><p class="lead">Wat gaan we vandaag doen?</p></div>';
+  h += '<div class="insight">'+ic('sparkle',20,'style="color:var(--sh-foreground-primary);margin-top:2px"')+'<div style="flex:1;display:flex;flex-direction:column;gap:6px"><span class="h5" style="font-size:14px">Afgestemd op jou</span><span class="label">'+(r?esc(r.title)+' bij '+esc(r.dept):'')+(S.apps.length?' · '+S.apps.join(', '):'')+(S.goals.length?' · doel: '+esc(S.goals.map(function(g){return g.toLowerCase();}).join(', ')):'')+'</span></div><button type="button" class="sh-btn sh-btn--ghost sh-btn--sm" data-a="profile">Aanpassen</button></div>';
+  h += '<div style="display:flex;flex-direction:column;gap:12px">'+composer(true)+'<div class="wrap" style="gap:8px">';
+  if (r) r.prompts.forEach(function(p,i){ h += '<button type="button" class="sh-suggest sh-suggest--quiet" data-a="prompt" data-v="'+i+'">'+esc(p)+'</button>'; });
+  h += '</div></div>';
+  h += '<section aria-labelledby="h-skills" style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><h2 class="h4" id="h-skills">Voor jou klaargezet</h2><span class="label faded">Op basis van je functie en doelen</span></div><div class="cards">';
+  if (r) r.skills.forEach(function(k,i){
+    var locked = k.need && !S.done[k.need], open = k.need && S.done[k.need];
+    h += '<button type="button" class="action-card" data-a="skill" data-v="'+i+'"><span class="action-card__top"><span class="icon-container">'+ic('sparkle',20)+'</span>'+(locked?'<span class="sh-chip sh-chip--attention">'+ic('lock',12,'stroke-width="2.4"')+'Eerst e-learning · '+ELS[k.need].mins+' min</span>':'')+(open?'<span class="sh-chip sh-chip--constructive">'+ic('check',12,'stroke-width="3"')+'Ontgrendeld</span>':'')+'</span><span class="h5" style="font-size:17px;line-height:24px">'+esc(k.t)+'</span><span class="label faded">'+esc(k.d)+'</span></button>';
+  });
+  h += '</div></section></div>';
+
+  h += '<aside class="home__side" aria-label="Overzicht">'+checklist();
+  h += '<section class="panel" aria-labelledby="h-att"><h2 class="overline" id="h-att">Vraagt jouw aandacht</h2>';
+  if (r) r.attention.forEach(function(a,i){
+    var task = a.type==='Taak';
+    h += '<div class="item"><div style="display:flex;align-items:center;gap:8px"><span class="sh-chip '+(task?'sh-chip--primary':'sh-chip--accent1')+'">'+(task?ic('tasks',12):ic('warn',12))+a.type+'</span><span class="label-sm faded">'+rich(a.m)+'</span></div><span class="h5" style="font-size:15px;line-height:22px">'+esc(a.t)+'</span><button type="button" class="sh-btn sh-btn--ghost sh-btn--sm" data-a="att" data-v="'+i+'" style="align-self:flex-start;margin-left:-12px">Pak dit op met COAGPT '+ic('arrow',16)+'</button></div>';
+  });
+  h += '</section>';
+  h += '<section class="panel" aria-labelledby="h-lp"><div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2 class="overline" id="h-lp">Jouw leerpad</h2><span class="label-sm faded">'+doneN+' van '+n.length+' afgerond</span></div>';
+  h += '<div class="sh-progress"><div class="sh-progress__track"><div class="sh-progress__fill'+(pct===100?' sh-progress__fill--done':'')+'" style="width:'+pct+'%"></div></div><span class="sh-progress__pct">'+pct+'%</span></div>';
+  n.forEach(function(id){
+    var e = ELS[id], d = !!S.done[id];
+    h += '<button type="button" class="lp" data-a="el" data-v="'+id+'"'+(d?' disabled':'')+'><span style="width:32px;height:32px;border-radius:999px;flex:none;display:flex;align-items:center;justify-content:center;'+(d?'background:var(--sh-background-constructive);color:#fff':'background:var(--sh-background-primary-raised);color:var(--sh-foreground-primary-prominent)')+'">'+(d?ic('check',16,'stroke-width="3"'):ic('play',14))+'</span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><span class="h5" style="font-size:14px">'+e.title+'</span><span class="label-sm faded">'+(d?'Afgerond':e.mins+' min · '+(id==='basis'?'aanbevolen voor iedereen':'nodig voor een skill'))+'</span></span>'+(d?'':ic('chevRight',16,'style="color:var(--sh-foreground-neutral-faded)"'))+'</button>';
+  });
+  h += '</section></aside></div>';
+  return h;
+}
+
+function viewChat(){
+  var h = '<div class="chat"><div class="chat__scroll" id="scroll" aria-live="polite">';
+  S.msgs.forEach(function(m, idx){
+    if (m.kind==='user') h += '<div class="bubble-out">'+esc(m.text)+'</div>';
+    if (m.kind==='thinking') h += '<div class="msg-in"><span class="ai-avatar ai-avatar--thinking">'+ic('sparkle',16)+'</span><div class="msg-in__body">'+(m.tool?'<span class="tool">'+ic('loader',14,'class="spin" stroke-width="2.4"')+esc(m.tool.replace(/ (doorzocht|opgehaald|vergeleken)$/,''))+'…</span>':'')+'<span class="dots" aria-label="COAGPT denkt na"><i></i><i></i><i></i></span></div></div>';
+    if (m.kind==='agent') h += '<div class="msg-in"><span class="ai-avatar">'+ic('sparkle',16)+'</span><div class="msg-in__body">'+(m.tool?'<span class="tool">'+ic('check',14,'stroke-width="2.6" style="color:var(--sh-background-constructive)"')+esc(m.tool)+'</span>':'')+'<div class="bubble-in msg-text">'+rich(m.text)+'</div>'+(m.src?'<span class="cite">'+ic('doc',12)+rich(m.src)+'</span>':'')+'<div class="feedback"><button type="button" class="sh-icon-btn" aria-label="Goed antwoord">'+ic('up',18)+'</button><button type="button" class="sh-icon-btn" aria-label="Slecht antwoord">'+ic('down',18)+'</button><button type="button" class="sh-icon-btn" aria-label="Opmerking">'+ic('comment',18)+'</button><button type="button" class="sh-icon-btn" aria-label="Kopiëren">'+ic('copy',18)+'</button></div></div></div>';
+    if (m.kind==='gate'){
+      var e = ELS[m.need];
+      h += '<div class="msg-in"><span class="ai-avatar">'+ic('sparkle',16)+'</span><div class="msg-in__body"><div class="bubble-in msg-text">Dit doe ik graag voor je. Voor <strong>'+esc(m.skill)+'</strong> vraagt COA wel eerst een korte e-learning. Daarna staat deze skill direct voor je aan.</div>';
+      h += '<div class="sh-alert"><div class="sh-alert__head"><span style="color:var(--sh-foreground-attention);margin-top:2px">'+ic('book',22)+'</span><div style="display:flex;flex-direction:column;gap:4px;flex:1"><span class="label-sm" style="font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--sh-foreground-attention-prominent)">E-learning · '+e.mins+' minuten</span><span class="h5" style="font-size:17px;line-height:24px;color:var(--sh-foreground-attention-prominent)">'+e.title+'</span><span class="label" style="color:var(--sh-foreground-neutral-prominent)">'+e.desc+'</span></div></div>';
+      if (S.done[m.need]) h += '<span class="sh-chip sh-chip--constructive" style="align-self:flex-start">'+ic('check',12,'stroke-width="3"')+'Afgerond</span>';
+      else if (m.later) h += '<span class="label faded">Staat in je leerpad.</span>';
+      else h += '<div class="wrap"><button type="button" class="sh-btn sh-btn--primary" data-a="el" data-v="'+m.need+'">'+ic('play',14)+'Start nu</button><button type="button" class="sh-btn sh-btn--secondary" data-a="later" data-v="'+idx+'">Later, zet hem in mijn leerpad</button></div>';
+      h += '</div></div></div>';
+    }
+    if (m.kind==='tip'){
+      h += '<div class="msg-in"><span class="ai-avatar"></span><div class="msg-in__body"><div class="bubble-in msg-text">Doe ik. Omdat dit je eerste keer is, eerst twee dingen die je moet weten.</div>';
+      h += '<div class="insight" style="flex-direction:column;gap:12px"><span class="h5" style="font-family:var(--sh-font-body);font-weight:600;font-size:14px">Werken met COAGPT</span><div class="tip-li">'+ic('sparkle',18,'style="color:var(--sh-foreground-primary)"')+'<span class="label"><strong>Alles loopt via Sluis.</strong> Elk AI-verzoek van COAGPT, agents en apps gaat daar langs. Zo blijft het veilig en controleerbaar.</span></div><div class="tip-li">'+ic('doc',18,'style="color:var(--sh-foreground-primary)"')+'<span class="label"><strong>Controleer de bron.</strong> Bij elk antwoord zie je waar het vandaan komt. Jij beslist wat je ermee doet.</span></div>';
+      h += m.done ? '<span class="sh-chip sh-chip--constructive" style="align-self:flex-start">'+ic('check',12,'stroke-width="3"')+'Basis afgerond</span>' : '<div class="wrap" style="gap:8px"><button type="button" class="sh-btn sh-btn--primary sh-btn--sm" data-a="tipok">Begrepen, ga verder</button><button type="button" class="sh-btn sh-btn--secondary sh-btn--sm" data-a="tipmore">'+ic('play',12)+'Meer uitleg (5 min)</button></div>';
+      h += '</div></div></div>';
+    }
+    if (m.kind==='unlocked') h += '<div class="sh-alert sh-alert--ok">'+ic('check',18,'stroke-width="2.6"')+esc(m.text)+'</div>';
+  });
+  h += '</div><div class="chat__foot">'+composer(false)+'<p class="disclaimer">Alle AI-verzoeken lopen via Sluis. Controleer antwoorden altijd in de bron.</p></div></div>';
+  return h;
+}
+
+function viewDrawer(){
+  var e = ELS[S.el], n = e.slides.length, total = n+2, step = S.elStep;
+  var isSlide = step<n, isQuiz = step===n, isDone = step>n;
+  var pct = Math.round((Math.min(step, total-1))/(total-1)*100);
+  var right = isQuiz && S.answer===e.quiz.c, wrong = isQuiz && S.answer!=null && S.answer!==e.quiz.c;
+  var h = '<div class="scrim" data-a="scrim"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="el-title">';
+  h += '<div class="drawer__head"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="display:flex;flex-direction:column;gap:6px"><span class="label-sm" style="font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sh-foreground-attention-prominent)">E-learning · '+e.mins+' minuten</span><h2 class="h3" id="el-title" tabindex="-1">'+e.title+'</h2></div><button type="button" class="sh-icon-btn" data-a="el-close" aria-label="Sluiten">'+ic('x',20)+'</button></div>';
+  h += '<div class="sh-progress"><div class="sh-progress__track"><div class="sh-progress__fill'+(isDone?' sh-progress__fill--done':'')+'" style="width:'+pct+'%"></div></div><span class="sh-progress__pct">'+pct+'%</span></div></div>';
+  h += '<div class="drawer__body">';
+  if (isSlide){ var sl = e.slides[step]; h += '<div class="slide-hero"><span class="label-sm" style="font-weight:700;letter-spacing:.12em;color:#9fd3dc">DEEL '+(step+1)+' VAN '+n+'</span><span class="h2" style="color:#fff">'+sl.h+'</span></div><p style="margin:0;font-size:18px;line-height:30px;color:var(--sh-foreground-neutral-prominent)">'+sl.p+'</p>'; }
+  if (isQuiz){
+    h += '<span class="overline">Korte check</span><p class="h4" style="line-height:28px">'+e.quiz.q+'</p><div role="group" aria-label="Antwoorden" style="display:flex;flex-direction:column;gap:10px">';
+    e.quiz.o.forEach(function(o,i){ var cls = S.answer===i ? (i===e.quiz.c?' ok':' no') : ''; h += '<button type="button" class="quiz-opt'+cls+'" data-a="ans" data-v="'+i+'" aria-pressed="'+(S.answer===i)+'"><span class="l">'+'ABC'[i]+'</span>'+o+'</button>'; });
+    h += '</div>';
+    if (right) h += '<div class="sh-alert sh-alert--ok" role="status" style="font-weight:500">Klopt. '+e.quiz.why+'</div>';
+    if (wrong) h += '<div class="sh-alert" role="status" style="background:var(--sh-background-destructive-raised);color:var(--sh-foreground-destructive-prominent)">Nog niet helemaal. Kijk nog eens naar de vorige delen en probeer het opnieuw.</div>';
+  }
+  if (isDone){
+    h += '<div style="display:flex;flex-direction:column;gap:16px;padding-top:24px"><span style="width:64px;height:64px;border-radius:999px;background:var(--sh-background-constructive-raised);color:var(--sh-foreground-constructive-prominent);display:flex;align-items:center;justify-content:center">'+ic('check',32,'stroke-width="2.6"')+'</span><h3 class="h2">Afgerond. Goed gedaan, '+esc(nameOr())+'.</h3><p class="lead">'+(S.pending?esc(S.pending.t)+' staat nu voor je aan. Ik ga direct verder met je vraag.':'Deze e-learning staat als afgerond in je leerpad. De bijbehorende skills zijn nu ontgrendeld.')+'</p></div>';
+  }
+  h += '</div><div class="drawer__foot"><div>'+((isSlide||isQuiz)&&step>0?'<button type="button" class="sh-btn sh-btn--secondary" data-a="el-back">Vorige</button>':'')+'</div>';
+  if (isSlide) h += '<button type="button" class="sh-btn sh-btn--primary" data-a="el-next">Volgende</button>';
+  if (isQuiz) h += '<button type="button" class="sh-btn sh-btn--primary" data-a="el-next"'+(right?'':' disabled style="opacity:.45;cursor:not-allowed"')+'>Afronden</button>';
+  if (isDone) h += '<button type="button" class="sh-btn sh-btn--primary" data-a="el-finish">'+(S.pending?'Verder met '+esc(S.pending.t.toLowerCase()):'Terug naar mijn werkruimte')+'</button>';
+  h += '</div></aside></div>';
+  return h;
+}
+
+/* ---------- Render ---------- */
+function render(focusSel){
+  if (S.screen==='werkruimte' && !S.coachSeen && S.coach===0 && S.view==='vandaag') S.coach = 1;
+  app.innerHTML = S.screen==='intake' ? viewIntake() : viewWork();
+  var sc = document.getElementById('scroll'); if (sc) sc.lastElementChild && sc.lastElementChild.scrollIntoView({block:'end'});
+  var ich = document.getElementById('ichat'); if (ich) ich.scrollTop = ich.scrollHeight;
+  if (focusSel){ var f = document.querySelector(focusSel); if (f) f.focus({preventScroll:false}); }
+}
+
+/* ---------- Gedrag ---------- */
+function replyFor(sk){
+  var r = role(), apps = S.apps.length ? S.apps.join(' en ') : 'je apps';
+  if (sk && sk.reply) return sk.reply;
+  if (sk) return 'Ik pak "'+sk.t+'" voor je op. Ik gebruik daarvoor '+apps+' en wat ik weet van je werk als '+(r?r.title.toLowerCase():'medewerker')+'.\n\nHier is een eerste opzet: [eerste versie]\n\nBij elk punt staat de bron. Wil je dat ik ergens extra op let?';
+  return 'Helder. Ik neem je profiel mee: '+(r?r.title+' bij '+r.dept:'je functie')+', met '+apps+'.\n\nZal ik eerst een korte aanpak voorstellen, of wil je dat ik direct begin?';
+}
+function findSkill(t){ var r=role(); if (!r) return null; for (var i=0;i<r.skills.length;i++) if (r.skills[i].t===t) return r.skills[i]; return null; }
+function answer(sk){
+  var thinking = { kind:'thinking', tool: sk && sk.tool ? sk.tool : (S.apps.length?'Zoekt in '+S.apps[0]:'') };
+  S.msgs.push(thinking); S.busy = true; render();
+  setTimeout(function(){
+    var i = S.msgs.indexOf(thinking); if (i<0) return;
+    S.msgs.splice(i,1,{ kind:'agent', text:replyFor(sk), src: sk ? (sk.src||'') : '', tool: sk && sk.tool ? sk.tool : '' });
+    S.busy = false; render();
+  }, 1300);
+}
+function send(text, sk){
+  text = String(text||'').trim(); if (!text || S.busy) return;
+  sk = sk || findSkill(text);
+  S.ob.ask = true; S.msgs.push({ kind:'user', text:text }); S.draft = ''; S.view = 'gesprek'; S.doc = null; window.scrollTo(0,0);
+  if (sk && sk.need && !S.done[sk.need]){ S.msgs.push({ kind:'gate', need:sk.need, skill:sk.t }); S.pending = sk; render(); return; }
+  answer(sk);
+}
+var toastTimer=null;
+function toast(t){ S.toast=t; render(); clearTimeout(toastTimer); toastTimer=setTimeout(function(){ S.toast=''; var el=document.querySelector('.sh-toast'); if (el) el.remove(); }, 2600); }
+function finishEl(){
+  var id = S.el; S.done[id] = true; S.el = null; S.elStep = 0; S.answer = null;
+  if (S.pending){ var sk = S.pending; S.pending = null; S.view = 'gesprek'; S.msgs.push({ kind:'unlocked', text: ELS[id].title+' afgerond. '+sk.t+' staat nu voor je aan.' }); answer(sk); return; }
+  render();
+}
+
+var A = {
+  exp:function(v){ S.exp=v; advance(); },
+  role:function(v){ var r; ROLES.forEach(function(x){ if (x.id===v) r=x; }); S.role=v; S.apps=r.apps.slice(); S.topics=[]; S.goals=[]; advance(); },
+  topic:function(v){ toggle('topics',v); render(); },
+  app:function(v){ toggle('apps',v); render(); },
+  goal:function(v){ toggle('goals',v); render(); },
+  adv:function(){ advance(); },
+  edit:function(v){ clearInterval(timer); S.istep=+v; S.build=0; render(); },
+  firsttask:function(){ var a=role().attention[0], sk=firstSkill(); S.screen='werkruimte'; S.view='gesprek'; S.ob.ask=true; S.firstTask=sk; S.msgs=[{kind:'user',text:'Help me met: '+a.t},{kind:'tip'}]; render(); window.scrollTo(0,0); },
+  tour:function(){ S.screen='werkruimte'; S.view='vandaag'; S.coach=0; render('#coach-t'); window.scrollTo(0,0); },
+  tipok:function(){ S.done.basis=true; S.msgs.forEach(function(m){ if (m.kind==='tip') m.done=true; }); var sk=S.firstTask; S.firstTask=null; answer(sk); },
+  tipmore:function(){ S.msgs.forEach(function(m){ if (m.kind==='tip') m.done=true; }); S.pending=S.firstTask; S.firstTask=null; A.el('basis'); },
+  coachnext:function(){ S.coach++; if (S.coach>COACH.length){ S.coach=-1; S.coachSeen=true; } render('#coach-t'); },
+  coachskip:function(){ S.coach=-1; S.coachSeen=true; render(); },
+  'cl-ask':function(){ if (S.ob.ask) return; S.view='vandaag'; render('#prompt'); },
+  'cl-basis':function(){ if (S.done.basis) return; A.el('basis'); },
+  'cl-doc':function(){ if (!S.ob.doc) A.nav('documenten'); },
+  'cl-agent':function(){ if (!S.ob.agent) A.nav('agents'); },
+  'cl-app':function(){ if (!S.ob.app) A.nav('apps'); },
+  'cl-hide':function(){ S.ob.hidden=true; render(); },
+  openapp:function(v){ S.ob.app=true; toast(v+' opent zonder opnieuw in te loggen'); },
+  home:function(){ S.msgs=[]; S.pending=null; S.busy=false; S.view='vandaag'; render('#prompt'); },
+  nav:function(v){ S.view=v; S.q=''; S.doc=null; if (v==='gesprek' && !S.msgs.length) S.view='vandaag'; render(v==='kennis'||v==='skills'?'#filter':'#page-title'); window.scrollTo(0,0); },
+  tf:function(v){ S.taskFilter=v; render(); },
+  taskdone:function(v){ S.doneTasks[v]=true; toast('Taak afgerond'); },
+  ask:function(v){ if (v) send(v); },
+  oldchat:function(v){ var p=role().prompts[+v]; S.msgs=[{kind:'user',text:p},{kind:'agent',text:replyFor(null),src:''}]; S.view='gesprek'; render(); window.scrollTo(0,0); },
+  doc:function(v){ S.doc=+v; render('#doc-title'); },
+  docclose:function(){ S.doc=null; render(); },
+  docsum:function(){ var d=(DOCS[role().id]||[])[S.doc]; var name=d[0]; var sk={ t:'Document samenvatten', need:d[4]||null, src:'DOCK · '+name, tool:'Document in DOCK gelezen', reply:'Samenvatting van "'+name+'":\n\n• Doel: [doel]\n• Belangrijkste afspraken: [afspraken]\n• Termijnen: [termijnen]\n\nBij elk punt staat de pagina. Zal ik de afspraken als taken klaarzetten?' }; S.doc=null; S.ob.doc=true; send('Vat samen: '+name.replace(/\[|\]/g,''), sk); },
+  agent:function(v,el){ S.agents[v]=el.checked; if (el.checked) S.ob.agent=true; toast(v+(el.checked?' staat aan':' is gepauzeerd')); },
+  toast:function(v){ toast(v); },
+  req:function(v){ S.requested[v]=true; toast('Toegang tot '+v+' aangevraagd'); },
+  anyskill:function(v){ var x=allSkills()[+v]; send(x.k.t, x.k); },
+  tpl:function(v){ var t=TEMPLATES[+v]; send('Gebruik de template: '+t[0], { t:t[0], need:null, src:'Templates · '+t[0], tool:'', reply:'Ik heb de template "'+t[0]+'" voor je klaargezet. Een paar vragen om hem goed in te vullen:\n\n1. Voor wie is het bedoeld?\n2. Wat is de aanleiding?\n3. Is er een deadline?\n\nJe kunt ook een document uit DOCK toevoegen, dan haal ik de gegevens daaruit.' }); },
+  kb:function(v){ var k=KENNIS[+v]; send('Wat staat er in "'+k[0]+'"?', { t:k[0], need:null, src:'Kennis · '+k[0], tool:'Kennis doorzocht', reply:'In "'+k[0]+'" staat in het kort:\n\n• [kernpunt]\n• [kernpunt]\n• [kernpunt]\n\nWil je dat ik het toepas op jouw situatie?' }); },
+  more:function(){ S.showAll=!S.showAll; render(); },
+  profile:function(){ clearInterval(timer); S.screen='intake'; S.istep=2; S.build=0; render(); window.scrollTo(0,0); },
+  skill:function(v){ var k=role().skills[+v]; send(k.t,k); },
+  prompt:function(v){ send(role().prompts[+v]); },
+  att:function(v){ send('Help me met: '+role().attention[+v].t); },
+  send:function(){ var t=document.getElementById('prompt'); send(t?t.value:S.draft); },
+  el:function(v){ S.el=v; S.elStep=0; S.answer=null; render('#el-title'); },
+  'el-next':function(){ S.elStep++; S.answer = S.answer; render(); },
+  'el-back':function(){ S.elStep=Math.max(0,S.elStep-1); S.answer=null; render(); },
+  'el-close':function(){ S.el=null; S.elStep=0; S.answer=null; render(); },
+  'el-finish':finishEl,
+  ans:function(v){ S.answer=+v; render(); },
+  later:function(v){ var m=S.msgs[+v]; if (m) m.later=true; S.pending=null; S.msgs.push({ kind:'agent', text:'Prima. De e-learning staat in je leerpad. Zal ik intussen iets anders voor je doen?' }); render(); },
+  scrim:function(v,el,e){ if (e.target===el) A['el-close'](); },
+  reset:function(){ clearInterval(timer); S=fresh(); render('#naam'); window.scrollTo(0,0); },
+  skip:function(){ clearInterval(timer); S=fresh(); Object.assign(S,{ screen:'werkruimte', name:'Thijs', exp:'1 tot 5 jaar', role:'contract', apps:['DOCK','FIKS'], topics:['Contractverlengingen','Keuringen op locaties'], goals:['Minder zoeken in documenten','Geen keuring meer laten verlopen'], view:'vandaag', istep:5, build:4 }); render(); window.scrollTo(0,0); }
+};
+
+document.addEventListener('click', function(e){
+  var b = e.target.closest('[data-a]'); if (!b) return;
+  if (b.disabled) return;
+  var a = b.getAttribute('data-a');
+  if (a==='scrim'){ if (e.target===b) A['el-close'](); return; }
+  if (a==='docclose-scrim'){ if (e.target===b) A.docclose(); return; }
+  if (A[a]) A[a](b.getAttribute('data-v'), b, e);
+});
+document.addEventListener('submit', function(e){
+  if (e.target.getAttribute('data-form')==='name'){ e.preventDefault(); var v=(document.getElementById('naam').value||'').trim(); if (!v){ S.nameErr=true; render('#naam'); return; } S.name=v; S.nameErr=false; advance(); }
+});
+document.addEventListener('input', function(e){
+  var id = e.target.id;
+  if (id==='naam'){ S.name=e.target.value; if (S.nameErr && S.name.trim()){ S.nameErr=false; var dsc=document.getElementById('naam-desc'); if (dsc){ dsc.className='sh-desc'; dsc.textContent='Alleen je voornaam is genoeg.'; } } var p=document.getElementById('preview'); if (p) p.outerHTML = preview(); }
+  if (id==='note') S.note=e.target.value;
+  if (id==='prompt') S.draft=e.target.value;
+  if (id==='filter'){ S.q=e.target.value; var box=document.getElementById('results'); var q=S.q.toLowerCase(); if (box) box.innerHTML = e.target.getAttribute('data-filter')==='skills' ? skillResults(role(), allSkills(), q) : kennisResults(q); }
+});
+document.addEventListener('keydown', function(e){
+  if (e.target.id==='prompt' && e.key==='Enter' && !e.shiftKey){ e.preventDefault(); send(e.target.value); }
+  if (e.key==='Escape' && S.el){ A['el-close'](); return; }
+  if (e.key==='Escape' && S.doc!=null){ A.docclose(); return; }
+  if (e.key==='/' && S.screen==='werkruimte' && !/INPUT|TEXTAREA/.test(e.target.tagName)){ e.preventDefault(); A.nav('kennis'); }
+});
+
+render();
+</script>
+</body>
+</html>

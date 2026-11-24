@@ -1,0 +1,9 @@
+{
+  "name": "coagpt-prototype",
+  "private": true,
+  "type": "module",
+  "description": "Klikbaar prototype van COAGPT (intake, onboarding en werkruimte) op het Shelter design system, achter een inlog.",
+  "dependencies": {
+    "@vercel/functions": "^3.11.3"
+  }
+}

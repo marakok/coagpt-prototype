@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Inloggen · COAGPT prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Shelter v2.1.0 tokens (mxds.nl, light theme) */
+:root{
+  --sh-petrol-50:#e5ffff; --sh-petrol-250:#83def2; --sh-petrol-450:#2ea1b8; --sh-petrol-500:#0094ab;
+  --sh-petrol-550:#008197; --sh-petrol-600:#006f85; --sh-petrol-650:#005f74; --sh-petrol-700:#004e63;
+  --sh-petrol-800:#00384a; --sh-petrol-900:#002535;
+
+  --sh-background-neutral:#f7f8f8;
+  --sh-background-neutral-raised:#ffffff;
+  --sh-background-neutral-faded:#e9ebec;
+  --sh-background-neutral-muted:#dbe0e2;
+  --sh-background-neutral-inverted:#002535;
+  --sh-background-primary:#2ea1b8;
+  --sh-background-primary-faded:#006f85;
+  --sh-background-primary-raised:#e5ffff;
+  --sh-background-constructive:#41a960;
+  --sh-background-constructive-faded:#00772f;
+  --sh-background-constructive-raised:#e0ffe9;
+  --sh-background-attention:#be8c0b;
+  --sh-background-attention-raised:#fffcdb;
+  --sh-background-destructive:#f25342;
+  --sh-background-destructive-faded:#b80300;
+  --sh-background-destructive-raised:#ffeee5;
+  --sh-background-accent1-raised:#fff0ff;
+
+  --sh-foreground-neutral-prominent:#12171a;
+  --sh-foreground-neutral:#282f32;
+  --sh-foreground-neutral-faded:#4b5357;
+  --sh-foreground-neutral-muted:#6b7478;
+  --sh-foreground-neutral-inverted:#f7f8f8;
+  --sh-foreground-primary:#008197;
+  --sh-foreground-primary-prominent:#004e63;
+  --sh-foreground-constructive:#0d8940;
+  --sh-foreground-constructive-prominent:#005510;
+  --sh-foreground-attention:#986800;
+  --sh-foreground-attention-prominent:#623800;
+  --sh-foreground-destructive:#d32a1d;
+  --sh-foreground-destructive-prominent:#8e0000;
+  --sh-foreground-accent1:#8360a1;
+  --sh-foreground-accent1-prominent:#51316b;
+
+  --sh-border-neutral:#dbe0e2;
+  --sh-border-neutral-faded:#e9ebec;
+  --sh-border-neutral-prominent:#c8cfd2;
+  --sh-border-neutral-contrast:#12171a;
+  --sh-border-primary:#0094ab;
+  --sh-border-constructive:#24984d;
+  --sh-border-attention:#aa7a00;
+
+  --sh-action-hover-inverse:#00000008;
+  --sh-action-active-inverse:#0000001a;
+  --sh-opacity-dark-50:#00000080;
+
+  --sh-radius-xs:4px; --sh-radius-sm:6px; --sh-radius-md:8px; --sh-radius-lg:10px; --sh-radius-xl:12px; --sh-radius-full:9999px;
+  --sh-levitation-1:0 2px 3px 0 rgba(0,0,0,.1);
+  --sh-levitation-2:0 4px 16px 0 rgba(0,0,0,.03),0 4px 6px 0 rgba(0,0,0,.03);
+  --sh-levitation-3:0 4px 16px 0 rgba(0,0,0,.03),0 6px 8px 0 rgba(0,0,0,.03);
+  --sh-levitation-4:0 4px 16px 0 rgba(0,0,0,.03),0 10px 12px 0 rgba(0,0,0,.03);
+  --sh-levitation-5:0 4px 16px 0 rgba(0,0,0,.03),0 14px 16px 0 rgba(0,0,0,.1);
+  --sh-focus:#008197;
+
+  --sh-font-header:'Supreme','Noto Sans',system-ui,sans-serif;
+  --sh-font-body:'Noto Sans',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--sh-font-body);font-size:16px;line-height:24px;color:var(--sh-foreground-neutral);background:var(--sh-background-neutral);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--sh-focus);outline-offset:2px}
+.auth{display:flex;flex-wrap:wrap;min-height:100vh}
+.auth__form{flex:1 1 480px;display:flex;align-items:center;justify-content:center;padding:48px 24px;background:var(--sh-background-neutral-raised)}
+.auth__card{width:100%;max-width:400px;display:flex;flex-direction:column;gap:32px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--sh-foreground-neutral-prominent)}
+.brand__name{font-family:var(--sh-font-header);font-size:24px;line-height:28px;font-weight:800}
+.h1{margin:0;font-family:var(--sh-font-header);font-weight:500;font-size:32px;line-height:36px;color:var(--sh-foreground-neutral-prominent)}
+.lead{margin:8px 0 0;color:var(--sh-foreground-neutral-faded)}
+.sh-field{display:flex;flex-direction:column;gap:8px}
+.sh-field label{font-size:14px;line-height:20px;font-weight:600;color:var(--sh-foreground-neutral-prominent)}
+.sh-input-wrap{position:relative;display:flex}
+.sh-input{width:100%;min-height:48px;padding:4px 48px 4px 12px;border-radius:var(--sh-radius-xl);border:1px solid var(--sh-border-neutral-faded);background:var(--sh-background-neutral);font:inherit;font-size:16px;color:var(--sh-foreground-neutral-prominent)}
+.sh-input:hover{border-color:var(--sh-border-neutral-prominent)}
+.sh-input:focus{outline:none;border:2px solid var(--sh-focus);background:var(--sh-background-neutral-raised);padding:3px 47px 3px 11px}
+.sh-input[aria-invalid="true"]{border:2px solid var(--sh-background-destructive);padding:3px 47px 3px 11px}
+.reveal{position:absolute;right:4px;top:4px;width:40px;height:40px;border:0;border-radius:var(--sh-radius-md);background:transparent;color:var(--sh-foreground-neutral-faded);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.reveal:hover{background:var(--sh-action-hover-inverse);color:var(--sh-foreground-neutral-prominent)}
+.sh-desc{font-size:12px;line-height:16px;color:var(--sh-foreground-neutral-faded);padding-top:4px}
+.sh-desc--error{color:var(--sh-foreground-destructive)}
+.sh-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;padding:0 16px;border-radius:var(--sh-radius-xl);border:1px solid transparent;background:var(--sh-background-primary-faded);color:#fff;font:inherit;font-size:16px;font-weight:500;cursor:pointer}
+.sh-btn:hover{background:var(--sh-petrol-650)}
+.sh-alert{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-radius:var(--sh-radius-xl);font-size:14px;line-height:20px}
+.sh-alert--error{background:var(--sh-background-destructive-raised);color:var(--sh-foreground-destructive-prominent)}
+.sh-alert--ok{background:var(--sh-background-constructive-raised);color:var(--sh-foreground-constructive-prominent)}
+.sh-alert[hidden]{display:none}
+.note{font-size:14px;line-height:20px;color:var(--sh-foreground-neutral-faded)}
+.auth__aside{flex:1 1 420px;background:var(--sh-background-neutral-inverted);color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
+.overline{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sh-petrol-250)}
+.aside__title{margin:12px 0 0;font-family:var(--sh-font-header);font-weight:500;font-size:40px;line-height:44px;max-width:480px}
+.aside__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;max-width:440px}
+.aside__list li{display:flex;gap:12px;align-items:flex-start;color:rgba(255,255,255,.85)}
+.aside__list .n{width:28px;height:28px;flex:none;border-radius:9999px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff}
+.orb{width:56px;height:56px;border-radius:9999px;background:radial-gradient(140% 120% at 40% 0,#fff 0,#f2f9fa 30%,#c8e5eb 58%,#95ceda 82%,#61b8c9 100%);box-shadow:0 0 0 1px rgba(46,161,184,.18);animation:orb 2.4s ease-in-out infinite}
+@keyframes orb{50%{box-shadow:0 0 0 10px rgba(46,161,184,.18)}}
+@media (max-width:900px){.auth__aside{display:none}}
+</style>
+</head>
+<body>
+<div class="auth">
+  <main class="auth__form">
+    <div class="auth__card">
+      <div class="brand"><svg width="35" height="25" viewBox="0 0 25 18" aria-hidden="true"><path fill="currentColor" d="M12.5771 0.03125C15.5686 0.03125 17.994 2.45585 17.9941 5.44727V11.9287C17.9941 14.9203 15.5687 17.3457 12.5771 17.3457C9.58561 17.3457 7.16016 14.9203 7.16016 11.9287V5.44727C7.1603 2.45585 9.5857 0.0312517 12.5771 0.03125ZM2.68555 0.03125C4.16829 0.0314455 5.36999 1.23306 5.37012 2.71582C5.37012 4.19869 4.16837 5.40117 2.68555 5.40137C1.20256 5.40137 0 4.19881 0 2.71582C0.000124703 1.23294 1.20264 0.03125 2.68555 0.03125ZM22.3145 0C23.7974 0 25 1.20256 25 2.68555C24.9998 4.16837 23.7973 5.37012 22.3145 5.37012C20.8317 5.36995 19.6301 4.16827 19.6299 2.68555C19.6299 1.20266 20.8316 0.000163241 22.3145 0Z"/></svg><span class="brand__name">COAGPT</span></div>
+      <div>
+        <h1 class="h1">Inloggen</h1>
+        <p class="lead">Dit prototype is alleen voor genodigden. Vul de toegangscode in die je hebt gekregen.</p>
+      </div>
+      <div class="sh-alert sh-alert--error" id="err" role="alert" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>
+        <span id="err-text">De toegangscode klopt niet. Probeer het opnieuw.</span>
+      </div>
+      <div class="sh-alert sh-alert--ok" id="out" role="status" hidden>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
+        <span>Je bent uitgelogd.</span>
+      </div>
+      <form method="post" action="/api/login" style="display:flex;flex-direction:column;gap:24px">
+        <input type="hidden" name="next" id="next" value="/">
+        <div class="sh-field">
+          <label for="password">Toegangscode</label>
+          <div class="sh-input-wrap">
+            <input class="sh-input" id="password" name="password" type="password" autocomplete="current-password" required aria-describedby="pw-desc">
+            <button type="button" class="reveal" id="reveal" aria-label="Toon toegangscode" aria-pressed="false">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <span class="sh-desc" id="pw-desc">Je blijft zeven dagen ingelogd op dit apparaat.</span>
+        </div>
+        <button type="submit" class="sh-btn">Inloggen</button>
+      </form>
+      <p class="note">Geen toegangscode? Vraag hem aan bij het designteam van MXVF.</p>
+    </div>
+  </main>
+  <aside class="auth__aside" aria-label="Over dit prototype">
+    <div>
+      <span class="orb" aria-hidden="true" style="display:block;margin-bottom:32px"></span>
+      <span class="overline">Prototype · Shelter design system</span>
+      <p class="aside__title">Jouw eigen AI-werkplek bij COA</p>
+    </div>
+    <ol class="aside__list">
+      <li><span class="n">1</span><span>Een kort gesprek over wie je bent en waar je aan werkt.</span></li>
+      <li><span class="n">2</span><span>Je eerste taak meteen samen met COAGPT.</span></li>
+      <li><span class="n">3</span><span>Een werkruimte die past bij jouw functie.</span></li>
+    </ol>
+  </aside>
+</div>
+<script>
+(function(){
+  var q = new URLSearchParams(location.search);
+  var n = q.get('next'); if (n && n.charAt(0)==='/' && n.charAt(1)!=='/') document.getElementById('next').value = n;
+  var pw = document.getElementById('password');
+  if (q.get('error')){
+    document.getElementById('err').hidden = false;
+    if (q.get('error')==='config') document.getElementById('err-text').textContent = 'De inlog is nog niet ingesteld. Zet PROTOTYPE_PASSWORD en AUTH_SECRET in Vercel.';
+    pw.setAttribute('aria-invalid','true');
+  }
+  if (q.get('uitgelogd')) document.getElementById('out').hidden = false;
+  pw.focus();
+  var r = document.getElementById('reveal');
+  r.addEventListener('click', function(){ var show = pw.type==='password'; pw.type = show ? 'text' : 'password'; r.setAttribute('aria-pressed', String(show)); r.setAttribute('aria-label', show ? 'Verberg toegangscode' : 'Toon toegangscode'); });
+})();
+</script>
+</body>
+</html>
