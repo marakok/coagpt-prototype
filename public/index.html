@@ -140,7 +140,7 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 /* Progress */
 .sh-progress{display:flex;align-items:center;gap:12px}
 .sh-progress__track{flex:1;height:8px;border-radius:var(--sh-radius-full);background:var(--sh-background-neutral-muted);overflow:hidden}
-.sh-progress__fill{height:100%;border-radius:var(--sh-radius-full);background:var(--sh-background-primary);transition:width .3s}
+.sh-progress__fill{height:100%;border-radius:var(--sh-radius-full);background:var(--sh-background-primary);transition:width var(--sh-motion-slower) var(--sh-ease-emphasized),background-color var(--sh-motion-base)}
 .sh-progress__fill--done{background:var(--sh-background-constructive)}
 .sh-progress__pct{width:36px;text-align:right;font-size:12px;font-weight:600;color:var(--sh-foreground-neutral-faded)}
 
@@ -181,7 +181,6 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 .pv__ghost{height:40px;border-radius:var(--sh-radius-lg);border:1px dashed rgba(255,255,255,.22)}
 .pv__app{display:inline-flex;align-items:center;height:28px;padding:0 12px;border-radius:var(--sh-radius-full);background:#fff;color:var(--sh-petrol-900);font-size:13px;font-weight:700;letter-spacing:.03em}
 .avatar{width:48px;height:48px;border-radius:var(--sh-radius-full);display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
-.pop{animation:pop .35s ease}
 @keyframes pop{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
 .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -275,7 +274,7 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 .dots{display:inline-flex;gap:4px;align-self:flex-start;padding:12px 16px;border-radius:0 var(--sh-radius-xl) var(--sh-radius-xl) var(--sh-radius-xl);background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral);box-shadow:var(--sh-levitation-1)}
 .dots i{width:6px;height:6px;border-radius:50%;background:var(--sh-foreground-neutral-muted);animation:dot 1.2s infinite}
 .dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
-@keyframes dot{0%,60%,100%{opacity:.3}30%{opacity:1}}
+@keyframes dot{0%,60%,100%{opacity:.35;transform:none}30%{opacity:1;transform:translateY(-3px)}}
 
 .sh-alert{border-radius:var(--sh-radius-xl);background:var(--sh-background-attention-raised);padding:16px;display:flex;flex-direction:column;gap:14px}
 .sh-alert__head{display:flex;gap:12px;align-items:flex-start}
@@ -287,9 +286,9 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 .disclaimer{margin:10px 0 0;text-align:center;font-size:12px;line-height:16px;color:var(--sh-foreground-neutral-faded)}
 
 /* Drawer (e-learning) */
-.scrim{position:fixed;inset:0;background:var(--sh-opacity-dark-50);display:flex;justify-content:flex-end;z-index:20;animation:fade .2s}
+.scrim{position:fixed;inset:0;background:var(--sh-opacity-dark-50);display:flex;justify-content:flex-end;z-index:20}
 @keyframes fade{from{opacity:0}}
-.drawer{width:100%;max-width:552px;height:100%;background:var(--sh-background-neutral-raised);border-radius:var(--sh-radius-xl) 0 0 var(--sh-radius-xl);box-shadow:var(--sh-levitation-5);display:flex;flex-direction:column;animation:slide .28s cubic-bezier(.2,.8,.2,1)}
+.drawer{width:100%;max-width:552px;height:100%;background:var(--sh-background-neutral-raised);border-radius:var(--sh-radius-xl) 0 0 var(--sh-radius-xl);box-shadow:var(--sh-levitation-5);display:flex;flex-direction:column}
 @keyframes slide{from{transform:translateX(40px);opacity:.4}}
 .drawer__head{padding:24px;border-bottom:1px solid var(--sh-border-neutral-faded);display:flex;flex-direction:column;gap:16px}
 .drawer__body{flex:1;overflow:auto;padding:24px;display:flex;flex-direction:column;gap:20px}
@@ -346,14 +345,14 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 .sh-switch input:focus-visible + .sh-switch__track{outline:2px solid var(--sh-focus);outline-offset:2px}
 
 /* Toast */
-.sh-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--sh-radius-xl);background:var(--sh-background-neutral-inverted);color:#fff;font-size:15px;box-shadow:var(--sh-levitation-5);animation:pop .25s ease}
+.sh-toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:var(--sh-radius-xl);background:var(--sh-background-neutral-inverted);color:#fff;font-size:15px;box-shadow:var(--sh-levitation-5)}
 
 
 /* ===== Intake als gesprek ===== */
 .intake__main{padding:0 !important;gap:0 !important;height:100vh;min-height:640px;position:sticky;top:0}
 @media (max-width:980px){.intake__main{height:auto;position:static}}
 .intake__top{padding:20px 40px;border-bottom:1px solid var(--sh-border-neutral-faded);background:var(--sh-background-neutral-raised)}
-.ichat{flex:1;overflow:auto;padding:32px 40px;display:flex;flex-direction:column;gap:20px;background:var(--sh-background-neutral);scroll-behavior:smooth}
+.ichat{flex:1;overflow:auto;padding:32px 40px;display:flex;flex-direction:column;gap:20px;background:var(--sh-background-neutral)}
 .ichat > *{max-width:760px;width:100%}
 .intake__foot{padding:16px 40px 24px;background:var(--sh-background-neutral);border-top:1px solid var(--sh-border-neutral-faded)}
 .intake__foot > *{max-width:760px}
@@ -396,7 +395,7 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 .mini-task{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:12px 16px;border-radius:var(--sh-radius-xl);background:var(--sh-background-neutral-raised);border:1px solid var(--sh-border-neutral)}
 
 /* Coach mark (Shelter tooltip, inverted) */
-.sh-coach{position:absolute;z-index:26;width:280px;padding:16px;border-radius:var(--sh-radius-md);background:var(--sh-background-neutral-inverted);color:#fff;box-shadow:var(--sh-levitation-5);display:flex;flex-direction:column;gap:6px;animation:pop .25s ease}
+.sh-coach{position:absolute;z-index:26;width:280px;padding:16px;border-radius:var(--sh-radius-md);background:var(--sh-background-neutral-inverted);color:#fff;box-shadow:var(--sh-levitation-5);display:flex;flex-direction:column;gap:6px}
 .sh-coach strong{font-family:var(--sh-font-header);font-weight:500;font-size:18px;line-height:24px;outline:none}
 .sh-coach__arrow{position:absolute;width:12px;height:12px;background:var(--sh-background-neutral-inverted);transform:rotate(45deg)}
 .sh-coach--right{left:calc(100% + 18px);top:0}
@@ -427,6 +426,116 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 .proto span{padding:0 8px 0 10px;font-size:12px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.7)}
 .proto button{min-height:32px;padding:0 12px;border:0;border-radius:var(--sh-radius-full);background:rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600}
 .proto button:hover{background:rgba(255,255,255,.22)}
+
+/* =========================================================
+   Motion. De motion-documentatie van Shelter op mxds.nl zit
+   achter een inlog; dit zijn prototype-tokens in dezelfde
+   naamgeving. Vervang ze zodra de officiële waarden bekend zijn.
+   ========================================================= */
+:root{
+  --sh-motion-fast:120ms; --sh-motion-base:200ms; --sh-motion-slow:320ms; --sh-motion-slower:520ms;
+  --sh-ease-standard:cubic-bezier(.2,0,0,1);
+  --sh-ease-emphasized:cubic-bezier(.2,.8,.2,1);
+  --sh-ease-exit:cubic-bezier(.4,0,1,1);
+  --sh-ease-spring:cubic-bezier(.34,1.45,.64,1);
+}
+
+/* Interactie: elke klikbare laag reageert vloeiend */
+.sh-btn,.sh-icon-btn,.sh-navitem,.sidenav__new,.sh-suggest,.sh-prompt,.sh-tab,.lp,.row--btn,.quiz-opt,.cl-item,.link-btn,.send,.topnav__search,.proto button,.proto a,.opt,.action-card,.sh-chip,.mini-avatar,.sh-input,.ai-input,.insight{
+  transition:background-color var(--sh-motion-fast) var(--sh-ease-standard),border-color var(--sh-motion-fast) var(--sh-ease-standard),color var(--sh-motion-fast) var(--sh-ease-standard),box-shadow var(--sh-motion-base) var(--sh-ease-standard),transform var(--sh-motion-base) var(--sh-ease-emphasized),opacity var(--sh-motion-base) var(--sh-ease-standard)}
+.sh-btn:active:not(:disabled),.send:active,.sh-icon-btn:active,.sh-prompt:active,.sh-suggest:active,.sh-tab:active,.proto button:active,.sidenav__new:active,.sh-navitem:active,.cl-item:active:not(.is-done),.quiz-opt:active,.lp:active:not([disabled]){transform:scale(.97);transition-duration:60ms}
+button.action-card:hover,.opt:hover{transform:translateY(-2px);box-shadow:var(--sh-levitation-3);border-color:var(--sh-border-neutral-prominent)}
+article.action-card:hover{box-shadow:var(--sh-levitation-2)}
+button.action-card:active,.opt:active{transform:translateY(0) scale(.985);box-shadow:var(--sh-levitation-1)}
+.action-card .icon-container,.opt__icon,.doc-ic,.chat-ic{transition:transform var(--sh-motion-slow) var(--sh-ease-spring),background-color var(--sh-motion-base)}
+button.action-card:hover .icon-container,.opt:hover .opt__icon,.row--btn:hover .doc-ic,.row--btn:hover .chat-ic{transform:scale(1.08) rotate(-4deg)}
+.row--btn > svg:last-child,.lp > svg:last-child,.cl-item > svg:last-child,.sh-btn svg,.send svg,.action-card__top > svg{transition:transform var(--sh-motion-base) var(--sh-ease-emphasized)}
+.row--btn:hover > svg:last-child,.lp:hover:not([disabled]) > svg:last-child,.cl-item:hover > svg:last-child,button.action-card:hover .action-card__top > svg{transform:translateX(3px)}
+.sh-btn:hover svg:last-child:not(:first-child){transform:translateX(2px)}
+.send:hover svg{transform:translate(2px,-2px)}
+.sidenav__new:hover svg{transform:rotate(90deg)}
+.sidenav__new svg{transition:transform var(--sh-motion-slow) var(--sh-ease-emphasized)}
+.ai-input:focus-within{box-shadow:var(--sh-levitation-4)}
+.mini-avatar[data-a]:hover,button.mini-avatar:hover{transform:scale(1.06)}
+.row--btn:hover{background:var(--sh-background-neutral)}
+.lp:hover:not([disabled]){border-color:var(--sh-border-neutral-prominent)}
+
+/* Actieve pill in navigatie en tabs: glijdt naar de nieuwe keuze */
+.sh-navitem,.sh-tab{position:relative;isolation:isolate}
+.sh-navitem[aria-current="page"],.sh-tab[aria-selected="true"]{background:transparent}
+.sh-navitem[aria-current="page"]::before,.sh-tab[aria-selected="true"]::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:var(--sh-background-primary-faded);transform-origin:0 0}
+.sh-navitem[aria-current="page"]:hover::before,.sh-tab[aria-selected="true"]:hover::before{background:var(--sh-petrol-650)}
+
+/* Binnenkomen: alleen wat nieuw is in beeld komt in beweging */
+.m-in{animation:m-rise var(--sh-motion-slow) var(--sh-ease-emphasized) both;animation-delay:var(--md,0ms)}
+@keyframes m-rise{from{opacity:0;transform:translateY(10px)}}
+@keyframes m-left{from{opacity:0;transform:translate(-10px,6px)}}
+@keyframes m-right{from{opacity:0;transform:translateY(8px) scale(.96)}}
+@keyframes m-pop{from{opacity:0;transform:scale(.86)}}
+@keyframes m-pop-sm{from{opacity:0;transform:translateY(6px) scale(.95)}}
+@keyframes m-fade{from{opacity:0}}
+@keyframes m-fwd{from{opacity:0;transform:translateX(24px)}}
+@keyframes m-back{from{opacity:0;transform:translateX(-24px)}}
+@keyframes m-grow{from{transform:scaleX(0)}}
+@keyframes m-shake{0%,100%{transform:none}20%{transform:translateX(-6px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(2px)}}
+@keyframes m-tap{0%{transform:scale(.94)}60%{transform:scale(1.03)}100%{transform:none}}
+@keyframes m-word{from{opacity:0;filter:blur(3px)}}
+@keyframes m-drawer{from{transform:translateX(56px);opacity:0}}
+@keyframes m-coach{from{opacity:0;transform:translateY(-4px) scale(.94)}}
+@keyframes m-toast-in{from{opacity:0;transform:translate(-50%,16px) scale(.96)}}
+@keyframes m-toast-out{to{opacity:0;transform:translate(-50%,8px) scale(.98)}}
+@keyframes m-fade-out{to{opacity:0}}
+@keyframes m-drawer-out{to{transform:translateX(56px);opacity:0}}
+@keyframes m-ring{0%{box-shadow:0 0 0 0 rgba(65,169,96,.45)}100%{box-shadow:0 0 0 22px rgba(65,169,96,0)}}
+@keyframes m-sheen{from{background-position:150% 0}to{background-position:-50% 0}}
+
+.ichat > .msg-in.m-in,.chat__scroll > .msg-in.m-in{animation-name:m-left}
+.out-wrap.m-in,.chat__scroll > .bubble-out.m-in{animation-name:m-right;transform-origin:100% 100%}
+.sidenav > .m-in{animation-name:m-left}
+.pop.m-in,.cl-dot.m-in,.sh-alert--ok.m-in,.avatar.m-in,.sh-chip.m-in{animation-name:m-pop;animation-timing-function:var(--sh-ease-spring)}
+.sh-prompt.m-in,.opt.m-in,.mini-task.m-in,.sh-btn.m-in{animation-name:m-pop-sm}
+.sh-tool--done.m-in{animation-name:m-fade}
+.sh-tool--done.m-in svg{animation:m-pop var(--sh-motion-slow) var(--sh-ease-spring) both;animation-delay:var(--md,0ms)}
+.sh-step.m-in{animation:none}
+.sh-step.m-in .sh-step__dot{animation:m-pop var(--sh-motion-slow) var(--sh-ease-spring) both;animation-delay:var(--md,0ms)}
+.sh-step__line{position:relative;overflow:hidden}
+.sh-step__line::after{content:"";position:absolute;inset:0;background:var(--sh-background-constructive);transform:scaleX(0);transform-origin:0 50%}
+.sh-step--done .sh-step__line{background:var(--sh-border-neutral-faded)}
+.sh-step--done .sh-step__line::after{transform:none}
+.sh-step--done.m-in .sh-step__line::after{animation:m-grow var(--sh-motion-slower) var(--sh-ease-emphasized) both;animation-delay:calc(var(--md,0ms) + 120ms)}
+.scrim.m-in{animation:m-fade var(--sh-motion-base) var(--sh-ease-standard) both}
+.scrim.m-in > .drawer{animation:m-drawer var(--sh-motion-slow) var(--sh-ease-emphasized) both}
+.scrim.m-out{animation:m-fade-out var(--sh-motion-base) var(--sh-ease-exit) both;pointer-events:none}
+.scrim.m-out > .drawer{animation:m-drawer-out var(--sh-motion-base) var(--sh-ease-exit) both}
+.sh-coach.m-in{animation-name:m-coach;transform-origin:0 24px}
+.sh-coach--left.m-in{transform-origin:100% 24px}
+.quiz-opt.no.m-in{animation:m-shake 380ms var(--sh-ease-standard) both}
+.quiz-opt.ok.m-in{animation:m-tap var(--sh-motion-slow) var(--sh-ease-spring) both}
+.drawer__body.m-fwd > .m-in{animation-name:m-fwd}
+.drawer__body.m-back > .m-in{animation-name:m-back}
+.m-tap{animation:m-tap var(--sh-motion-slow) var(--sh-ease-spring)}
+.m-w{animation:m-word 360ms var(--sh-ease-standard) both}
+.m-success{animation:m-pop 480ms var(--sh-ease-spring) both,m-ring 900ms var(--sh-ease-standard) 300ms 2}
+
+/* Toast */
+.sh-toast[hidden]{display:none}
+.sh-toast.is-on{animation:m-toast-in var(--sh-motion-slow) var(--sh-ease-emphasized) both}
+.sh-toast.m-out{animation:m-toast-out var(--sh-motion-base) var(--sh-ease-exit) both}
+
+/* Laden: skeletons met een rustige glans */
+.pv__ghost{background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.08) 50%,transparent 70%) 0 0/200% 100%;animation:m-sheen 1.8s linear infinite}
+.pv__ghost:nth-child(2){animation-delay:.15s}.pv__ghost:nth-child(3){animation-delay:.3s}
+.sk{background:linear-gradient(100deg,var(--sh-background-neutral-faded) 30%,var(--sh-background-neutral) 50%,var(--sh-background-neutral-faded) 70%) 0 0/200% 100%;animation:m-sheen 2s linear infinite}
+
+/* AI-orb: ademt rustig, versnelt als hij denkt */
+.ai-avatar{background-size:140% 140%;background-position:50% 0;transition:box-shadow var(--sh-motion-base)}
+.ai-avatar--thinking{animation:orb 1.6s ease-in-out infinite,m-orb-shift 2.4s ease-in-out infinite}
+@keyframes m-orb-shift{50%{background-position:30% 40%}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:1ms !important;animation-delay:0ms !important;animation-iteration-count:1 !important;transition-duration:1ms !important;scroll-behavior:auto !important}
+  .spin{animation:spin 1s linear infinite !important}
+}
 </style>
 </head>
 <body>
@@ -620,9 +729,9 @@ function brand(light){
 function preview(){
   var r = role(), h = '';
   h += '<div class="pv" id="preview" aria-live="polite">';
-  h += '<div style="display:flex;align-items:center;gap:14px"><span class="avatar" style="background:#9fd3dc;color:var(--sh-petrol-900)">'+esc(initial())+'</span>';
+  h += '<div style="display:flex;align-items:center;gap:14px"><span class="avatar" data-m="av'+esc(initial())+'" style="background:#9fd3dc;color:var(--sh-petrol-900)">'+esc(initial())+'</span>';
   h += '<span style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font-size:17px;font-weight:600">'+esc(S.name.trim()||'Jouw naam')+'</span>';
-  h += r ? '<span class="sh-chip sh-chip--constructive" style="align-self:flex-start">'+esc(r.title)+' · '+esc(r.dept)+'</span>' : '<span style="font-size:14px;color:rgba(255,255,255,.72)">Kies je functie</span>';
+  h += r ? '<span class="sh-chip sh-chip--constructive" data-m="pvrole'+r.id+'" style="align-self:flex-start">'+esc(r.title)+' · '+esc(r.dept)+'</span>' : '<span style="font-size:14px;color:rgba(255,255,255,.72)">Kies je functie</span>';
   h += '</span></div>';
   h += '<div style="display:flex;flex-direction:column;gap:8px"><span class="pv__label">Klaargezet voor jou</span>';
   if (r) r.skills.forEach(function(k){ h += '<div class="pv__row pop">'+ic('sparkle',16,'style="color:#9fd3dc"')+'<span style="flex:1">'+esc(k.t)+'</span>'+(k.need?'<span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#f5d38a">'+ic('lock',12)+'e-learning</span>':'')+'</div>'; });
@@ -643,7 +752,7 @@ function promptChips(items, action, multi, selected){
 }
 function toolRow(t, state){
   var icn = state==='done' ? ic('check',14,'stroke-width="2.6"') : (state==='running' ? ic('loader',14,'class="spin" stroke-width="2.4"') : ic('clock',14));
-  return '<div class="sh-tool sh-tool--'+state+'">'+icn+'<span>'+esc(t)+'</span></div>';
+  return '<div class="sh-tool sh-tool--'+state+'" data-m="tool:'+esc(t)+':'+state+'">'+icn+'<span>'+esc(t)+'</span></div>';
 }
 function viewIntake(){
   var r = role(), st = S.istep, B = [], nm = S.name.trim();
@@ -692,7 +801,7 @@ function viewIntake(){
     var cur = st<5 ? Math.max(0, Math.min(3, st-1)) : 4;
     var s2 = i<cur||st>=5 ? 'done' : (i===cur ? 'current' : 'next');
     if (st===0) s2 = i===0 ? 'current' : 'next';
-    h += '<li class="sh-step sh-step--'+s2+'"'+(s2==='current'?' aria-current="step"':'')+'><span class="sh-step__dot">'+(s2==='done'?ic('check',16,'stroke-width="3"'):(i+1))+'</span><span class="sh-step__label">'+t+'</span>'+(i<3?'<span class="sh-step__line"></span>':'')+'</li>';
+    h += '<li class="sh-step sh-step--'+s2+'" data-m="st'+i+s2+'"'+(s2==='current'?' aria-current="step"':'')+'><span class="sh-step__dot">'+(s2==='done'?ic('check',16,'stroke-width="3"'):(i+1))+'</span><span class="sh-step__label">'+t+'</span>'+(i<3?'<span class="sh-step__line"></span>':'')+'</li>';
   });
   h += '</ol></div><div class="ichat" id="ichat" aria-live="polite">'+B.map(function(b){ return b.html; }).join('')+'</div>';
   h += '<div class="intake__foot">';
@@ -723,7 +832,7 @@ var COACH = [
 function coachHtml(i, place){
   if (S.coach!==i+1 || S.view!=='vandaag' || S.el || S.doc!=null) return '';
   var c = COACH[i];
-  return '<div class="sh-coach sh-coach--'+place+'" role="dialog" aria-labelledby="coach-t"><span class="sh-coach__arrow" aria-hidden="true"></span><span class="label-sm" style="color:var(--sh-petrol-250)">'+(i+1)+' van '+COACH.length+'</span><strong id="coach-t" tabindex="-1">'+c[0]+'</strong><span class="label" style="color:rgba(255,255,255,.85)">'+c[1]+'</span><div class="sh-coach__foot"><button type="button" class="link-btn link-btn--inv" data-a="coachskip">Overslaan</button><button type="button" class="sh-btn sh-btn--sm sh-btn--inv" data-a="coachnext">'+(i===COACH.length-1?'Klaar':'Volgende')+'</button></div></div>';
+  return '<div class="sh-coach sh-coach--'+place+'" data-m="coach'+i+'" role="dialog" aria-labelledby="coach-t"><span class="sh-coach__arrow" aria-hidden="true"></span><span class="label-sm" style="color:var(--sh-petrol-250)">'+(i+1)+' van '+COACH.length+'</span><strong id="coach-t" tabindex="-1">'+c[0]+'</strong><span class="label" style="color:rgba(255,255,255,.85)">'+c[1]+'</span><div class="sh-coach__foot"><button type="button" class="link-btn link-btn--inv" data-a="coachskip">Overslaan</button><button type="button" class="sh-btn sh-btn--sm sh-btn--inv" data-a="coachnext">'+(i===COACH.length-1?'Klaar':'Volgende')+'</button></div></div>';
 }
 function checklist(){
   if (S.ob.hidden) return '';
@@ -738,10 +847,10 @@ function checklist(){
   var h = '<section class="panel" aria-labelledby="h-cl" style="position:relative">'+coachHtml(0,'left');
   h += '<div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px"><h2 class="overline" id="h-cl">Aan de slag</h2><span class="label-sm faded">'+d+' van '+items.length+'</span></div>';
   h += '<div class="sh-progress"><div class="sh-progress__track"><div class="sh-progress__fill'+(pct===100?' sh-progress__fill--done':'')+'" style="width:'+pct+'%"></div></div><span class="sh-progress__pct">'+pct+'%</span></div>';
-  if (d===items.length) h += '<div class="sh-alert sh-alert--ok" style="font-weight:500">'+ic('check',18,'stroke-width="2.6"')+'Je kent COAGPT nu. Goed gedaan!</div>';
+  if (d===items.length) h += '<div class="sh-alert sh-alert--ok" data-m="cl-done" style="font-weight:500">'+ic('check',18,'stroke-width="2.6"')+'Je kent COAGPT nu. Goed gedaan!</div>';
   h += '<div class="cl">';
   items.forEach(function(x,i){
-    h += '<button type="button" class="cl-item'+(x[3]?' is-done':'')+'" data-a="'+x[4]+'"'+(x[3]?' aria-disabled="true"':'')+'><span class="cl-dot">'+(x[3]?ic('check',14,'stroke-width="3"'):(i+1))+'</span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><span class="cl-t">'+x[1]+'</span>'+(x[3]?'':'<span class="label-sm faded">'+x[2]+'</span>')+'</span>'+(x[3]?'':ic('chevRight',16,'style="color:var(--sh-foreground-neutral-faded)"'))+'</button>';
+    h += '<button type="button" class="cl-item'+(x[3]?' is-done':'')+'" data-a="'+x[4]+'"'+(x[3]?' aria-disabled="true"':'')+'><span class="cl-dot" data-m="cl'+x[0]+x[3]+'">'+(x[3]?ic('check',14,'stroke-width="3"'):(i+1))+'</span><span style="flex:1;min-width:0;display:flex;flex-direction:column"><span class="cl-t">'+x[1]+'</span>'+(x[3]?'':'<span class="label-sm faded">'+x[2]+'</span>')+'</span>'+(x[3]?'':ic('chevRight',16,'style="color:var(--sh-foreground-neutral-faded)"'))+'</button>';
   });
   h += '</div><button type="button" class="sh-btn sh-btn--ghost sh-btn--sm" data-a="cl-hide" style="align-self:flex-start;margin-left:-12px">Verbergen</button></section>';
   return h;
@@ -804,7 +913,7 @@ function viewWork(){
     h += '</div>';
   }
   h += '<div class="sidenav__group" style="position:relative">'+coachHtml(2,'right')+'<button type="button" class="sh-navitem" data-a="more" aria-expanded="'+moreOpen+'">'+ic('grid',18)+'<span class="grow">Alles in COAGPT</span>'+ic('chevDown',16,'style="transform:'+(moreOpen?'rotate(180deg)':'none')+';transition:transform .2s"')+'</button>';
-  if (moreOpen){ NAV_MORE.forEach(function(x){ h += '<button type="button" class="sh-navitem sh-navitem--sub" data-a="nav" data-v="'+x[0]+'"'+(S.view===x[0]?' aria-current="page"':'')+'>'+x[2]+'</button>'; }); }
+  if (moreOpen){ NAV_MORE.forEach(function(x){ h += '<button type="button" class="sh-navitem sh-navitem--sub" data-m="more'+x[0]+'" data-a="nav" data-v="'+x[0]+'"'+(S.view===x[0]?' aria-current="page"':'')+'>'+x[2]+'</button>'; }); }
   h += '</div>';
   h += '<div style="margin-top:auto;border-top:1px solid var(--sh-border-neutral-faded);padding:16px 4px 0;display:flex;align-items:center;gap:12px"><span class="mini-avatar" style="width:40px;height:40px;font-size:15px">'+esc(initial())+'</span><span style="display:flex;flex-direction:column;min-width:0;flex:1"><span class="h5" style="font-size:15px">'+esc(S.name.trim()||'Medewerker')+'</span><span class="label faded">'+(r?esc(r.title):'')+'</span></span><button type="button" class="sh-icon-btn" data-a="profile" aria-label="Profiel aanpassen">'+ic('pen',18)+'</button></div>';
   h += '</nav>';
@@ -830,7 +939,6 @@ function viewWork(){
   h += '</div></div>';
   if (S.doc!=null) h += viewDocPanel(r);
   if (S.el) h += viewDrawer();
-  if (S.toast) h += '<div class="sh-toast" role="status">'+ic('check',18,'stroke-width="2.6"')+'<span>'+esc(S.toast)+'</span></div>';
   return h;
 }
 function pageHead(title, desc, extra){
@@ -883,7 +991,7 @@ function viewDocPanel(r){
   var d = (DOCS[r?r.id:'contract']||[])[S.doc]; if (!d) return '';
   var sk = null; if (r) r.skills.forEach(function(k){ if (!sk && k.need && k.need===d[4]) sk=k; });
   var locked = sk && sk.need && !S.done[sk.need];
-  var h = '<div class="scrim" data-a="docclose-scrim"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="doc-title"><div class="drawer__head"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="display:flex;flex-direction:column;gap:6px"><span class="overline">DOCK · '+d[1]+'</span><h2 class="h3" id="doc-title" tabindex="-1">'+rich(d[0])+'</h2></div><button type="button" class="sh-icon-btn" data-a="docclose" aria-label="Sluiten">'+ic('x',20)+'</button></div>';
+  var h = '<div class="scrim" data-m="scrim" data-a="docclose-scrim"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="doc-title"><div class="drawer__head"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="display:flex;flex-direction:column;gap:6px"><span class="overline">DOCK · '+d[1]+'</span><h2 class="h3" id="doc-title" tabindex="-1">'+rich(d[0])+'</h2></div><button type="button" class="sh-icon-btn" data-a="docclose" aria-label="Sluiten">'+ic('x',20)+'</button></div>';
   h += '<div class="wrap" style="gap:6px"><span class="sh-chip sh-chip--neutral">'+d[2]+'</span><span class="sh-chip sh-chip--neutral">Versie 3</span><span class="sh-chip sh-chip--neutral">Gewijzigd '+d[3]+'</span>'+(d[4]?'<span class="sh-chip sh-chip--attention">'+ic('lock',12)+(d[4]==='persoons'?'Persoonsgegevens':'Vertrouwelijk')+'</span>':'')+'</div></div>';
   h += '<div class="drawer__body"><div class="doc-preview" aria-label="Voorbeeld van het document"><span class="h4" style="font-size:18px">'+rich(d[0])+'</span><span class="sk" style="width:90%"></span><span class="sk" style="width:75%"></span><span class="sk" style="width:84%"></span><span class="sk" style="width:40%"></span><span style="height:8px"></span><span class="sk" style="width:88%"></span><span class="sk" style="width:70%"></span><span class="sk" style="width:80%"></span></div>';
   h += '<div class="insight">'+ic('sparkle',20,'style="color:var(--sh-foreground-primary);margin-top:2px"')+'<div style="flex:1;display:flex;flex-direction:column;gap:6px"><span class="h5" style="font-size:14px;font-family:var(--sh-font-body);font-weight:600">Wat kan COAGPT met dit document?</span><span class="label">Samenvatten, vergelijken met eerdere versies of de afspraken eruit halen.'+(locked?' Hiervoor doe je eerst de e-learning "'+ELS[sk.need].title+'".':'')+'</span></div></div></div>';
@@ -896,7 +1004,7 @@ function viewAgents(r){
   h += '<div class="grid-cards">';
   list.forEach(function(a,i){
     var on = S.agents[a[0]]!=null ? S.agents[a[0]] : a[3];
-    h += '<article class="action-card" style="min-height:0;gap:12px"><div class="action-card__top"><span class="icon-container">'+ic('bot',20)+'</span><label class="sh-switch"><input type="checkbox" data-a="agent" data-v="'+esc(a[0])+'"'+(on?' checked':'')+'><span class="sh-switch__track" aria-hidden="true"></span><span class="sr-only">'+esc(a[0])+' aan of uit</span></label></div><h2 class="h4" style="font-size:18px">'+esc(a[0])+'</h2><p class="label faded" style="margin:0">'+esc(a[1])+'</p><div class="wrap" style="gap:6px"><span class="sh-chip sh-chip--neutral">'+ic('clock',12)+a[2]+'</span><span class="sh-chip '+(on?'sh-chip--constructive':'sh-chip--neutral')+'">'+(on?'Actief':'Gepauzeerd')+'</span></div></article>';
+    h += '<article class="action-card" style="min-height:0;gap:12px"><div class="action-card__top"><span class="icon-container">'+ic('bot',20)+'</span><label class="sh-switch"><input type="checkbox" data-a="agent" data-v="'+esc(a[0])+'"'+(on?' checked':'')+'><span class="sh-switch__track" aria-hidden="true"></span><span class="sr-only">'+esc(a[0])+' aan of uit</span></label></div><h2 class="h4" style="font-size:18px">'+esc(a[0])+'</h2><p class="label faded" style="margin:0">'+esc(a[1])+'</p><div class="wrap" style="gap:6px"><span class="sh-chip sh-chip--neutral">'+ic('clock',12)+a[2]+'</span><span class="sh-chip '+(on?'sh-chip--constructive':'sh-chip--neutral')+'" data-status>'+(on?'Actief':'Gepauzeerd')+'</span></div></article>';
   });
   return h+'</div></div>';
 }
@@ -922,7 +1030,7 @@ function viewDbs(r){
 }
 function skillCard(k, idx, roleIdx){
   var locked = k.need && !S.done[k.need], open = k.need && S.done[k.need];
-  return '<button type="button" class="action-card" data-a="anyskill" data-v="'+idx+'"><span class="action-card__top"><span class="icon-container">'+ic('sparkle',20)+'</span>'+(locked?'<span class="sh-chip sh-chip--attention">'+ic('lock',12,'stroke-width="2.4"')+'Eerst e-learning · '+ELS[k.need].mins+' min</span>':'')+(open?'<span class="sh-chip sh-chip--constructive">'+ic('check',12,'stroke-width="3"')+'Ontgrendeld</span>':'')+'</span><span class="h5" style="font-size:17px;line-height:24px">'+esc(k.t)+'</span><span class="label faded">'+esc(k.d)+'</span></button>';
+  return '<button type="button" class="action-card" data-a="anyskill" data-v="'+idx+'"><span class="action-card__top"><span class="icon-container">'+ic('sparkle',20)+'</span>'+(locked?'<span class="sh-chip sh-chip--attention">'+ic('lock',12,'stroke-width="2.4"')+'Eerst e-learning · '+ELS[k.need].mins+' min</span>':'')+(open?'<span class="sh-chip sh-chip--constructive" data-m="unl'+esc(k.t)+'">'+ic('check',12,'stroke-width="3"')+'Ontgrendeld</span>':'')+'</span><span class="h5" style="font-size:17px;line-height:24px">'+esc(k.t)+'</span><span class="label faded">'+esc(k.d)+'</span></button>';
 }
 function viewSkills(r){
   var all = allSkills(), q = (S.q||'').toLowerCase();
@@ -992,7 +1100,7 @@ function viewHome(r, n, doneN){
   h += '<section aria-labelledby="h-skills" style="display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px"><h2 class="h4" id="h-skills">Voor jou klaargezet</h2><span class="label faded">Op basis van je functie en doelen</span></div><div class="cards">';
   if (r) r.skills.forEach(function(k,i){
     var locked = k.need && !S.done[k.need], open = k.need && S.done[k.need];
-    h += '<button type="button" class="action-card" data-a="skill" data-v="'+i+'"><span class="action-card__top"><span class="icon-container">'+ic('sparkle',20)+'</span>'+(locked?'<span class="sh-chip sh-chip--attention">'+ic('lock',12,'stroke-width="2.4"')+'Eerst e-learning · '+ELS[k.need].mins+' min</span>':'')+(open?'<span class="sh-chip sh-chip--constructive">'+ic('check',12,'stroke-width="3"')+'Ontgrendeld</span>':'')+'</span><span class="h5" style="font-size:17px;line-height:24px">'+esc(k.t)+'</span><span class="label faded">'+esc(k.d)+'</span></button>';
+    h += '<button type="button" class="action-card" data-a="skill" data-v="'+i+'"><span class="action-card__top"><span class="icon-container">'+ic('sparkle',20)+'</span>'+(locked?'<span class="sh-chip sh-chip--attention">'+ic('lock',12,'stroke-width="2.4"')+'Eerst e-learning · '+ELS[k.need].mins+' min</span>':'')+(open?'<span class="sh-chip sh-chip--constructive" data-m="unl'+esc(k.t)+'">'+ic('check',12,'stroke-width="3"')+'Ontgrendeld</span>':'')+'</span><span class="h5" style="font-size:17px;line-height:24px">'+esc(k.t)+'</span><span class="label faded">'+esc(k.d)+'</span></button>';
   });
   h += '</div></section></div>';
 
@@ -1045,20 +1153,20 @@ function viewDrawer(){
   var isSlide = step<n, isQuiz = step===n, isDone = step>n;
   var pct = Math.round((Math.min(step, total-1))/(total-1)*100);
   var right = isQuiz && S.answer===e.quiz.c, wrong = isQuiz && S.answer!=null && S.answer!==e.quiz.c;
-  var h = '<div class="scrim" data-a="scrim"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="el-title">';
+  var h = '<div class="scrim" data-m="scrim" data-a="scrim"><aside class="drawer" role="dialog" aria-modal="true" aria-labelledby="el-title">';
   h += '<div class="drawer__head"><div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start"><div style="display:flex;flex-direction:column;gap:6px"><span class="label-sm" style="font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--sh-foreground-attention-prominent)">E-learning · '+e.mins+' minuten</span><h2 class="h3" id="el-title" tabindex="-1">'+e.title+'</h2></div><button type="button" class="sh-icon-btn" data-a="el-close" aria-label="Sluiten">'+ic('x',20)+'</button></div>';
   h += '<div class="sh-progress"><div class="sh-progress__track"><div class="sh-progress__fill'+(isDone?' sh-progress__fill--done':'')+'" style="width:'+pct+'%"></div></div><span class="sh-progress__pct">'+pct+'%</span></div></div>';
-  h += '<div class="drawer__body">';
+  h += '<div class="drawer__body'+(S.elDir>0?' m-fwd':(S.elDir<0?' m-back':''))+'">';
   if (isSlide){ var sl = e.slides[step]; h += '<div class="slide-hero"><span class="label-sm" style="font-weight:700;letter-spacing:.12em;color:#9fd3dc">DEEL '+(step+1)+' VAN '+n+'</span><span class="h2" style="color:#fff">'+sl.h+'</span></div><p style="margin:0;font-size:18px;line-height:30px;color:var(--sh-foreground-neutral-prominent)">'+sl.p+'</p>'; }
   if (isQuiz){
     h += '<span class="overline">Korte check</span><p class="h4" style="line-height:28px">'+e.quiz.q+'</p><div role="group" aria-label="Antwoorden" style="display:flex;flex-direction:column;gap:10px">';
-    e.quiz.o.forEach(function(o,i){ var cls = S.answer===i ? (i===e.quiz.c?' ok':' no') : ''; h += '<button type="button" class="quiz-opt'+cls+'" data-a="ans" data-v="'+i+'" aria-pressed="'+(S.answer===i)+'"><span class="l">'+'ABC'[i]+'</span>'+o+'</button>'; });
+    e.quiz.o.forEach(function(o,i){ var cls = S.answer===i ? (i===e.quiz.c?' ok':' no') : ''; h += '<button type="button" class="quiz-opt'+cls+'"'+(cls?' data-m="q'+i+cls+'"':'')+' data-a="ans" data-v="'+i+'" aria-pressed="'+(S.answer===i)+'"><span class="l">'+'ABC'[i]+'</span>'+o+'</button>'; });
     h += '</div>';
     if (right) h += '<div class="sh-alert sh-alert--ok" role="status" style="font-weight:500">Klopt. '+e.quiz.why+'</div>';
     if (wrong) h += '<div class="sh-alert" role="status" style="background:var(--sh-background-destructive-raised);color:var(--sh-foreground-destructive-prominent)">Nog niet helemaal. Kijk nog eens naar de vorige delen en probeer het opnieuw.</div>';
   }
   if (isDone){
-    h += '<div style="display:flex;flex-direction:column;gap:16px;padding-top:24px"><span style="width:64px;height:64px;border-radius:999px;background:var(--sh-background-constructive-raised);color:var(--sh-foreground-constructive-prominent);display:flex;align-items:center;justify-content:center">'+ic('check',32,'stroke-width="2.6"')+'</span><h3 class="h2">Afgerond. Goed gedaan, '+esc(nameOr())+'.</h3><p class="lead">'+(S.pending?esc(S.pending.t)+' staat nu voor je aan. Ik ga direct verder met je vraag.':'Deze e-learning staat als afgerond in je leerpad. De bijbehorende skills zijn nu ontgrendeld.')+'</p></div>';
+    h += '<div style="display:flex;flex-direction:column;gap:16px;padding-top:24px"><span class="m-success" style="width:64px;height:64px;border-radius:999px;background:var(--sh-background-constructive-raised);color:var(--sh-foreground-constructive-prominent);display:flex;align-items:center;justify-content:center">'+ic('check',32,'stroke-width="2.6"')+'</span><h3 class="h2">Afgerond. Goed gedaan, '+esc(nameOr())+'.</h3><p class="lead">'+(S.pending?esc(S.pending.t)+' staat nu voor je aan. Ik ga direct verder met je vraag.':'Deze e-learning staat als afgerond in je leerpad. De bijbehorende skills zijn nu ontgrendeld.')+'</p></div>';
   }
   h += '</div><div class="drawer__foot"><div>'+((isSlide||isQuiz)&&step>0?'<button type="button" class="sh-btn sh-btn--secondary" data-a="el-back">Vorige</button>':'')+'</div>';
   if (isSlide) h += '<button type="button" class="sh-btn sh-btn--primary" data-a="el-next">Volgende</button>';
@@ -1068,12 +1176,154 @@ function viewDrawer(){
   return h;
 }
 
+/* ---------- Motion ----------
+   De app tekent bij elke wijziging alles opnieuw. Daarom krijgt elk blok
+   een sleutel; alleen blokken met een nieuwe sleutel komen in beweging.
+   Zo speelt een animatie één keer, en niet bij elke klik opnieuw. */
+var RM = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : { matches:false };
+function still(){ return RM.matches; }
+var M = { keys:null, prog:{}, tap:null, screen:null };
+function vk(){ return S.screen+'/'+S.view+'/'; }
+var AUTO = [
+  ['.sidenav', function(){ return 'ws/'; }],
+  ['.intake__aside', function(){ return 'ia/'; }],
+  ['.ichat', function(){ return 'i/'; }],
+  ['.chat__scroll', function(){ return 'c/'; }],
+  ['.page', vk], ['.home__main', vk], ['.home__side', vk],
+  ['.grid-cards', vk], ['.cards', vk],
+  ['.list', function(){ return vk()+S.taskFilter+'/'; }],
+  ['.drawer__body', function(){ return 'd/'+S.el+'/'+S.doc+'/'+S.elStep+'/'; }]
+];
+var NESTED = '.grid-cards,.cards,.list,#results,.home__main,.home__side';
+var STAGGER = '.msg-in__body > :not(.bubble-in):not(.sh-prompts):not(.sh-tools):not(.role-grid):not(.wrap),.msg-in__body > .sh-prompts > *,.msg-in__body > .sh-tools > *,.msg-in__body > .role-grid > *,.msg-in__body > .wrap > *';
+function qsa(root, sel){ var out = root.matches && root.matches(sel) ? [root] : []; return out.concat(Array.prototype.slice.call(root.querySelectorAll(sel))); }
+function sig(el){ var f = el.firstElementChild; return el.tagName+'.'+(el.className||'').split(' ')[0]+'>'+(f ? (f.className && f.className.baseVal==null ? f.className : f.tagName) : ''); }
+function enter(el, d){ el.style.setProperty('--md', Math.round(d)+'ms'); el.classList.add('m-in'); }
+function streamWords(el, per, cap){
+  var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null), nodes = [], n;
+  while ((n = walker.nextNode())) if (n.nodeValue.trim()) nodes.push(n);
+  var words = 0; nodes.forEach(function(t){ words += t.nodeValue.trim().split(/\s+/).length; });
+  per = Math.min(per, cap/Math.max(1,words));
+  var i = 0;
+  nodes.forEach(function(t){
+    var frag = document.createDocumentFragment();
+    t.nodeValue.split(/(\s+)/).forEach(function(part){
+      if (!part) return;
+      if (/^\s+$/.test(part)){ frag.appendChild(document.createTextNode(part)); return; }
+      var s = document.createElement('span'); s.className = 'm-w'; s.style.animationDelay = Math.round(i++*per)+'ms'; s.textContent = part; frag.appendChild(s);
+    });
+    t.parentNode.replaceChild(frag, t);
+  });
+  return i*per;
+}
+function motionPass(root, partial){
+  var prev = M.keys, now = partial ? Object.assign({}, M.keys || {}) : {}, fresh = [], calm = still();
+  AUTO.forEach(function(a){
+    qsa(root, a[0]).forEach(function(c){
+      var p = a[1]();
+      Array.prototype.forEach.call(c.children, function(ch, i){
+        if (ch.matches(NESTED)) return;
+        var k = p+a[0]+i+':'+sig(ch); now[k] = 1;
+        if (!prev || !prev[k]) fresh.push(ch);
+      });
+    });
+  });
+  fresh.sort(function(a,b){ return a.compareDocumentPosition(b) & 2 ? 1 : -1; });
+  if (!calm) fresh.forEach(function(el, i){
+    var d = Math.min(i, 10)*45; enter(el, d);
+    if (el.classList.contains('msg-in')){
+      var b = el.querySelector('.bubble-in'), inChat = !!el.closest('.chat__scroll');
+      var t = b ? streamWords(b, inChat ? 24 : 16, inChat ? 1400 : 700) : 0;
+      Array.prototype.forEach.call(el.querySelectorAll(STAGGER), function(x, j){ enter(x, d + t + 120 + Math.min(j, 12)*35); });
+    }
+  });
+  qsa(root, '[data-m]').forEach(function(el){
+    var k = 'x/'+el.getAttribute('data-m'); now[k] = 1;
+    if (calm || (prev && prev[k]) || el.classList.contains('m-in')) return;
+    var host = el.parentElement && el.parentElement.closest('.m-in');
+    enter(el, host ? parseFloat(host.style.getPropertyValue('--md')||0)+90 : 0);
+  });
+  qsa(root, '.pop').forEach(function(el){
+    var k = 'pop/'+el.textContent; now[k] = 1;
+    if (!calm && prev && !prev[k]) enter(el, 0);
+  });
+  M.keys = now;
+}
+function countTo(el, from, to){
+  if (!el || from===to) return;
+  var t0 = null, dur = 520;
+  function step(ts){ if (!t0) t0 = ts; var p = Math.min(1, (ts-t0)/dur), e = 1-Math.pow(1-p, 3); el.textContent = Math.round(from+(to-from)*e)+'%'; if (p<1) requestAnimationFrame(step); }
+  requestAnimationFrame(step);
+}
+function progressPass(){
+  var next = {}, fills = app.querySelectorAll('.sh-progress__fill');
+  Array.prototype.forEach.call(fills, function(f, i){
+    var k = vk()+(f.closest('.drawer') ? 'dr'+S.el+S.doc : '')+i, to = f.style.width;
+    next[k] = to;
+    var from = M.prog[k] != null ? M.prog[k] : '0%';
+    if (still() || from===to) return;
+    f.style.transition = 'none'; f.style.width = from; void f.offsetWidth; f.style.transition = ''; f.style.width = to;
+    var pct = f.parentElement && f.parentElement.nextElementSibling;
+    if (pct && pct.classList.contains('sh-progress__pct')) countTo(pct, parseInt(from,10)||0, parseInt(to,10)||0);
+  });
+  M.prog = next;
+}
+function glide(el, r0, from, to){
+  if (!el || !r0 || still() || !el.animate) return;
+  var r1 = el.getBoundingClientRect(), dx = r0.left-r1.left, dy = r0.top-r1.top;
+  if (Math.abs(dx)<1 && Math.abs(dy)<1) return;
+  try {
+    el.animate([{ transform:'translate('+dx+'px,'+dy+'px) scale('+(r0.width/r1.width)+','+(r0.height/r1.height)+')' }, { transform:'none' }], { duration:340, easing:'cubic-bezier(.2,.8,.2,1)', pseudoElement:'::before' });
+    el.animate([{ color:from }, { color:to }], { duration:260, easing:'ease-out' });
+  } catch(e){}
+}
+function rectOf(sel){ var el = app.querySelector(sel); return el ? el.getBoundingClientRect() : null; }
+function leave(el, done){
+  if (!el || still() || !el.animate){ done(); return; }
+  var h = el.offsetHeight;
+  el.style.overflow = 'hidden';
+  var a = el.animate([{ opacity:1, transform:'none', height:h+'px' }, { opacity:0, transform:'translateX(24px)', height:h+'px', offset:.6 }, { opacity:0, transform:'translateX(24px)', height:'0px', paddingTop:'0px', paddingBottom:'0px', marginTop:'0px', marginBottom:'0px' }], { duration:340, easing:'cubic-bezier(.2,0,0,1)', fill:'forwards' });
+  a.onfinish = done;
+}
+var closing = false;
+function closeOverlay(done){
+  var s = document.querySelector('.scrim');
+  if (!s || still() || closing){ if (!closing) done(); return; }
+  closing = true; s.classList.remove('m-in'); s.classList.add('m-out');
+  setTimeout(function(){ closing = false; done(); }, 210);
+}
+app.addEventListener('animationend', function(e){
+  var el = e.target;
+  if (el.classList.contains('m-in') && /^m-/.test(e.animationName)){ el.classList.remove('m-in'); el.style.removeProperty('--md'); }
+  if (el.classList.contains('m-tap')) el.classList.remove('m-tap');
+});
+
 /* ---------- Render ---------- */
 function render(focusSel){
   if (S.screen==='werkruimte' && !S.coachSeen && S.coach===0 && S.view==='vandaag') S.coach = 1;
+  var sameScreen = M.screen===S.screen;
+  var navR = rectOf('.sidenav .sh-navitem[aria-current="page"]'), tabR = rectOf('.sh-tab[aria-selected="true"]');
+  var oldIch = document.getElementById('ichat'), ichTop = oldIch ? oldIch.scrollTop : null;
   app.innerHTML = S.screen==='intake' ? viewIntake() : viewWork();
-  var sc = document.getElementById('scroll'); if (sc) sc.lastElementChild && sc.lastElementChild.scrollIntoView({block:'end'});
-  var ich = document.getElementById('ichat'); if (ich) ich.scrollTop = ich.scrollHeight;
+  motionPass(app);
+  progressPass();
+  if (sameScreen){
+    glide(app.querySelector('.sidenav .sh-navitem[aria-current="page"]'), navR, '#282f32', '#f7f8f8');
+    glide(app.querySelector('.sh-tab[aria-selected="true"]'), tabR, '#282f32', '#f7f8f8');
+  }
+  if (M.tap){
+    var tapped = null;
+    Array.prototype.forEach.call(app.querySelectorAll('[aria-pressed][data-a="'+M.tap[0]+'"]'), function(el){ if (el.getAttribute('data-v')===M.tap[1]) tapped = el; });
+    if (tapped && !still()) tapped.classList.add('m-tap');
+    M.tap = null;
+  }
+  M.screen = S.screen;
+  var sc = document.getElementById('scroll'); if (sc && sc.lastElementChild) sc.lastElementChild.scrollIntoView({ block:'end', behavior: still() ? 'auto' : 'smooth' });
+  var ich = document.getElementById('ichat');
+  if (ich){
+    if (ichTop!=null) ich.scrollTop = ichTop;
+    ich.scrollTo({ top: ich.scrollHeight, behavior: still() || ichTop==null ? 'auto' : 'smooth' });
+  }
   if (focusSel){ var f = document.querySelector(focusSel); if (f) f.focus({preventScroll:false}); }
 }
 
@@ -1102,7 +1352,15 @@ function send(text, sk){
   answer(sk);
 }
 var toastTimer=null;
-function toast(t){ S.toast=t; render(); clearTimeout(toastTimer); toastTimer=setTimeout(function(){ S.toast=''; var el=document.querySelector('.sh-toast'); if (el) el.remove(); }, 2600); }
+function toast(t, quiet){
+  if (!quiet) render();
+  var el = document.getElementById('toast');
+  if (!el){ el = document.createElement('div'); el.id = 'toast'; el.className = 'sh-toast'; el.setAttribute('role','status'); document.body.appendChild(el); }
+  el.innerHTML = ic('check',18,'stroke-width="2.6"')+'<span>'+esc(t)+'</span>';
+  el.hidden = false; el.classList.remove('m-out','is-on'); void el.offsetWidth; el.classList.add('is-on');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ el.classList.remove('is-on'); el.classList.add('m-out'); toastTimer = setTimeout(function(){ el.hidden = true; }, still()?0:220); }, 2600);
+}
 function finishEl(){
   var id = S.el; S.done[id] = true; S.el = null; S.elStep = 0; S.answer = null;
   if (S.pending){ var sk = S.pending; S.pending = null; S.view = 'gesprek'; S.msgs.push({ kind:'unlocked', text: ELS[id].title+' afgerond. '+sk.t+' staat nu voor je aan.' }); answer(sk); return; }
@@ -1128,19 +1386,24 @@ var A = {
   'cl-doc':function(){ if (!S.ob.doc) A.nav('documenten'); },
   'cl-agent':function(){ if (!S.ob.agent) A.nav('agents'); },
   'cl-app':function(){ if (!S.ob.app) A.nav('apps'); },
-  'cl-hide':function(){ S.ob.hidden=true; render(); },
-  openapp:function(v){ S.ob.app=true; toast(v+' opent zonder opnieuw in te loggen'); },
+  'cl-hide':function(v,el){ leave(el.closest('.panel'), function(){ S.ob.hidden=true; render(); }); },
+  openapp:function(v){ S.ob.app=true; toast(v+' opent zonder opnieuw in te loggen', true); },
   home:function(){ S.msgs=[]; S.pending=null; S.busy=false; S.view='vandaag'; render('#prompt'); },
   nav:function(v){ S.view=v; S.q=''; S.doc=null; if (v==='gesprek' && !S.msgs.length) S.view='vandaag'; render(v==='kennis'||v==='skills'?'#filter':'#page-title'); window.scrollTo(0,0); },
   tf:function(v){ S.taskFilter=v; render(); },
-  taskdone:function(v){ S.doneTasks[v]=true; toast('Taak afgerond'); },
+  taskdone:function(v,el){ leave(el.closest('.row'), function(){ S.doneTasks[v]=true; toast('Taak afgerond'); }); },
   ask:function(v){ if (v) send(v); },
   oldchat:function(v){ var p=role().prompts[+v]; S.msgs=[{kind:'user',text:p},{kind:'agent',text:replyFor(null),src:''}]; S.view='gesprek'; render(); window.scrollTo(0,0); },
   doc:function(v){ S.doc=+v; render('#doc-title'); },
-  docclose:function(){ S.doc=null; render(); },
-  docsum:function(){ var d=(DOCS[role().id]||[])[S.doc]; var name=d[0]; var sk={ t:'Document samenvatten', need:d[4]||null, src:'DOCK · '+name, tool:'Document in DOCK gelezen', reply:'Samenvatting van "'+name+'":\n\n• Doel: [doel]\n• Belangrijkste afspraken: [afspraken]\n• Termijnen: [termijnen]\n\nBij elk punt staat de pagina. Zal ik de afspraken als taken klaarzetten?' }; S.doc=null; S.ob.doc=true; send('Vat samen: '+name.replace(/\[|\]/g,''), sk); },
-  agent:function(v,el){ S.agents[v]=el.checked; if (el.checked) S.ob.agent=true; toast(v+(el.checked?' staat aan':' is gepauzeerd')); },
-  toast:function(v){ toast(v); },
+  docclose:function(){ closeOverlay(function(){ S.doc=null; render(); }); },
+  docsum:function(){ var d=(DOCS[role().id]||[])[S.doc]; var name=d[0]; var sk={ t:'Document samenvatten', need:d[4]||null, src:'DOCK · '+name, tool:'Document in DOCK gelezen', reply:'Samenvatting van "'+name+'":\n\n• Doel: [doel]\n• Belangrijkste afspraken: [afspraken]\n• Termijnen: [termijnen]\n\nBij elk punt staat de pagina. Zal ik de afspraken als taken klaarzetten?' }; closeOverlay(function(){ S.doc=null; S.ob.doc=true; send('Vat samen: '+name.replace(/\[|\]/g,''), sk); }); },
+  agent:function(v,el){
+    S.agents[v]=el.checked; if (el.checked) S.ob.agent=true;
+    var chip = el.closest('.action-card').querySelector('[data-status]');
+    if (chip){ chip.className = 'sh-chip '+(el.checked?'sh-chip--constructive':'sh-chip--neutral'); chip.textContent = el.checked?'Actief':'Gepauzeerd'; if (!still()){ chip.classList.add('m-tap'); } }
+    toast(v+(el.checked?' staat aan':' is gepauzeerd'), true);
+  },
+  toast:function(v){ toast(v, true); },
   req:function(v){ S.requested[v]=true; toast('Toegang tot '+v+' aangevraagd'); },
   anyskill:function(v){ var x=allSkills()[+v]; send(x.k.t, x.k); },
   tpl:function(v){ var t=TEMPLATES[+v]; send('Gebruik de template: '+t[0], { t:t[0], need:null, src:'Templates · '+t[0], tool:'', reply:'Ik heb de template "'+t[0]+'" voor je klaargezet. Een paar vragen om hem goed in te vullen:\n\n1. Voor wie is het bedoeld?\n2. Wat is de aanleiding?\n3. Is er een deadline?\n\nJe kunt ook een document uit DOCK toevoegen, dan haal ik de gegevens daaruit.' }); },
@@ -1151,12 +1414,12 @@ var A = {
   prompt:function(v){ send(role().prompts[+v]); },
   att:function(v){ send('Help me met: '+role().attention[+v].t); },
   send:function(){ var t=document.getElementById('prompt'); send(t?t.value:S.draft); },
-  el:function(v){ S.el=v; S.elStep=0; S.answer=null; render('#el-title'); },
-  'el-next':function(){ S.elStep++; S.answer = S.answer; render(); },
-  'el-back':function(){ S.elStep=Math.max(0,S.elStep-1); S.answer=null; render(); },
-  'el-close':function(){ S.el=null; S.elStep=0; S.answer=null; render(); },
-  'el-finish':finishEl,
-  ans:function(v){ S.answer=+v; render(); },
+  el:function(v){ S.el=v; S.elStep=0; S.elDir=0; S.answer=null; render('#el-title'); },
+  'el-next':function(){ S.elStep++; S.elDir=1; render(); },
+  'el-back':function(){ S.elStep=Math.max(0,S.elStep-1); S.elDir=-1; S.answer=null; render(); },
+  'el-close':function(){ closeOverlay(function(){ S.el=null; S.elStep=0; S.answer=null; render(); }); },
+  'el-finish':function(){ closeOverlay(finishEl); },
+  ans:function(v){ S.answer=+v; S.elDir=0; render(); },
   later:function(v){ var m=S.msgs[+v]; if (m) m.later=true; S.pending=null; S.msgs.push({ kind:'agent', text:'Prima. De e-learning staat in je leerpad. Zal ik intussen iets anders voor je doen?' }); render(); },
   scrim:function(v,el,e){ if (e.target===el) A['el-close'](); },
   reset:function(){ clearInterval(timer); S=fresh(); render('#naam'); window.scrollTo(0,0); },
@@ -1169,6 +1432,7 @@ document.addEventListener('click', function(e){
   var a = b.getAttribute('data-a');
   if (a==='scrim'){ if (e.target===b) A['el-close'](); return; }
   if (a==='docclose-scrim'){ if (e.target===b) A.docclose(); return; }
+  if (b.hasAttribute('aria-pressed')) M.tap = [a, b.getAttribute('data-v')];
   if (A[a]) A[a](b.getAttribute('data-v'), b, e);
 });
 document.addEventListener('submit', function(e){
@@ -1176,7 +1440,7 @@ document.addEventListener('submit', function(e){
 });
 document.addEventListener('input', function(e){
   var id = e.target.id;
-  if (id==='naam'){ S.name=e.target.value; if (S.nameErr && S.name.trim()){ S.nameErr=false; var dsc=document.getElementById('naam-desc'); if (dsc){ dsc.className='sh-desc'; dsc.textContent='Alleen je voornaam is genoeg.'; } } var p=document.getElementById('preview'); if (p) p.outerHTML = preview(); }
+  if (id==='naam'){ S.name=e.target.value; if (S.nameErr && S.name.trim()){ S.nameErr=false; var dsc=document.getElementById('naam-desc'); if (dsc){ dsc.className='sh-desc'; dsc.textContent='Alleen je voornaam is genoeg.'; } } var p=document.getElementById('preview'); if (p){ p.outerHTML = preview(); motionPass(document.getElementById('preview'), true); } }
   if (id==='note') S.note=e.target.value;
   if (id==='prompt') S.draft=e.target.value;
   if (id==='filter'){ S.q=e.target.value; var box=document.getElementById('results'); var q=S.q.toLowerCase(); if (box) box.innerHTML = e.target.getAttribute('data-filter')==='skills' ? skillResults(role(), allSkills(), q) : kennisResults(q); }
