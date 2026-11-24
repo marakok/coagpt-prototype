@@ -9,170 +9,169 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-/* Shelter v2.1.0 tokens (mxds.nl, light theme) */
+/* Overgenomen van de Shelter-inlogpagina (mxds.nl/login), dark theme */
 :root{
-  --sh-petrol-50:#e5ffff; --sh-petrol-250:#83def2; --sh-petrol-450:#2ea1b8; --sh-petrol-500:#0094ab;
-  --sh-petrol-550:#008197; --sh-petrol-600:#006f85; --sh-petrol-650:#005f74; --sh-petrol-700:#004e63;
-  --sh-petrol-800:#00384a; --sh-petrol-900:#002535;
-
-  --sh-background-neutral:#f7f8f8;
-  --sh-background-neutral-raised:#ffffff;
-  --sh-background-neutral-faded:#e9ebec;
-  --sh-background-neutral-muted:#dbe0e2;
-  --sh-background-neutral-inverted:#002535;
-  --sh-background-primary:#2ea1b8;
-  --sh-background-primary-faded:#006f85;
-  --sh-background-primary-raised:#e5ffff;
-  --sh-background-constructive:#41a960;
-  --sh-background-constructive-faded:#00772f;
-  --sh-background-constructive-raised:#e0ffe9;
-  --sh-background-attention:#be8c0b;
-  --sh-background-attention-raised:#fffcdb;
-  --sh-background-destructive:#f25342;
-  --sh-background-destructive-faded:#b80300;
-  --sh-background-destructive-raised:#ffeee5;
-  --sh-background-accent1-raised:#fff0ff;
-
-  --sh-foreground-neutral-prominent:#12171a;
-  --sh-foreground-neutral:#282f32;
-  --sh-foreground-neutral-faded:#4b5357;
-  --sh-foreground-neutral-muted:#6b7478;
-  --sh-foreground-neutral-inverted:#f7f8f8;
-  --sh-foreground-primary:#008197;
-  --sh-foreground-primary-prominent:#004e63;
-  --sh-foreground-constructive:#0d8940;
-  --sh-foreground-constructive-prominent:#005510;
-  --sh-foreground-attention:#986800;
-  --sh-foreground-attention-prominent:#623800;
-  --sh-foreground-destructive:#d32a1d;
-  --sh-foreground-destructive-prominent:#8e0000;
-  --sh-foreground-accent1:#8360a1;
-  --sh-foreground-accent1-prominent:#51316b;
-
-  --sh-border-neutral:#dbe0e2;
-  --sh-border-neutral-faded:#e9ebec;
-  --sh-border-neutral-prominent:#c8cfd2;
-  --sh-border-neutral-contrast:#12171a;
-  --sh-border-primary:#0094ab;
-  --sh-border-constructive:#24984d;
-  --sh-border-attention:#aa7a00;
-
-  --sh-action-hover-inverse:#00000008;
-  --sh-action-active-inverse:#0000001a;
-  --sh-opacity-dark-50:#00000080;
-
-  --sh-radius-xs:4px; --sh-radius-sm:6px; --sh-radius-md:8px; --sh-radius-lg:10px; --sh-radius-xl:12px; --sh-radius-full:9999px;
-  --sh-levitation-1:0 2px 3px 0 rgba(0,0,0,.1);
-  --sh-levitation-2:0 4px 16px 0 rgba(0,0,0,.03),0 4px 6px 0 rgba(0,0,0,.03);
-  --sh-levitation-3:0 4px 16px 0 rgba(0,0,0,.03),0 6px 8px 0 rgba(0,0,0,.03);
-  --sh-levitation-4:0 4px 16px 0 rgba(0,0,0,.03),0 10px 12px 0 rgba(0,0,0,.03);
-  --sh-levitation-5:0 4px 16px 0 rgba(0,0,0,.03),0 14px 16px 0 rgba(0,0,0,.1);
-  --sh-focus:#008197;
-
-  --sh-font-header:'Supreme','Noto Sans',system-ui,sans-serif;
-  --sh-font-body:'Noto Sans',system-ui,sans-serif;
+  --petrol-950:#001d2c; --petrol-900:#002535; --petrol-850:#002d3e; --petrol-800:#00384a;
+  --petrol-600:#006f85; --petrol-650:#005f74; --petrol-550:#008197; --petrol-500:#0094ab; --petrol-450:#2ea1b8;
+  --fg:#ffffff; --fg-faded:#a6afb3; --fg-muted:#8a9397;
+  --attention:#be8c0b; --destructive:#ff6451;
+  --font-header:'Supreme','Noto Sans',system-ui,sans-serif;
+  --font-body:'Noto Sans',system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{font-family:var(--sh-font-body);font-size:16px;line-height:24px;color:var(--sh-foreground-neutral);background:var(--sh-background-neutral);-webkit-font-smoothing:antialiased}
-:focus-visible{outline:2px solid var(--sh-focus);outline-offset:2px}
-.auth{display:flex;flex-wrap:wrap;min-height:100vh}
-.auth__form{flex:1 1 480px;display:flex;align-items:center;justify-content:center;padding:48px 24px;background:var(--sh-background-neutral-raised)}
-.auth__card{width:100%;max-width:400px;display:flex;flex-direction:column;gap:32px}
-.brand{display:flex;align-items:center;gap:12px;color:var(--sh-foreground-neutral-prominent)}
-.brand__name{font-family:var(--sh-font-header);font-size:24px;line-height:28px;font-weight:800}
-.h1{margin:0;font-family:var(--sh-font-header);font-weight:500;font-size:32px;line-height:36px;color:var(--sh-foreground-neutral-prominent)}
-.lead{margin:8px 0 0;color:var(--sh-foreground-neutral-faded)}
-.sh-field{display:flex;flex-direction:column;gap:8px}
-.sh-field label{font-size:14px;line-height:20px;font-weight:600;color:var(--sh-foreground-neutral-prominent)}
-.sh-input-wrap{position:relative;display:flex}
-.sh-input{width:100%;min-height:48px;padding:4px 48px 4px 12px;border-radius:var(--sh-radius-xl);border:1px solid var(--sh-border-neutral-faded);background:var(--sh-background-neutral);font:inherit;font-size:16px;color:var(--sh-foreground-neutral-prominent)}
-.sh-input:hover{border-color:var(--sh-border-neutral-prominent)}
-.sh-input:focus{outline:none;border:2px solid var(--sh-focus);background:var(--sh-background-neutral-raised);padding:3px 47px 3px 11px}
-.sh-input[aria-invalid="true"]{border:2px solid var(--sh-background-destructive);padding:3px 47px 3px 11px}
-.reveal{position:absolute;right:4px;top:4px;width:40px;height:40px;border:0;border-radius:var(--sh-radius-md);background:transparent;color:var(--sh-foreground-neutral-faded);display:flex;align-items:center;justify-content:center;cursor:pointer}
-.reveal:hover{background:var(--sh-action-hover-inverse);color:var(--sh-foreground-neutral-prominent)}
-.sh-desc{font-size:12px;line-height:16px;color:var(--sh-foreground-neutral-faded);padding-top:4px}
-.sh-desc--error{color:var(--sh-foreground-destructive)}
-.sh-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:48px;padding:0 16px;border-radius:var(--sh-radius-xl);border:1px solid transparent;background:var(--sh-background-primary-faded);color:#fff;font:inherit;font-size:16px;font-weight:500;cursor:pointer}
-.sh-btn:hover{background:var(--sh-petrol-650)}
-.sh-alert{display:flex;gap:12px;align-items:flex-start;padding:12px 16px;border-radius:var(--sh-radius-xl);font-size:14px;line-height:20px}
-.sh-alert--error{background:var(--sh-background-destructive-raised);color:var(--sh-foreground-destructive-prominent)}
-.sh-alert--ok{background:var(--sh-background-constructive-raised);color:var(--sh-foreground-constructive-prominent)}
-.sh-alert[hidden]{display:none}
-.note{font-size:14px;line-height:20px;color:var(--sh-foreground-neutral-faded)}
-.auth__aside{flex:1 1 420px;background:var(--sh-background-neutral-inverted);color:#fff;padding:48px;display:flex;flex-direction:column;justify-content:space-between;gap:32px}
-.overline{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--sh-petrol-250)}
-.aside__title{margin:12px 0 0;font-family:var(--sh-font-header);font-weight:500;font-size:40px;line-height:44px;max-width:480px}
-.aside__list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;max-width:440px}
-.aside__list li{display:flex;gap:12px;align-items:flex-start;color:rgba(255,255,255,.85)}
-.aside__list .n{width:28px;height:28px;flex:none;border-radius:9999px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff}
-.orb{width:56px;height:56px;border-radius:9999px;background:radial-gradient(140% 120% at 40% 0,#fff 0,#f2f9fa 30%,#c8e5eb 58%,#95ceda 82%,#61b8c9 100%);box-shadow:0 0 0 1px rgba(46,161,184,.18);animation:orb 2.4s ease-in-out infinite}
-@keyframes orb{50%{box-shadow:0 0 0 10px rgba(46,161,184,.18)}}
-@media (max-width:900px){.auth__aside{display:none}}
+body{font-family:var(--font-body);color:var(--fg);background:radial-gradient(120% 80% at 30% 0%,#0c3040 0%,#071e29 55%,#051821 100%);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--petrol-450);outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.auth-shell{min-height:100vh;background:var(--petrol-950)}
+.auth-split{display:grid;grid-template-columns:42fr 58fr;min-height:100vh}
+
+/* Linkerkant */
+.auth-side{position:relative;overflow:hidden;padding:44px 48px;display:flex;flex-direction:column;justify-content:space-between;gap:48px;background:radial-gradient(130% 120% at 28% 18%,#0e3446 0,#08283a 45%,#041b26)}
+.auth-side-glow{position:absolute;inset:0;pointer-events:none;opacity:.6;background:radial-gradient(46% 56% at var(--gx,70%) var(--gy,40%),rgba(67,175,197,.32) 0,rgba(67,175,197,.12) 42%,transparent 72%);transition:background-position .3s}
+.auth-side-top,.auth-side-claim,.auth-side-foot{position:relative;z-index:1}
+.auth-logo{display:block;color:#fff}
+.auth-side-claim{margin:auto 0 10vh;font-family:var(--font-header);font-size:44px;line-height:50.6px;font-weight:500;letter-spacing:-.01em;max-width:400px}
+.auth-side-foot{display:flex;align-items:center;gap:12px;font-size:13px;color:rgba(230,255,255,.7)}
+.auth-side-badge{padding:6px 12px;border-radius:9999px;border:1px solid rgba(255,255,255,.24);background:rgba(255,255,255,.1);font-size:12px;font-weight:600;color:#fff}
+.auth-side-mark{position:absolute;right:-22%;bottom:-30%;width:110%;height:auto;color:rgba(255,255,255,.07);transform:rotate(-8deg);pointer-events:none}
+
+/* Rechterkant */
+.auth-main{display:flex;align-items:center;justify-content:center;padding:48px 32px}
+.auth-panel{width:100%;max-width:560px;display:flex;flex-direction:column;gap:16px}
+.auth-heading{margin:0 0 8px;font-size:20px;line-height:23px;font-weight:600}
+.auth-steps{display:flex;flex-direction:column;gap:12px}
+.auth-step{display:flex;gap:16px;align-items:flex-start;padding:16px 18px;border-radius:12px;border:1px solid var(--petrol-850);background:var(--petrol-850)}
+.auth-step.is-active{border-color:var(--petrol-450);background:var(--petrol-900);box-shadow:inset 0 0 0 1px var(--petrol-450)}
+.auth-step-num{width:40px;height:40px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:500;background:var(--petrol-800);color:var(--fg-faded)}
+.auth-step.is-active .auth-step-num{background:var(--petrol-500);color:#fff}
+.auth-step-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding-top:1px}
+.auth-step-title{font-size:17px;line-height:22px;font-weight:500;color:#fff}
+.auth-step-text{font-size:14px;line-height:23px;color:var(--fg-faded)}
+.auth-step-field{margin-top:12px}
+
+/* Float-label input */
+.sh-input-field{position:relative;height:48px;padding:0 12px;border-radius:12px;border:1px solid var(--petrol-850);background:var(--petrol-950);display:flex;align-items:center;transition:border-color .12s}
+.sh-input-field:hover{border-color:var(--petrol-800)}
+.sh-input-field:focus-within{border:2px solid var(--petrol-450);padding:0 11px}
+.sh-input-field.is-error{border:2px solid var(--destructive);padding:0 11px}
+.sh-input{flex:1;min-width:0;height:46px;padding:18px 0 4px;border:0;background:transparent;color:#fff;font:inherit;font-size:16px;outline:none}
+.sh-float-label{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--fg-faded);pointer-events:none;transition:all .15s ease}
+.sh-input-field:focus-within .sh-float-label,.sh-input:not(:placeholder-shown) + .sh-float-label{top:6px;transform:none;font-size:12px;line-height:16px}
+.sh-input-field:focus-within .sh-float-label{left:11px;top:5px}
+.reveal{width:36px;height:36px;margin-right:-6px;border:0;border-radius:8px;background:transparent;color:var(--fg-faded);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.reveal:hover{background:rgba(255,255,255,.06);color:#fff}
+.field-error{display:flex;align-items:center;gap:6px;margin:8px 0 0;font-size:13px;line-height:20px;color:var(--destructive)}
+.field-ok{margin:8px 0 0;font-size:13px;line-height:20px;color:#7fd39a}
+
+/* Mededeling */
+.auth-notice{margin-top:12px;padding:14px 16px 12px;border-radius:12px;border:1px solid var(--petrol-850);background:var(--petrol-900)}
+.auth-notice[hidden]{display:none}
+.auth-notice-head{display:flex;align-items:center;gap:8px}
+.auth-notice-icon{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--attention);color:var(--attention);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex:none;font-family:Georgia,serif}
+.auth-notice-title{flex:1;font-size:15px;font-weight:500;color:var(--attention)}
+.auth-notice-close{width:32px;height:32px;margin:-6px -8px -6px 0;border:0;border-radius:8px;background:transparent;color:var(--fg-faded);font-size:13px;cursor:pointer}
+.auth-notice-close:hover{background:rgba(255,255,255,.06);color:#fff}
+.auth-notice p{margin:10px 0 0;font-size:13px;line-height:20px;color:var(--fg-faded)}
+
+.auth-submit{margin-top:12px;height:48px;border-radius:12px;border:1px solid transparent;background:var(--petrol-600);color:#fff;font:inherit;font-size:20px;font-weight:500;cursor:pointer;transition:background .12s,color .12s}
+.auth-submit:hover:not(:disabled){background:var(--petrol-650)}
+.auth-submit:disabled{background:var(--petrol-800);border-color:var(--petrol-850);color:var(--fg-muted);cursor:not-allowed}
+
+@media (max-width:900px){
+  .auth-split{grid-template-columns:1fr}
+  .auth-side{padding:24px;gap:0;min-height:0}
+  .auth-side-claim,.auth-side-foot,.auth-side-mark{display:none}
+  .auth-main{align-items:flex-start;padding:32px 20px}
+}
 </style>
 </head>
 <body>
-<div class="auth">
-  <main class="auth__form">
-    <div class="auth__card">
-      <div class="brand"><svg width="35" height="25" viewBox="0 0 25 18" aria-hidden="true"><path fill="currentColor" d="M12.5771 0.03125C15.5686 0.03125 17.994 2.45585 17.9941 5.44727V11.9287C17.9941 14.9203 15.5687 17.3457 12.5771 17.3457C9.58561 17.3457 7.16016 14.9203 7.16016 11.9287V5.44727C7.1603 2.45585 9.5857 0.0312517 12.5771 0.03125ZM2.68555 0.03125C4.16829 0.0314455 5.36999 1.23306 5.37012 2.71582C5.37012 4.19869 4.16837 5.40117 2.68555 5.40137C1.20256 5.40137 0 4.19881 0 2.71582C0.000124703 1.23294 1.20264 0.03125 2.68555 0.03125ZM22.3145 0C23.7974 0 25 1.20256 25 2.68555C24.9998 4.16837 23.7973 5.37012 22.3145 5.37012C20.8317 5.36995 19.6301 4.16827 19.6299 2.68555C19.6299 1.20266 20.8316 0.000163241 22.3145 0Z"/></svg><span class="brand__name">COAGPT</span></div>
-      <div>
-        <h1 class="h1">Inloggen</h1>
-        <p class="lead">Dit prototype is alleen voor genodigden. Vul de toegangscode in die je hebt gekregen.</p>
-      </div>
-      <div class="sh-alert sh-alert--error" id="err" role="alert" hidden>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4l9 16H3z"/><path d="M12 10v4M12 17v.5"/></svg>
-        <span id="err-text">De toegangscode klopt niet. Probeer het opnieuw.</span>
-      </div>
-      <div class="sh-alert sh-alert--ok" id="out" role="status" hidden>
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"/></svg>
-        <span>Je bent uitgelogd.</span>
-      </div>
-      <form method="post" action="/api/login" style="display:flex;flex-direction:column;gap:24px">
+<div class="auth-shell">
+  <div class="auth-split">
+    <aside class="auth-side" id="side">
+      <div class="auth-side-glow" aria-hidden="true"></div>
+      <div class="auth-side-top"><svg class="auth-logo" width="164" height="58" viewBox="0 0 227 80" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="COA | MXVF"><defs><clipPath id="logo-c1"><path d="M0 64.8H9.1V75.9H0Z"/></clipPath><clipPath id="logo-c4"><path d="M55.6 40.5H71.1V80H55.6Z"/></clipPath></defs><path clip-path="url(#logo-c1)" fill-rule="evenodd" clip-rule="evenodd" d="M6.9 72.6H8.5L8.3 75.4C7.2 75.7 6.1 75.9 5.1 75.9C1.2 75.9 -0.0 73.5 -0.0 70.8C-0.0 67.3 2.0 64.8 5.9 64.8C6.9 64.8 8.0 64.9 9.0 65.2L8.8 67.8H7.2V66.5C6.7 66.4 6.3 66.4 5.9 66.4C3.2 66.4 2.2 68.5 2.2 70.7C2.2 73.4 3.6 74.2 5.5 74.2C5.9 74.2 6.2 74.1 6.6 74.0L6.9 72.6Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M17.3 74.2C19.2 74.2 20.4 72.3 20.4 69.8C20.4 67.7 19.4 66.5 17.7 66.5C15.8 66.5 14.7 68.3 14.7 70.8C14.7 73.0 15.7 74.2 17.3 74.2ZM17.8 64.8C21.3 64.8 22.6 67.3 22.6 69.8C22.6 73.3 20.6 75.9 17.2 75.9C13.8 75.9 12.4 73.3 12.4 70.8C12.4 67.4 14.5 64.8 17.8 64.8H17.8ZM31.3 70.4L30.6 67.4C30.5 67.1 30.4 66.7 30.4 66.4H30.4C30.3 66.7 30.2 67.1 30.0 67.4L28.7 70.4H31.3V70.4ZM29.4 64.9H31.9L34.5 74.1H35.3L35.2 75.6H31.4L31.5 74.1H32.2L31.7 72.0H28.1L27.1 74.1H28.2L28.0 75.6H24.2L24.3 74.1H25.0L29.4 64.9Z" fill="currentColor"/><path clip-path="url(#logo-c4)" fill-rule="evenodd" clip-rule="evenodd" d="M63.3 44.7C65.5 41.9 66.9 43.2 69.8 40.5C70.1 41.9 70.6 42.6 70.3 44.6C70.0 47.0 68.5 51.5 69.0 54.0C67.9 54.5 67.0 55.2 66.3 56.0C65.9 56.5 65.4 56.9 64.8 57.2C64.0 57.6 62.7 58.0 61.6 57.6C60.5 53.8 56.8 54.8 55.6 52.0C56.3 52.7 56.9 52.9 57.7 53.0C59.3 53.3 60.7 53.5 62.4 53.3C63.4 53.2 63.7 52.5 63.7 51.7C63.7 50.3 63.7 49.4 63.7 48.3C63.8 47.8 63.8 47.6 63.5 47.2C63.0 46.6 62.6 45.6 63.3 44.7L63.3 44.7ZM57.6 79.9C58.2 80.1 60.2 79.7 61.8 77.4C63.1 77.7 64.9 75.9 65.3 74.6C67.4 74.8 68.7 72.4 69.1 70.4C70.7 70.4 72.1 65.5 69.9 61.1C69.3 61.6 68.5 62.1 67.4 62.7C67.8 67.0 66.1 69.6 65.2 68.8C63.6 73.1 61.8 76.2 57.6 79.9L57.6 79.9Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M38.5 25.8C38.5 25.8 38.8 25.5 39.1 25.3C39.4 25.1 39.5 25.1 39.9 25.2C40.3 25.2 40.1 25.2 41.3 25.4C42.5 25.5 42.6 24.3 42.6 24.3L42.4 24.2C42.1 24.5 41.9 24.6 41.3 24.6C40.8 24.6 40.3 24.6 39.8 24.6C39.4 24.5 39.4 24.4 39.0 24.8C38.7 25.2 38.4 25.5 38.2 25.8L38.5 25.8ZM39.4 27.1C39.5 27.0 39.7 26.9 39.9 26.8C40.2 26.6 40.8 27.0 41.1 27.1C41.4 27.1 41.8 26.5 41.8 26.5L42.0 26.4L42.2 26.3C41.7 26.4 40.8 26.4 40.2 26.4C39.8 26.4 39.8 26.5 39.7 26.6C39.5 26.7 39.4 26.9 39.2 27.1C39.2 27.1 39.3 27.2 39.4 27.1Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M44.5 34.4C43.8 34.5 42.7 34.6 42.3 34.6C41.9 34.6 42.1 34.2 42.2 33.9C42.2 33.7 42.4 33.7 42.5 33.7C43.1 33.5 43.8 33.4 44.4 33.4C44.6 33.4 44.8 33.4 44.8 33.8C44.8 34.1 44.9 34.4 44.5 34.4ZM31.6 28.6C31.6 27.5 31.6 27.4 31.6 26.8C31.7 26.1 32.3 26.1 32.8 26.4L33.3 29.5C33.3 29.5 31.7 30.0 31.6 28.6ZM57.5 28.5C55.9 29.2 53.4 31.1 51.9 33.1C50.6 32.2 48.4 31.4 46.3 31.0C46.3 30.8 46.3 31.0 46.6 29.6C46.8 28.4 46.5 28.2 46.0 27.8C45.8 27.7 45.9 27.4 46.0 27.3C46.4 25.6 46.3 25.3 46.3 25.3C46.3 25.3 45.6 25.1 45.5 24.8C45.1 19.3 41.1 18.1 39.3 18.3C43.4 19.6 43.6 24.0 43.6 24.4C43.5 24.8 44.3 24.9 44.7 25.0C45.0 25.1 45.6 25.9 45.2 25.8C44.0 25.6 43.5 26.9 43.7 27.8C43.9 28.7 44.7 32.3 44.7 32.3C43.5 32.1 41.9 31.9 41.9 31.9C41.9 31.8 41.7 31.3 41.6 31.0C41.4 30.5 41.1 30.4 40.5 30.9C40.2 31.1 39.9 31.3 39.3 31.7C38.4 32.4 38.0 31.7 37.9 30.5C37.8 29.5 37.2 29.0 36.3 29.7C35.6 30.1 35.0 30.8 34.9 29.7L34.6 26.2C37.7 24.2 36.6 21.3 35.7 19.6L35.5 19.3C35.2 18.7 32.7 19.8 31.5 20.7C30.6 21.2 29.9 21.7 29.5 22.7C29.1 24.0 28.7 25.0 28.7 25.0C26.8 25.4 23.8 27.9 24.8 31.6C22.2 34.1 21.2 38.9 22.7 43.6C22.7 43.6 26.3 42.3 28.2 42.0C26.7 41.8 25.8 41.3 25.9 39.8C25.9 39.8 27.2 40.0 28.6 40.2C29.6 40.2 31.2 40.1 33.0 40.5C33.5 40.6 35.1 41.2 36.1 41.6C37.2 42.1 37.8 41.9 38.5 41.8C42.6 40.8 44.5 40.4 47.9 39.1C50.4 38.0 51.8 37.2 53.9 36.2C58.3 34.2 60.9 33.9 62.1 33.8C62.2 32.8 62.6 32.2 63.1 31.6C61.6 29.0 58.0 28.2 57.5 28.5ZM35.1 50.2C40.3 50.8 48.3 51.4 50.1 56.8C51.3 57.0 52.4 57.1 53.6 57.2C54.1 58.3 54.1 58.6 53.8 59.5H53.7C53.1 61.2 51.9 64.1 51.2 66.3C51.1 66.9 51.2 67.3 51.4 67.7C51.8 68.4 52.7 69.9 53.3 71.3C53.9 72.5 54.1 73.6 54.2 74.4C54.3 75.1 54.3 75.7 54.2 76.1C54.2 76.5 54.2 77.0 54.7 76.7C61.7 73.5 65.5 66.0 65.8 63.6L65.8 63.6C63.5 65.0 61.5 68.5 58.0 66.8L58.1 66.8C58.1 68.2 59.3 69.0 60.1 69.0C59.5 69.5 57.9 71.0 57.2 70.6C53.6 68.9 52.1 60.0 59.1 58.8C59.6 57.8 59.7 57.2 59.7 57.2L59.6 57.2C58.2 56.9 56.9 56.8 55.5 56.9C55.5 56.9 55.2 53.1 54.4 51.6C54.4 51.6 54.2 52.0 52.9 52.0L54.1 50.0C54.2 49.3 54.0 48.7 53.7 48.1H53.7C54.8 47.6 55.2 46.2 54.9 45.3C55.5 45.3 56.1 44.7 56.0 44.2C56.5 45.2 57.9 45.4 58.6 44.9C57.9 44.8 57.4 44.5 57.3 43.9C59.3 44.4 59.9 43.6 60.6 42.8V42.8C61.1 43.0 61.7 43.1 62.3 43.0C62.8 43.6 63.2 44.0 63.3 44.7C65.5 39.9 63.5 37.9 58.9 39.6C57.3 40.1 56.5 38.8 54.6 39.0C52.0 39.4 51.1 41.5 50.6 42.8C50.3 43.6 50.1 43.8 49.5 44.3C48.3 45.2 48.0 45.5 48.1 46.9C45.1 47.5 42.9 46.2 39.2 47.4C38.2 48.8 36.8 49.9 35.1 50.2Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M87.1 41.0C96.9 34.1 105.0 45.3 113 32.4C102.8 43.1 97.0 31.4 87.1 41.0V41.0" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M45.8 12.1C44.7 10.4 44.7 8.1 47.3 6.5C47.8 4.1 49.7 0.7 54.2 1.5C55.9 1.8 57.0 0.8 58.1 0.3C59.2 -0.1 59.7 -0.1 60.2 0.3C60.8 0.9 61.4 0.9 62.0 0.7C62.7 0.6 63.5 0.9 63.9 1.8C64.6 3.5 67.3 2.2 67.2 7.6C68.3 7.8 68.8 9.6 68.6 11.5C69.4 12.4 69.6 13.8 69.2 14.9V14.9C69.8 16.5 69.7 17.6 69.1 18.3C68.6 17.3 68.3 16.6 67.9 15.9C67.6 15.3 67.1 16.1 66.1 15.6C67.4 14.0 67.1 12.4 65.7 10.5C65.0 9.5 64.0 11.1 64.4 12.1L64.4 12.1C64.9 13.3 65.1 13.8 65.2 14.2C65.2 14.2 64.4 14.7 64.0 14.9C63.4 13.6 62.9 13.0 62.5 12.0C62.0 10.5 60.6 11.2 59.6 8.5C58.7 9.1 56.8 9.0 56.1 8.5C54.6 9.6 55.1 12.1 51.6 12.1C51.6 12.8 51.2 13.5 50.5 14.0C50.9 15.1 51.3 15.7 52.2 16.6C51.8 17.2 51.6 17.9 51.6 17.9L51.9 18.3C52.7 17.2 53.4 16.6 54.2 16.4C54.3 16.4 54.7 16.9 54.7 16.9C54.5 16.9 54.5 17.3 54.5 17.5C54.5 17.8 54.8 18.4 54.8 18.4C55.1 19.0 56.3 21.5 56.5 21.8C56.5 21.8 57.9 20.8 58.1 20.6L58.5 20.8C58.3 21.2 58.1 21.8 58.1 21.8L58.2 22.1L58.9 21.3C59.2 21.0 59.6 21.0 59.8 20.9C60.1 20.9 60.4 20.9 60.6 20.9C60.6 20.9 60.8 21.2 60.7 21.2C60.2 21.4 58.8 22.1 58.7 22.8C58.0 23.0 57.5 23.4 57.3 23.7C57.1 24.2 57.8 24.1 58.0 24.1C58.2 24.1 60.1 22.6 60.3 22.4C60.4 22.2 60.5 22.7 60.4 22.9C60.3 23.0 59.3 24.4 59.7 24.9C60.3 25.8 60.5 26.0 60.9 26.6C65.6 21.1 65.4 21.3 65.8 20.6C66.3 19.7 65.9 18.3 65.9 18.0L65.9 18.0C66.2 19.3 67.0 21.2 66.7 23.6L66.7 23.6C68.0 22.7 70.6 21.4 69.7 19.5L73.6 16.5C80.6 11.4 94.6 12.9 94.2 27.2C94.2 27.2 93.9 29.3 89.1 32.3C86.6 33.9 84.9 35.1 84.2 37.3C84.2 37.3 86.4 35.4 89.3 36.1C85.8 38.1 84.5 42.0 83.6 47.6C82.6 53.8 78.7 57.4 75.3 59.7C75.3 59.7 73.4 59.6 71.8 59.6C72.4 59.1 72.9 58.4 73.4 57.7C73.7 57.4 73.9 57.1 73.9 56.8C74.4 53.9 73.6 45.7 73.8 41.8V41.8C75.1 40.6 74.0 37.6 75.3 37.0C78.5 35.1 81.1 32.3 82.2 29.0C84.7 27.8 86.8 25.3 87.4 23.2C82.3 26.3 75.4 21.1 71.3 23.6C70.8 27.9 68.1 27.2 63.1 31.6C63.3 29.2 61.3 26.5 60.9 26.6C59.9 26.8 59.0 27.0 58.4 27.0C57.7 27.0 57.5 26.7 57.3 26.3C57.1 25.8 56.8 25.8 56.3 25.7C55.9 25.5 55.6 25.1 55.2 24.4C55.1 24.0 54.9 23.9 54.4 23.8C53.9 23.7 53.5 23.3 53.2 22.7C52.8 22.2 52.8 22.2 52.3 21.3C51.7 20.1 50.6 20.5 50.6 19.7C50.5 18.7 50.3 18.1 50.3 18.1C49.6 17.8 49.3 17.6 49.0 16.8C47.5 14.8 45.5 15.0 45.8 12.1Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M33.7 48.1C22.4 49.2 23.3 60.7 9.7 57.1C23.5 58.1 20.6 47.6 33.7 48.0V48.1Z" fill="currentColor"/><rect x="137" y="20" width="2" height="40" fill="#008197"/><path d="M172.6 45.0L167.4 35.1V48H165.1V31.2H168.1L173.7 42.3L179.4 31.2H182.1V48H179.8V35.1L174.6 45.0H172.6ZM196.0 48L191.5 41.0L187.1 48H184.5L190.2 38.9L185.2 31.2H188.0L191.7 37.0L195.4 31.2H198.1L193.0 39.0L198.8 48H196.0ZM207.7 48H205.1L199.4 31.2H202.0L206.4 45.0L210.9 31.2H213.3L207.7 48ZM224.7 40.7H218.2V48H215.9V31.2H226.1V33.2H218.2V38.6H224.7V40.7Z" fill="currentColor"/></svg></div>
+      <p class="auth-side-claim">Eén werkplek.<br>Afgestemd op jou.<br>Voor heel COA.</p>
+      <div class="auth-side-foot"><span class="auth-side-badge">Prototype · COAGPT</span><span>MXVF Design Team · COA</span></div>
+      <svg class="auth-side-mark" viewBox="0 0 114 80" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill-rule="evenodd" clip-rule="evenodd" d="M63.3 44.7C65.5 41.9 66.9 43.2 69.8 40.5C70.1 41.9 70.6 42.6 70.3 44.6C70.0 47.0 68.5 51.5 69.0 54.0C67.9 54.5 67.0 55.2 66.3 56.0C65.9 56.5 65.4 56.9 64.8 57.2C64.0 57.6 62.7 58.0 61.6 57.6C60.5 53.8 56.8 54.8 55.6 52.0C56.3 52.7 56.9 52.9 57.7 53.0C59.3 53.3 60.7 53.5 62.4 53.3C63.4 53.2 63.7 52.5 63.7 51.7C63.7 50.3 63.7 49.4 63.7 48.3C63.8 47.8 63.8 47.6 63.5 47.2C63.0 46.6 62.6 45.6 63.3 44.7L63.3 44.7ZM57.6 79.9C58.2 80.1 60.2 79.7 61.8 77.4C63.1 77.7 64.9 75.9 65.3 74.6C67.4 74.8 68.7 72.4 69.1 70.4C70.7 70.4 72.1 65.5 69.9 61.1C69.3 61.6 68.5 62.1 67.4 62.7C67.8 67.0 66.1 69.6 65.2 68.8C63.6 73.1 61.8 76.2 57.6 79.9L57.6 79.9Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M38.5 25.8C38.5 25.8 38.8 25.5 39.1 25.3C39.4 25.1 39.5 25.1 39.9 25.2C40.3 25.2 40.1 25.2 41.3 25.4C42.5 25.5 42.6 24.3 42.6 24.3L42.4 24.2C42.1 24.5 41.9 24.6 41.3 24.6C40.8 24.6 40.3 24.6 39.8 24.6C39.4 24.5 39.4 24.4 39.0 24.8C38.7 25.2 38.4 25.5 38.2 25.8L38.5 25.8ZM39.4 27.1C39.5 27.0 39.7 26.9 39.9 26.8C40.2 26.6 40.8 27.0 41.1 27.1C41.4 27.1 41.8 26.5 41.8 26.5L42.0 26.4L42.2 26.3C41.7 26.4 40.8 26.4 40.2 26.4C39.8 26.4 39.8 26.5 39.7 26.6C39.5 26.7 39.4 26.9 39.2 27.1C39.2 27.1 39.3 27.2 39.4 27.1Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M44.5 34.4C43.8 34.5 42.7 34.6 42.3 34.6C41.9 34.6 42.1 34.2 42.2 33.9C42.2 33.7 42.4 33.7 42.5 33.7C43.1 33.5 43.8 33.4 44.4 33.4C44.6 33.4 44.8 33.4 44.8 33.8C44.8 34.1 44.9 34.4 44.5 34.4ZM31.6 28.6C31.6 27.5 31.6 27.4 31.6 26.8C31.7 26.1 32.3 26.1 32.8 26.4L33.3 29.5C33.3 29.5 31.7 30.0 31.6 28.6ZM57.5 28.5C55.9 29.2 53.4 31.1 51.9 33.1C50.6 32.2 48.4 31.4 46.3 31.0C46.3 30.8 46.3 31.0 46.6 29.6C46.8 28.4 46.5 28.2 46.0 27.8C45.8 27.7 45.9 27.4 46.0 27.3C46.4 25.6 46.3 25.3 46.3 25.3C46.3 25.3 45.6 25.1 45.5 24.8C45.1 19.3 41.1 18.1 39.3 18.3C43.4 19.6 43.6 24.0 43.6 24.4C43.5 24.8 44.3 24.9 44.7 25.0C45.0 25.1 45.6 25.9 45.2 25.8C44.0 25.6 43.5 26.9 43.7 27.8C43.9 28.7 44.7 32.3 44.7 32.3C43.5 32.1 41.9 31.9 41.9 31.9C41.9 31.8 41.7 31.3 41.6 31.0C41.4 30.5 41.1 30.4 40.5 30.9C40.2 31.1 39.9 31.3 39.3 31.7C38.4 32.4 38.0 31.7 37.9 30.5C37.8 29.5 37.2 29.0 36.3 29.7C35.6 30.1 35.0 30.8 34.9 29.7L34.6 26.2C37.7 24.2 36.6 21.3 35.7 19.6L35.5 19.3C35.2 18.7 32.7 19.8 31.5 20.7C30.6 21.2 29.9 21.7 29.5 22.7C29.1 24.0 28.7 25.0 28.7 25.0C26.8 25.4 23.8 27.9 24.8 31.6C22.2 34.1 21.2 38.9 22.7 43.6C22.7 43.6 26.3 42.3 28.2 42.0C26.7 41.8 25.8 41.3 25.9 39.8C25.9 39.8 27.2 40.0 28.6 40.2C29.6 40.2 31.2 40.1 33.0 40.5C33.5 40.6 35.1 41.2 36.1 41.6C37.2 42.1 37.8 41.9 38.5 41.8C42.6 40.8 44.5 40.4 47.9 39.1C50.4 38.0 51.8 37.2 53.9 36.2C58.3 34.2 60.9 33.9 62.1 33.8C62.2 32.8 62.6 32.2 63.1 31.6C61.6 29.0 58.0 28.2 57.5 28.5ZM35.1 50.2C40.3 50.8 48.3 51.4 50.1 56.8C51.3 57.0 52.4 57.1 53.6 57.2C54.1 58.3 54.1 58.6 53.8 59.5H53.7C53.1 61.2 51.9 64.1 51.2 66.3C51.1 66.9 51.2 67.3 51.4 67.7C51.8 68.4 52.7 69.9 53.3 71.3C53.9 72.5 54.1 73.6 54.2 74.4C54.3 75.1 54.3 75.7 54.2 76.1C54.2 76.5 54.2 77.0 54.7 76.7C61.7 73.5 65.5 66.0 65.8 63.6L65.8 63.6C63.5 65.0 61.5 68.5 58.0 66.8L58.1 66.8C58.1 68.2 59.3 69.0 60.1 69.0C59.5 69.5 57.9 71.0 57.2 70.6C53.6 68.9 52.1 60.0 59.1 58.8C59.6 57.8 59.7 57.2 59.7 57.2L59.6 57.2C58.2 56.9 56.9 56.8 55.5 56.9C55.5 56.9 55.2 53.1 54.4 51.6C54.4 51.6 54.2 52.0 52.9 52.0L54.1 50.0C54.2 49.3 54.0 48.7 53.7 48.1H53.7C54.8 47.6 55.2 46.2 54.9 45.3C55.5 45.3 56.1 44.7 56.0 44.2C56.5 45.2 57.9 45.4 58.6 44.9C57.9 44.8 57.4 44.5 57.3 43.9C59.3 44.4 59.9 43.6 60.6 42.8V42.8C61.1 43.0 61.7 43.1 62.3 43.0C62.8 43.6 63.2 44.0 63.3 44.7C65.5 39.9 63.5 37.9 58.9 39.6C57.3 40.1 56.5 38.8 54.6 39.0C52.0 39.4 51.1 41.5 50.6 42.8C50.3 43.6 50.1 43.8 49.5 44.3C48.3 45.2 48.0 45.5 48.1 46.9C45.1 47.5 42.9 46.2 39.2 47.4C38.2 48.8 36.8 49.9 35.1 50.2Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M87.1 41.0C96.9 34.1 105.0 45.3 113 32.4C102.8 43.1 97.0 31.4 87.1 41.0V41.0" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M45.8 12.1C44.7 10.4 44.7 8.1 47.3 6.5C47.8 4.1 49.7 0.7 54.2 1.5C55.9 1.8 57.0 0.8 58.1 0.3C59.2 -0.1 59.7 -0.1 60.2 0.3C60.8 0.9 61.4 0.9 62.0 0.7C62.7 0.6 63.5 0.9 63.9 1.8C64.6 3.5 67.3 2.2 67.2 7.6C68.3 7.8 68.8 9.6 68.6 11.5C69.4 12.4 69.6 13.8 69.2 14.9V14.9C69.8 16.5 69.7 17.6 69.1 18.3C68.6 17.3 68.3 16.6 67.9 15.9C67.6 15.3 67.1 16.1 66.1 15.6C67.4 14.0 67.1 12.4 65.7 10.5C65.0 9.5 64.0 11.1 64.4 12.1L64.4 12.1C64.9 13.3 65.1 13.8 65.2 14.2C65.2 14.2 64.4 14.7 64.0 14.9C63.4 13.6 62.9 13.0 62.5 12.0C62.0 10.5 60.6 11.2 59.6 8.5C58.7 9.1 56.8 9.0 56.1 8.5C54.6 9.6 55.1 12.1 51.6 12.1C51.6 12.8 51.2 13.5 50.5 14.0C50.9 15.1 51.3 15.7 52.2 16.6C51.8 17.2 51.6 17.9 51.6 17.9L51.9 18.3C52.7 17.2 53.4 16.6 54.2 16.4C54.3 16.4 54.7 16.9 54.7 16.9C54.5 16.9 54.5 17.3 54.5 17.5C54.5 17.8 54.8 18.4 54.8 18.4C55.1 19.0 56.3 21.5 56.5 21.8C56.5 21.8 57.9 20.8 58.1 20.6L58.5 20.8C58.3 21.2 58.1 21.8 58.1 21.8L58.2 22.1L58.9 21.3C59.2 21.0 59.6 21.0 59.8 20.9C60.1 20.9 60.4 20.9 60.6 20.9C60.6 20.9 60.8 21.2 60.7 21.2C60.2 21.4 58.8 22.1 58.7 22.8C58.0 23.0 57.5 23.4 57.3 23.7C57.1 24.2 57.8 24.1 58.0 24.1C58.2 24.1 60.1 22.6 60.3 22.4C60.4 22.2 60.5 22.7 60.4 22.9C60.3 23.0 59.3 24.4 59.7 24.9C60.3 25.8 60.5 26.0 60.9 26.6C65.6 21.1 65.4 21.3 65.8 20.6C66.3 19.7 65.9 18.3 65.9 18.0L65.9 18.0C66.2 19.3 67.0 21.2 66.7 23.6L66.7 23.6C68.0 22.7 70.6 21.4 69.7 19.5L73.6 16.5C80.6 11.4 94.6 12.9 94.2 27.2C94.2 27.2 93.9 29.3 89.1 32.3C86.6 33.9 84.9 35.1 84.2 37.3C84.2 37.3 86.4 35.4 89.3 36.1C85.8 38.1 84.5 42.0 83.6 47.6C82.6 53.8 78.7 57.4 75.3 59.7C75.3 59.7 73.4 59.6 71.8 59.6C72.4 59.1 72.9 58.4 73.4 57.7C73.7 57.4 73.9 57.1 73.9 56.8C74.4 53.9 73.6 45.7 73.8 41.8V41.8C75.1 40.6 74.0 37.6 75.3 37.0C78.5 35.1 81.1 32.3 82.2 29.0C84.7 27.8 86.8 25.3 87.4 23.2C82.3 26.3 75.4 21.1 71.3 23.6C70.8 27.9 68.1 27.2 63.1 31.6C63.3 29.2 61.3 26.5 60.9 26.6C59.9 26.8 59.0 27.0 58.4 27.0C57.7 27.0 57.5 26.7 57.3 26.3C57.1 25.8 56.8 25.8 56.3 25.7C55.9 25.5 55.6 25.1 55.2 24.4C55.1 24.0 54.9 23.9 54.4 23.8C53.9 23.7 53.5 23.3 53.2 22.7C52.8 22.2 52.8 22.2 52.3 21.3C51.7 20.1 50.6 20.5 50.6 19.7C50.5 18.7 50.3 18.1 50.3 18.1C49.6 17.8 49.3 17.6 49.0 16.8C47.5 14.8 45.5 15.0 45.8 12.1Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M33.7 48.1C22.4 49.2 23.3 60.7 9.7 57.1C23.5 58.1 20.6 47.6 33.7 48.0V48.1Z" fill="currentColor"/></svg>
+    </aside>
+
+    <main class="auth-main">
+      <form class="auth-panel" method="post" action="/api/login" id="form" novalidate>
+        <h1 class="auth-heading">Inloggen</h1>
         <input type="hidden" name="next" id="next" value="/">
-        <div class="sh-field">
-          <label for="password">Toegangscode</label>
-          <div class="sh-input-wrap">
-            <input class="sh-input" id="password" name="password" type="password" autocomplete="current-password" required aria-describedby="pw-desc">
-            <button type="button" class="reveal" id="reveal" aria-label="Toon toegangscode" aria-pressed="false">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
+        <div class="auth-steps">
+          <div class="auth-step is-active">
+            <span class="auth-step-num" aria-hidden="true">1</span>
+            <div class="auth-step-body">
+              <div class="auth-step-title" id="s1">Gedeeld wachtwoord</div>
+              <div class="auth-step-text">Tijdelijke toegang totdat de koppeling met het COA-account actief is</div>
+              <div class="auth-step-field">
+                <div class="sh-input-field" id="field">
+                  <input class="sh-input" id="password" name="password" type="password" placeholder=" " autocomplete="current-password" aria-describedby="s1 pw-msg">
+                  <label class="sh-float-label" for="password">Wachtwoord</label>
+                  <button type="button" class="reveal" id="reveal" aria-label="Toon wachtwoord" aria-pressed="false">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                  </button>
+                </div>
+                <p id="pw-msg" aria-live="polite"></p>
+              </div>
+            </div>
           </div>
-          <span class="sh-desc" id="pw-desc">Je blijft zeven dagen ingelogd op dit apparaat.</span>
+          <div class="auth-step is-upcoming">
+            <span class="auth-step-num" aria-hidden="true">2</span>
+            <div class="auth-step-body">
+              <div class="auth-step-title">COA-account (Entra ID)</div>
+              <div class="auth-step-text">Binnenkort: inloggen met je eigen COA-account en MFA</div>
+            </div>
+          </div>
+          <div class="auth-step is-upcoming">
+            <span class="auth-step-num" aria-hidden="true">3</span>
+            <div class="auth-step-body">
+              <div class="auth-step-title">Aan de slag met COAGPT</div>
+              <div class="auth-step-text">Een kort gesprek, je eerste taak en je eigen werkruimte</div>
+            </div>
+          </div>
         </div>
-        <button type="submit" class="sh-btn">Inloggen</button>
+
+        <div class="auth-notice" id="notice" role="note">
+          <div class="auth-notice-head">
+            <span class="auth-notice-icon" aria-hidden="true">i</span>
+            <span class="auth-notice-title">Belangrijke mededeling</span>
+            <button type="button" class="auth-notice-close" id="notice-close" aria-label="Mededeling sluiten">✕</button>
+          </div>
+          <p>Dit prototype is bedoeld voor medewerkers en teams van het COA. Deel het wachtwoord niet buiten je team. Geen toegang of vragen? Neem contact op met het MXVF Design Team.</p>
+        </div>
+
+        <button type="submit" class="auth-submit" id="submit" disabled>Ga van start</button>
       </form>
-      <p class="note">Geen toegangscode? Vraag hem aan bij het designteam van MXVF.</p>
-    </div>
-  </main>
-  <aside class="auth__aside" aria-label="Over dit prototype">
-    <div>
-      <span class="orb" aria-hidden="true" style="display:block;margin-bottom:32px"></span>
-      <span class="overline">Prototype · Shelter design system</span>
-      <p class="aside__title">Jouw eigen AI-werkplek bij COA</p>
-    </div>
-    <ol class="aside__list">
-      <li><span class="n">1</span><span>Een kort gesprek over wie je bent en waar je aan werkt.</span></li>
-      <li><span class="n">2</span><span>Je eerste taak meteen samen met COAGPT.</span></li>
-      <li><span class="n">3</span><span>Een werkruimte die past bij jouw functie.</span></li>
-    </ol>
-  </aside>
+    </main>
+  </div>
 </div>
 <script>
 (function(){
   var q = new URLSearchParams(location.search);
+  var pw = document.getElementById('password'), btn = document.getElementById('submit');
+  var field = document.getElementById('field'), msg = document.getElementById('pw-msg');
   var n = q.get('next'); if (n && n.charAt(0)==='/' && n.charAt(1)!=='/') document.getElementById('next').value = n;
-  var pw = document.getElementById('password');
+  function sync(){ btn.disabled = !pw.value; }
+  pw.addEventListener('input', function(){ sync(); if (field.classList.contains('is-error')){ field.classList.remove('is-error'); pw.removeAttribute('aria-invalid'); msg.className=''; msg.textContent=''; } });
   if (q.get('error')){
-    document.getElementById('err').hidden = false;
-    if (q.get('error')==='config') document.getElementById('err-text').textContent = 'De inlog is nog niet ingesteld. Zet PROTOTYPE_PASSWORD en AUTH_SECRET in Vercel.';
-    pw.setAttribute('aria-invalid','true');
-  }
-  if (q.get('uitgelogd')) document.getElementById('out').hidden = false;
-  pw.focus();
+    field.classList.add('is-error'); pw.setAttribute('aria-invalid','true'); msg.className = 'field-error';
+    msg.textContent = q.get('error')==='config' ? 'De inlog is nog niet ingesteld. Zet PROTOTYPE_PASSWORD en AUTH_SECRET in Vercel.' : 'Dit wachtwoord klopt niet. Probeer het opnieuw.';
+  } else if (q.get('uitgelogd')){ msg.className = 'field-ok'; msg.textContent = 'Je bent uitgelogd.'; }
+  sync(); pw.focus();
   var r = document.getElementById('reveal');
-  r.addEventListener('click', function(){ var show = pw.type==='password'; pw.type = show ? 'text' : 'password'; r.setAttribute('aria-pressed', String(show)); r.setAttribute('aria-label', show ? 'Verberg toegangscode' : 'Toon toegangscode'); });
+  r.addEventListener('click', function(){ var show = pw.type==='password'; pw.type = show ? 'text' : 'password'; r.setAttribute('aria-pressed', String(show)); r.setAttribute('aria-label', show ? 'Verberg wachtwoord' : 'Toon wachtwoord'); pw.focus(); });
+  var notice = document.getElementById('notice');
+  try { if (localStorage.getItem('coagpt-notice')==='closed') notice.hidden = true; } catch(e){}
+  document.getElementById('notice-close').addEventListener('click', function(){ notice.hidden = true; try { localStorage.setItem('coagpt-notice','closed'); } catch(e){} });
+  var side = document.getElementById('side');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+    side.addEventListener('pointermove', function(e){ var b = side.getBoundingClientRect(); side.style.setProperty('--gx', ((e.clientX-b.left)/b.width*100).toFixed(1)+'%'); side.style.setProperty('--gy', ((e.clientY-b.top)/b.height*100).toFixed(1)+'%'); });
+  }
 })();
 </script>
 </body>
