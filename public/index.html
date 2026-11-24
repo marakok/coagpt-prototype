@@ -170,7 +170,6 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 .intake__aside{flex:1 1 380px;max-width:100%;background:var(--sh-petrol-900);color:#fff;padding:32px 40px 40px;display:flex;flex-direction:column;gap:32px}
 .intake__main{flex:999 1 600px;min-width:0;background:var(--sh-background-neutral-raised);padding:32px 56px 32px;display:flex;flex-direction:column;gap:40px}
 .intake__body{flex:1;max-width:800px;display:flex;flex-direction:column;gap:32px}
-.intake__foot{max-width:800px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-top:1px solid var(--sh-border-neutral-faded);padding-top:24px}
 .brand{display:flex;align-items:center;gap:10px}
 .brand__mark{display:flex;align-items:center}
 .brand__name{font-family:var(--sh-font-header);font-size:20px;line-height:28px;font-weight:800}
@@ -426,6 +425,17 @@ textarea.sh-input:focus{padding:7px 11px 3px}
 .proto span{padding:0 8px 0 10px;font-size:12px;font-weight:700;letter-spacing:.08em;color:rgba(255,255,255,.7)}
 .proto button{min-height:32px;padding:0 12px;border:0;border-radius:var(--sh-radius-full);background:rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600}
 .proto button:hover{background:rgba(255,255,255,.22)}
+/* Prototype-balk: klein label, klapt open bij hover of toetsenbordfocus */
+.proto{gap:0;transition:box-shadow var(--sh-motion-base,200ms)}
+.proto span{padding:0 10px;line-height:32px;cursor:default}
+.proto__actions{display:grid;grid-template-columns:0fr;overflow:hidden;transition:grid-template-columns var(--sh-motion-slow,320ms) var(--sh-ease-emphasized,ease)}
+.proto__actions > div{min-width:0;display:flex;gap:8px;opacity:0;transition:opacity var(--sh-motion-base,200ms) var(--sh-ease-standard,ease)}
+.proto:hover,.proto:focus-within{box-shadow:var(--sh-levitation-5)}
+.proto:hover .proto__actions,.proto:focus-within .proto__actions{grid-template-columns:1fr}
+.proto:hover .proto__actions > div,.proto:focus-within .proto__actions > div{opacity:1;transition-delay:80ms}
+.proto__actions a{min-height:32px;padding:0 12px;border-radius:9999px;background:rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600;display:inline-flex;align-items:center;text-decoration:none;white-space:nowrap}
+.proto__actions a:hover{background:rgba(255,255,255,.22)}
+.proto button{white-space:nowrap}
 
 /* =========================================================
    Motion. De motion-documentatie van Shelter op mxds.nl zit
@@ -542,9 +552,11 @@ button.action-card:hover .icon-container,.opt:hover .opt__icon,.row--btn:hover .
 <div id="app"></div>
 <div class="proto" role="group" aria-label="Prototype-bediening">
   <span>PROTOTYPE</span>
-  <button type="button" data-a="reset">Opnieuw beginnen</button>
-  <button type="button" data-a="skip">Naar werkruimte</button>
-  <a href="/api/logout" style="min-height:32px;padding:0 12px;border-radius:9999px;background:rgba(255,255,255,.12);color:#fff;font-size:13px;font-weight:600;display:inline-flex;align-items:center;text-decoration:none">Uitloggen</a>
+  <div class="proto__actions"><div>
+    <button type="button" data-a="reset">Opnieuw beginnen</button>
+    <button type="button" data-a="skip">Naar werkruimte</button>
+    <a href="/api/logout">Uitloggen</a>
+  </div></div>
 </div>
 
 <script>
